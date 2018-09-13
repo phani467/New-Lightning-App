@@ -8,6 +8,7 @@ public static List<String> getPickListValuesIntoList(String objectType, String s
     List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
     for( Schema.PicklistEntry pickListVal : ple){
         pickListValuesList.add(pickListVal.getLabel());
+        hiiiiii
     }     
     return pickListValuesList;
 }
