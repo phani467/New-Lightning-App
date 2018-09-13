@@ -1,0 +1,578 @@
+<apex:page sidebar="false" showHeader="false" controller="bofc.BOFCHOME" action="{!checkRMS}">
+<html lang="en">
+<head>
+
+<title>index</title>
+
+ 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>  
+ 
+<!-- <apex:includeScript value="{!URLFOR($Resource.BulkFieldCreator, '/jquery.min.js')}" /> -->
+
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/css/bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/css/style1.css')}"/>   
+<!-- <apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator, '/font-awesome.min.css')}"/>   -->
+
+ 
+<!-- <apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator,'/HomePageCSS/css/bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/css/style.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/css/bootstrap.min.css')}"/>
+
+<apex:includeScript value="{!URLFOR($Resource.BulkFieldCreator, 'js/jquery-1.9.1.js')}" /> -->
+
+<!--[if IE]>
+<style>
+
+</style>
+  <![endif]-->
+
+
+<style>
+
+@media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    nav ul li:hover ul{top: 70px;}
+    }
+.content-box{padding:30px 0px 0px;width:100%; float:left;background-color:#fff;}
+.content-left{text-align:center;padding:30px 0px;}
+.content-right p{font-size:17px; font-family:Arial;color:#52524f;}
+.left-column-one ul{padding:0; margin-top:30px;}
+.left-column-one ul li{font-size:16px;font-family:Arial;line-height:33px;list-style-image: url('../img/cog.png'); background-repeat:no-repeat; padding-bottom:15px;}
+.left-column-one ul li i{color:#7a7a7a;font-size:24px;transition:all 0.5s ease 0s;}
+.left-column-one ul li i:hover{color:#1679b9;}
+
+
+.right-column-two ul{padding:0; margin-top:30px;}
+.right-column-two ul li{font-size:16px;font-family:Arial;line-height:33px;list-style-image: url('../img/cog.png'); background-repeat:no-repeat; padding-bottom:15px;}
+.right-column-two ul li i{color:#7a7a7a;font-size:24px;transition:all 0.5s ease 0s;}
+.right-column-two ul li i:hover{color:#1679b9;}
+
+.left-column-one{width:100%; float:left;padding-right:2%;}
+.right-column-two{width:50%; float:left;}
+
+.social-media{float:right; width:100%;}
+.social-media ul{padding:0; list-style:none; width:25%; float:right;}
+.social-media ul li{float:left;}
+.social-media ul li a{float:left;}
+.social-media ul li a i{font-size:25px;padding-right:5px;}
+
+.social-media p{float:left; width:70%;text-align:right;}
+.config-newsletter{padding:20px 10px;}
+.news-left > p {    font-size: 26px;}
+.news-right > a {    background:#0676b7; color:#fff;font-size:20px;    padding: 13px 36px;}
+.news-right > a:hover{text-decoration:none;}
+.news-right {    float: right;margin-top:10px;}
+
+.config-newsletter {    border-top: 2px solid #1679b9;width:100%;float:left; background-color:#fff;margin: 1px;}
+
+nav {
+    
+    background-color: #0a5d91;
+ }   
+nav ul li
+{
+ margin-left:0px;
+ // width:133.7px;
+ width:118.7px;
+}
+
+nav ul ul{ width:118.7px; }
+
+.content-right h1{ float:left;margin: 0px 0px 8px 0px;}
+
+.content-right p{ clear: both;font-size: 14px;}
+
+.header-right ul li,.content-right ul li
+{
+   margin: 0px 5px;
+}
+
+.logo-box {
+    padding: 15px 0px;
+}
+
+.header-right {
+   padding: 6% 0px;
+}
+
+.social_part_one
+{
+    border-bottom: 3px solid #e6e6e5;
+    float: left;
+    width: 100%;
+    padding-bottom: 3%;
+    margin-bottom: 3%;
+}
+.social_part_one ul{ margin-top:0px;}
+.social_part_one li{ float:left;line-height: 14px !important;}
+.social_part_one > a {
+    
+    padding-right: 45px;
+    margin-bottom: 0px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    color: #999999;
+    float: left;   
+}
+.downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+
+.social_part_one > a:hover{ text-decoration:none;color: #999999;}
+
+.social_part_one ul{float: left; margin: 0px !important;}
+
+
+
+.shipping_heading > a
+{
+    font-size: 17px;
+    text-transform: initial;
+    font-weight: bold;
+    color: #726f6f;
+}
+
+.shipping_heading > a:hover {
+    text-decoration: none;
+    color: #726f6f;
+}
+
+.content-right ul {
+    margin-top: 0px;
+}
+
+.content-box {
+    padding: 15px 0px 10px 0px;
+}
+
+    .overlay_div
+        {
+        // display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+    
+    .rms
+    {
+       position: fixed;
+       top: 30%;
+       left: 20%;
+       border: 3px solid black;
+       color: black;
+       background: white;
+       opacity: 5;
+       padding:10px;
+       z-index: 1111;
+    }
+    
+    .comingsoon
+    {
+        position: absolute;
+    font-size: 13px;
+    top: -28px;
+    right: 10px;
+    padding: 3px;
+    background-color: #f00;
+    color: #fff;
+    }
+    
+    .comingsoon:after, .comingsoon:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+    .comingsoon:after
+    {
+       border-color: rgba(136, 183, 213, 0);
+    border-top-color: #f00;
+    border-width: 9px;
+    margin-left: -9px;
+    }
+    
+    nav ul li a {
+        font:size:13px;
+    }
+    
+</style>
+
+<script>
+        function createRemoteSite()
+        { 
+            // Disable button 
+            document.getElementById('createremotesitebtn').disabled = true;
+            // Calls the Metdata API from JavaScript to create the Remote Site Setting to permit Apex callouts
+            var binding = new XMLHttpRequest();
+            var request = 
+                '<?xml version="1.0" encoding="utf-8"?>' + 
+                '<env:Envelope xmlns:env="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">'+
+                    '<env:Header>' + 
+                        '<urn:SessionHeader xmlns:urn="http://soap.sforce.com/2006/04/metadata">' + 
+                            '<urn:sessionId>{!$Api.Session_ID}</urn:sessionId>' + 
+                        '</urn:SessionHeader>' + 
+                    '</env:Header>' + 
+                    '<env:Body>' +
+                        '<createMetadata xmlns="http://soap.sforce.com/2006/04/metadata">' + 
+                            '<metadata xsi:type="RemoteSiteSetting">' + 
+                                '<fullName>BOFCRMSConfiguration1{!TypeofVersion}</fullName>' + 
+                                '<description>RMS for BOFC</description>' + 
+                                '<disableProtocolSecurity>false</disableProtocolSecurity>' + 
+                                '<isActive>true</isActive>' + 
+                                '<url>https://{!Hostname}</url>' +
+                            '</metadata>' +
+                            '<metadata xsi:type="RemoteSiteSetting">' + 
+                                '<fullName>BOFCRMSConfiguration2{!TypeofVersion}</fullName>' + 
+                                '<description>RMS for BOFC</description>' + 
+                                '<disableProtocolSecurity>false</disableProtocolSecurity>' + 
+                                '<isActive>true</isActive>' + 
+                                '<url>https://{!servername}-api.salesforce.com</url>' +
+                            '</metadata>' +
+                            '<metadata xsi:type="RemoteSiteSetting">' + 
+                                '<fullName>BOFCRMSConfiguration3{!TypeofVersion}</fullName>' + 
+                                '<description>RMS for BOFC</description>' + 
+                                '<disableProtocolSecurity>false</disableProtocolSecurity>' + 
+                                '<isActive>true</isActive>' + 
+                                '<url>https://{!servername}.salesforce.com</url>' +
+                            '</metadata>' +
+                        '</createMetadata>' +
+                    '</env:Body>' + 
+                '</env:Envelope>';
+            binding.open('POST', 'https://{!Host}/services/Soap/m/31.0');
+            binding.setRequestHeader('SOAPAction','""');
+            binding.setRequestHeader('Content-Type', 'text/xml');
+            binding.onreadystatechange = 
+                function() { 
+                    if(this.readyState==4) {
+                        var parser = new DOMParser();
+                        var doc  = parser.parseFromString(this.response, 'application/xml');
+                        var errors = doc.getElementsByTagName('errors');
+                        var messageText = '';
+                        for(var errorIdx = 0; errorIdx < errors.length; errorIdx++)
+                            messageText+= errors.item(errorIdx).getElementsByTagName('message').item(0).innerHTML + '\n';
+                        displayMetadataResponse(messageText);
+                    } 
+                }
+            binding.send(request);
+        }
+    </script>
+
+ 
+ </head>
+     
+
+<apex:form id="myForm">
+
+<body style="background-color:#e9e9e9;">
+        <div class="wrapper">
+            <div class="container">
+                <header>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <article class="logo-box">
+                               <div style="font-size: 32px;  font-weight: bold;  color: black;"> BULK OBJECT <font color="grey"> FIELD CREATOR</font> </div>
+                            </article>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                            <article class="header-right">
+                                <ul>
+                                    <li><apex:commandLink style="padding-right: 15px;" onclick="window.open('/home/home.jsp','_blank');">Salesforce Home</apex:commandLink></li>
+                                    <li><apex:commandLink style="padding-right: 15px;" onclick="window.open('/servlet/servlet.FileDownload?file={!doc1.id}','');" action="{!OpenRMS}">Configure BOFC</apex:commandLink></li>
+                                    <li><a href="/servlet/servlet.FileDownload?file={!doc2.id}" target="_blank" style="padding-right: 15px;">BOFC Feature Guide</a></li>
+                                    <!-- <li><a href="/servlet/servlet.FileDownload?file={!doc1.id}" target="_blank">Configuration Guidelines</a></li> -->
+                                </ul>
+                            </article>
+                        </div>
+                    </div>
+                    <div class="row anti">
+                        <nav>
+                            <ul>
+                                <li><i class="fa fa-building-o"></i><br/><a href="#">Dashboard</a><div class="comingsoon">Get Licence<br/>Details</div>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                            <li><a href="/apex/BOFCDashboard" target="_blank">Dashboard</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                
+                                <li><i class="fa fa-building-o"></i><br/><a href="#">Objects</a>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/BulkObjectCreation" target="_blank">Create Objects</a></li>
+                                        <li><a href="/apex/BulkObjectDeletion" target="_blank">Delete Objects</a></li>
+                                        <li><a href="/apex/BulkCloneObject" target="_blank">Clone Objects</a></li>
+                                        
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                <li><i class="fa fa-building-o"></i><br/><a href="#">Fields</a>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/BulkObjectFieldCreator" target="_blank">Create Fields</a></li>
+                                        <li><a href="/apex/BOFCBulkFieldUpdate" target="_blank">Update Fields</a></li>
+                                        <li><a href="/apex/BulkObjectFieldDeletor" target="_blank">Delete Fields</a></li>
+                                        <li><a href="/apex/BulkCloneFields" target="_blank">Clone Fields</a></li>
+                                        <li><a href="/apex/BOFCExtractData?Type=ObjectFields&View=0" target="_blank">Export Fields</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                <li><i class="fa fa-file-excel-o"></i><br/><a  style="padding: 0px 0px;"  href="#">Export - Import</a><div class="comingsoon">Beta</div>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                            <li><a href="/apex/BulkExportandImportFields" target="_blank">From External Org</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                <li ><i class="fa fa-building-o"></i><br/><a style="padding: 0px 0px;" href="#">Update Rules</a>
+                                    <ul>    
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/BOFCBulkValidationRule" target="_blank">Validation Rules</a></li>
+                                        <li><a href="/apex/BOFCBulkWorkflowRule" target="_blank">Workflow Rules</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                <li><i class="fa fa-lock"></i><br/><a style="padding: 0px 0px;" href="#">FLS</a>
+                                    <ul>    
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/AssignBulkFLS" target="_blank">Assign Bulk FLS</a></li>
+                                        <li><a href="/apex/BOFCExtractData?Type=FLS" target="_blank">View FLS</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                
+                                <li><i class="fa fa-file-excel-o"></i><br/><a href="#">Export</a>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                            <li><a href="/apex/BOFCExtractData?Type=ObjectFields" target="_blank">Object-Fields</a></li>
+                                            <li><a href="/apex/BOFCExtractData?Type=FLS" target="_blank">FLS</a></li>
+                                            <li><a href="/apex/BOFCExtractData?Type=ObjectPermissions" target="_blank">Object Permissions</a></li>
+                                            <li><a href="/apex/BOFCExtractData?Type=Profile" target="_blank">Profile</a></li>
+                                             
+                                            
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>
+                                
+                                <li><i class="fa fa-lock"></i><br/><a href="#">Comparison</a>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/BOFCOrgCompartor" target="_blank">Objects in Multiple Orgs</a></li>
+                                        <!-- <li><a href="/apex/BOFCExtractAllProfiles" target="_blank">Profiles in Same Org</a></li> -->
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li> 
+                                <li><i class="fa fa-lock"></i><br/><a style="padding: 0px 0px;" href="#">BOFC Reports</a>
+                                    <ul>
+                                        <apex:outputPanel rendered="{!AllowPageAccess}">
+                                        <li><a href="/apex/BOFCRunReport" target="_blank">Standard Report</a></li>
+                                        <li><a href="/apex/BOFCDashboardApexClasses" target="_blank">Apex Class Report</a></li>
+                                        </apex:outputPanel>
+                                    </ul>
+                                </li>  
+                            </ul>
+                        </nav>
+                    </div>
+                </header>
+    
+                <apex:outputPanel rendered="{!ShowRMSBox}">
+                <!-- <apex:pageMessages ></apex:pageMessages>
+                 <div class='overlay_div'> </div>
+                <div class='rms'>
+                        <center><h1><u>Configure Remote Site Settings(RMS)</u></h1></center><br/>
+                    <apex:outputlabel >Please create RMS and check below boxes once you are done(One-time activity) </apex:outputlabel><br/>    
+                    <apex:inputCheckbox value="{!IsRMSAPIHost}" /> &nbsp;&nbsp;&nbsp;
+                    <apex:outputlabel >Does <span style="color:red;"> https://{!Hostname} </span> exist?</apex:outputlabel> <br/>
+                    <apex:inputCheckbox value="{!IsRMSAPI}" /> &nbsp;&nbsp;&nbsp;
+                    <apex:outputlabel >Does <span style="color:red;"> https://{!servername}-api.salesforce.com </span> exist?</apex:outputlabel> <br/>
+                    <apex:inputCheckbox value="{!IsRMS}" /> &nbsp;&nbsp;&nbsp;                   
+                    <apex:outputlabel >Does <span style="color:red;">https://{!servername}.salesforce.com</span> exist?</apex:outputlabel>
+                    <br/>   
+                    <apex:commandButton value="Done" action="{!CreateRMS}"/><br/><br/>
+                    * Note: If any of the above settings does not exist, then <span style="color:red;"> Goto Setup > Administer > Security Controls > <a target="_blank" href="/0rp?spl1=1&setupid=SecurityRemoteProxy&retURL=%2Fui%2Fsetup%2FSetup%3Fsetupid%3DSecurity" style="color:red;font-weight:bold;">Remote Site Settings</a> </span> and create NEW
+                    <br/> <br/>  For Installation and Configuration guide, <a style="color:blue;" href="/servlet/servlet.FileDownload?file={!doc1.id}" target="_blank"> Click Here </a>
+                </div>
+                -->
+                    <div class='overlay_div'> </div>
+                    <div class='rms'>
+                        <center><h1><u>Configure Remote Site Settings(RMS)</u></h1></center><br/>
+                            
+                            <apex:outputPanel id="outPanel1">
+                            <apex:actionFunction name="displayMetadataResponse" action="{!displayMetadataResponse}" rerender="outPanel1">
+                                <apex:param name="metadataResponse" assignTo="{!metadataResponse}" value="{!metadataResponse}"/>
+                            </apex:actionFunction>
+                            <apex:pageMessages />
+                                <h4><u>Important: Post Installation Step</u></h4> 
+                                <p>In order to use features of this tool, you need to allow BOFC access to the Salesforce Metadata API's. 
+                                This can be <br/>accomplished by adding a Remote Site Settings. 
+                                </p>
+                                <p> Click the <b>Create Remote Site Setting</b> button to have the tool perform this step for you.</p>
+                                <input id="createremotesitebtn" class="btn button" type="button" onclick="createRemoteSite();" value="Create Remote Site Settings"/>&nbsp;&nbsp;&nbsp;    
+                                <apex:commandButton value="Close" styleclass="button" action="{!CloseRMS}"/>
+                                <br/><br/><h6 style="color:red;">*Note: This is ONE-TIME Activity</h6>
+                            </apex:outputPanel>
+                    </div>
+                </apex:outputPanel> 
+
+                
+                    <div class="row anti">
+                        <section class="content-box">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 content-left">
+                               <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'bofc_logo.png')}" width="350px" height="225px"/>
+                                
+                            </div>
+                            
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 content-right">
+                                <div style="font-size:30px;float:left"> Bulk Object Field Creator </div> 
+                            
+                                <div class="left-column-one">
+                                    <div class="salesforce_bottom">
+                                        
+                                        <div class="shipping_heading">
+                                            <strong>- BULK Object Operations</strong> 
+                                        </div>
+                                        <div class="shipping_heading">
+                                            <strong>- BULK Field Operations</strong> 
+                                        </div>
+                                        <div class="shipping_heading">
+                                            <strong>- Perform bulk operations on Validation and Workflow Rules</strong> 
+                                        </div>
+                                        <div class="shipping_heading">
+                                            <strong>- Export Object &amp; Fields Details</strong>
+                                        </div>
+                                        <div class="shipping_heading">
+                                            <strong>- Export &amp; Compare Objects, Profiles Details</strong>
+                                        </div>
+                                        
+                                        <div class="shipping_heading">
+                                            <strong>- View/Assign Fields Level Permission to Multiple Profiles</strong>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="social-media"><br/>
+                                    <p>Share This</p>
+                                    <ul>
+                                        <li><a href="https://www.facebook.com" target="_blank"> <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/facebook_icon.jpg')}" /></a></li>
+                                        <li><a href="https://twitter.com" target="_blank"> <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/twitter_icon.jpg')}" /></a></li>
+                                        <li><a href="https://www.linkedin.com/" target="_blank"><apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/LinkedIn.png')}" /></a></li>
+                                        <li><a href="mailto:mishu67777@gmail.com" target="_blank"> <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/email_icon.jpg')}" /></a></li>
+                                        
+                                    </ul>
+                                    <div class="clear-box"></div>
+                                </div>
+                                
+                                <div class="row anti">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti">
+                                    <div class="salesforce_bottom">
+                                        <div class="shipping_heading">
+                                        <a href="#">Support CSV,XLS &amp; XLSX</a>
+                                        <p>We make it easy for you</p>
+                                        </div>
+                                        <div class="shipping_heading">
+                                        <a href="#">Other Apps</a>
+                                        <p><a href="https://appexchange.salesforce.com/listingDetail?listingId=a0N3A00000ERrcGUAT" target="_blank">Bulk MetaData Cleaner</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti">
+                                    <div class="salesforce_bottom">
+                                        <div class="shipping_heading">
+                                        <a href="#">100% Guarantee</a>
+                                        <p>Your satisfaction matters to us!</p>
+                                        </div>
+                                        <div class="shipping_heading">
+                                        <a href="#">How to use it?</a>
+                                        <p> <a href="https://www.youtube.com/watch?v=hgNwHeKftB8" target="_blank">Click Here </a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            
+                            
+                            <apex:outputPanel rendered="{!TypeofVersion=='FullVersion' && AppExpired==false}">
+                            <div class="row config-newsletter anti">
+                               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 anti">
+                                    <div class="news-left">
+                                        <p><strong>Quite Easily Done (Q.E.D) - Configuration!!!</strong></p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 anti">
+                                    <div class="news-right" style="font-size: 20px;background: aquamarine;">
+                                        Welcome 
+                                    </div>
+                                </div>
+                            </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!TypeofVersion=='FullVersion' && AppExpired==true}">
+                            <div class="row config-newsletter anti">
+                               <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 anti">
+                                    <div class="news-left" >
+                                        <p style="font-size: 22px;background:red;">{!ExpirationMsg}</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 anti">
+                                    <div class="news-right">
+                                        <a href="https://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            </apex:outputPanel>
+                            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                            <div class="row config-newsletter anti">
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12 anti">
+                                    <div class="news-left">
+                                        <p style="font-size: 18px;background:red;">Its Free Version. "Click Here" to purchase <STRONG>FULL VERSION</STRONG> with unlimited access</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 anti">
+                                    <div class="news-right">
+                                        <a href="https://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here</a>
+                                    </div>
+                                </div>
+                            </div>
+                            </apex:outputPanel>
+                   </section>
+                </div>
+
+                <footer>
+                    <div class="row anti" style="height: 55px;">
+                        <div class="footer-left">
+                             
+                        </div>
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+</body>
+</apex:form>
+</html>
+</apex:page>

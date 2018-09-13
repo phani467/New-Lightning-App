@@ -1,0 +1,456 @@
+<apex:page controller="bofc.BulkObjectFieldDeletor" sidebar="false" showHeader="false" cache="false">
+ 
+ <style>
+     .home_icon
+        {
+          float:right;margin-top: 23px;font-size: 15px;padding-right: 50px;
+        }
+      .overlay_div1
+        {
+        // display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        
+        }
+    
+    footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+         
+        }
+    
+    .footer-right {
+        float: right;
+    }
+    
+     .footer-left {
+        width: 40%;
+        float: left;
+    }
+    
+    .anti {
+    padding: 0 15px;
+}
+    .rms
+    {
+       position: fixed;
+       top: 30%;
+       left: 20%;
+       border: 3px solid black;
+       color: black;
+       background: white;
+       opacity: 5;
+       padding:10px;
+       z-index: 1111;
+    }
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: {!if(TypeofVersion=='FreeVersion',8.5,5.5)}%;
+            }
+            
+            .table_container
+            {
+             height:300px;   
+             overflow-x:auto;
+            }
+        
+    </style>
+
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#showHide").click(function(){
+                $(".upload_area").toggle();
+            });
+           
+        });
+    </script> -->
+    
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Bulk Object Field Deletor</h2>
+            <div class="blank"></div>
+        </div>
+        <div class="home_icon" style="padding-right: 10px;"><a href="/home/home.jsp" style="color:blue;font-size:13px;">Salesforce Home</a></div>
+        <div class="home_icon" style="padding-right: 10px;"><a href="/apex/BOFCHome" style="color:blue;font-size:13px;">BOFC Home</a></div>
+        
+   </div>
+ 
+    <apex:form id="formID">
+    
+     <apex:pageBlock title="Delete Multiple Custom Fields" id="BasicPGID">
+            <apex:pageBlockButtons location="bottom">
+                <!-- <apex:commandButton disabled="{!!AllowPageAccess || LimitCompleted}" value="Fetch Existing Fields" action="{!FetchFields}" reRender="t1" status="search_Status_main1"/> -->
+                <apex:commandButton value="Delete Custom Fields" onclick="if(!confirm('Are you sure you want to delete selected custom fields?')){return false};" action="{!deleteField}" reRender="t1,BasicPGID" disabled="{!LimitCompleted==true || AllowPageAccess==false || lcreateFieldWrapper.size == 0}" status="search_Status_main1"  style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;"/>
+                <apex:commandButton disabled="{!!AllowPageAccess}" value="Reload Page" action="{!refreshPage}" status="search_Status_main1"/>
+            </apex:pageBlockButtons>
+         
+        <apex:pageBlockSection columns="1">
+                <br/><u><b><div style="color: red;font-weight:bold;">Steps to Delete Multiple Custom Fields in one click:</div></b></u>
+                    <div style="color: black;">
+                        1. Select the Object Name from drop down and Click on "Fetch Existing Fields" button to display all the fields of a selected object.
+                    </div>
+                    <div style="color: black;">
+                        2. Select the Fields which you want delete by selecting checkbox infront of each row.
+                    </div>
+                    <div style="color: black;">
+                        3. Click "Delete Custom Fields" button to delete fields from Salesforce.
+                    </div>
+                    <div style="color: black;">
+                        4. Once Fields are successfully deleted, you can verify them by clicking on "view" link to view object page.
+                    </div>
+        </apex:pageblockSection> 
+            
+        <apex:outputPanel rendered="{!AllowPageAccess}"> 
+        <apex:pageBlockSection title="Select Object Details" columns="2">
+            <apex:pageblockSectionItem >
+                Object Name
+                <apex:outputPanel >
+                    <apex:selectList value="{!ObjectName}" multiselect="false" size="1" style="border-left:3px solid red">
+                        <apex:selectOptions value="{!StandardCustomIgnoreSytemObjects}"/>
+                    </apex:selectList>
+                    <apex:commandButton disabled="{!!AllowPageAccess || LimitCompleted}" value="Fetch Existing Fields" action="{!FetchFields}" reRender="formID,t1" status="search_Status_main1"/>
+                    <br/><span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select name of Object</span>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            <apex:pageblockSectionItem />
+        </apex:pageblockSection>
+           
+         <br/>
+     
+     <script>
+        function loading_Main(val) {
+                 if (val) {
+                   document.getElementById('contentLoadingMain').style.display = 'block';
+                   
+                 }
+                 else {
+                   document.getElementById('contentLoadingMain').style.display = 'none';
+                  
+                 }
+               }
+     </script> 
+     
+     <apex:outputPanel id="t1">
+        <apex:pageMessages />
+            <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                              
+                              <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+            <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+            <apex:actionStatus onstop="stopSpinner();" id="search_Status_main" startStyle="color:red;"/>
+            <!-- <apex:pageBlockButtons >
+                <apex:commandButton value="Fetch Existing Fields" action="{!FetchFields}" reRender="t1" status="search_Status_main1"/>
+                <apex:commandButton value="Delete" action="{!deleteField}" reRender="t1,BasicPGID" disabled="{!lcreateFieldWrapper.size == 0}" status="search_Status_main1" style="color: white;padding: 7px;padding-right: 6px; background: red;font-size: 15px; margin: 0px;"/>
+                <apex:commandButton value="Refresh" action="{!refreshPage}" status="search_Status_main1"/>
+            </apex:pageBlockButtons> -->
+           <div class="table_container">
+            <script>
+            $(document).ready(function() {
+                $('.fixme').fixheadertable({
+                     height  : 200
+                });
+            });
+            </script>  
+            
+            <apex:outputPanel rendered="{!LimitCompleted}">
+            <div style="color: red;font-weight:bold;">
+                <span style="color:red;font-size: 13px;text-align: right; margin: 10px;">*You have consumed allowed limit of deleting 10 custom fields. Please upgrade to BOFC Full version for unlimited access.</span>
+            </div><br/>
+            </apex:outputPanel>
+            <apex:pageBlockTable value="{!lcreateFieldWrapper}" var="st" id="pgTable" width="100%">
+                <apex:column width="2%">
+                    <apex:facet name="header">
+                            <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')" />
+                    </apex:facet>
+                    <center>
+                        <apex:inputCheckbox value="{!st.selected}" id="inputId" disabled="{!st.fieldStatus=='insert'}"/>
+                    </center>
+                </apex:column>
+                <apex:column width="5%">
+                    <apex:facet name="header">Status</apex:facet>
+                    <center>
+                       
+                        <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'cross_icon.png')}" title="Error Found. Check Error Description" width="20" height="20" rendered="{!st.FieldStatus=='error'}"/>
+                        <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'right_click.png')}" title="No Error Found. Ready for Insert" width="20" height="20" rendered="{!st.FieldStatus=='insert'}" />
+                        <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'Exclamation_icon.png')}" title="Validate records" width="20" height="20" rendered="{!st.FieldStatus=='validate'}"/>
+                    
+                    </center>
+                </apex:column>
+                <apex:column width="10%">
+                    <apex:facet name="header">Error Description</apex:facet>
+                    <apex:outputText id="ErrorDesc" value="{!st.ErrorDescription}" style="font-weight:bold;color:#fff;background-color: {!if(st.FieldStatus=='validate','gold', if(st.FieldStatus=='error','red','lawngreen'))};"/>
+                </apex:column>
+                <apex:column width="15%">
+                    <apex:facet name="header">Field Label</apex:facet>
+                    <apex:outputText id="FieldLabel" value="{!st.FieldLabel}"/>
+                </apex:column>
+                <apex:column width="15%">
+                    <apex:facet name="header">Field Name</apex:facet>
+                    <apex:outputText id="FieldName" value="{!st.FieldFullName}"/>
+                </apex:column>
+                <apex:column width="5%">
+                    <apex:facet name="header"><center>Type</center></apex:facet>
+                    <center><apex:outputText value="{!st.FieldType}"/></center>
+                </apex:column>
+                <apex:column width="10%">
+                    <apex:facet name="header"><center>Length</center></apex:facet>
+                    <center><apex:outputText value="{!st.FieldLength}" /></center>
+                </apex:column>
+                <apex:column width="10%">
+                    <apex:facet name="header"><center>Required</center></apex:facet>
+                    <center> <apex:inputCheckbox value="{!st.FieldRequired}" disabled="true" /> </center>
+                </apex:column>
+                <apex:column width="10%">
+                    <apex:facet name="header"><center>External<br/>Id</center></apex:facet>
+                    <center><apex:inputCheckbox value="{!st.FieldExternalID}" disabled="true"/></center>
+                </apex:column>
+                
+            </apex:pageBlockTable>
+            <apex:outputText rendered="{!lcreateFieldWrapper.size == 0}" style="font-weight: bold;"><strong>No records found</strong></apex:outputText>
+            
+            
+            </div>
+            <br/>
+            <div style="color: red;font-weight:bold;">
+            *Note: <br/>1. Fields visibility depends upon logged in user
+            </div>
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}"> 
+            
+            <div style="color: red;font-weight:bold;">
+                2. In free version, user can delete only 10 custom fields. After that access will be disabled
+            </div>
+            </apex:outputPanel> 
+        
+            
+    </apex:outputPanel>
+    </apex:outputPanel>
+   </apex:pageBlock>
+  </apex:form>
+  
+
+<div class="overlay_div"> </div>
+    <div id="spinnerDiv"></div>
+
+<script type="text/javascript">
+<!--Spinning Image-->
+
+    var spinner;
+    function startSpinner() {
+        var opts = {
+          lines: 13, // The number of lines to draw
+          length: 20, // The length of each line
+          width: 10, // The line thickness
+          radius: 30, // The radius of the inner circle
+          corners: 1, // Corner roundness (0..1)
+          rotate: 0, // The rotation offset
+          direction: 1, // 1: clockwise, -1: counterclockwise
+          color: '#000', // #rgb or #rrggbb or array of colors
+          speed: 1, // Rounds per second
+          trail: 60, // Afterglow percentage
+          shadow: false, // Whether to render a shadow
+          hwaccel: false, // Whether to use hardware acceleration
+          className: 'spinner', // The CSS class to assign to the spinner
+          zIndex: 2e9, // The z-index (defaults to 2000000000)
+          top: '0%', // Top position relative to parent
+          left: '0%' // Left position relative to parent
+        };
+        var target = document.getElementById('spinnerDiv');
+        spinner = new Spinner(opts).spin(target);   
+
+    $(".overlay_div").show();
+    
+    }
+
+    function stopSpinner() {
+       $(".overlay_div").hide();
+        spinner.stop();
+    }
+
+
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+
+<!--Spinning Image-->
+</script>
+
+    <script>
+        $(document).ready(function(){
+            $("#showHide").click(function(){
+                $("#drop").toggle();
+            });
+           
+        });
+    </script>
+    
+    <footer>
+                    <div class="row anti">
+                        <div class="footer-left">
+                             
+                        </div>
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+    </footer> 
+  
+</apex:page>

@@ -1,0 +1,6 @@
+<apex:page controller="Five9.Five9AjaxPoolerController" action="{!startInstallUpdateFuture}">
+    <apex:form id="poolerForm">
+        <apex:outputText value="The installation is in progress ({!percentageCompleted} % completed). Please wait for several minutes." id="progressTextBox" />
+        <apex:actionPoller action="{!checkCompletion}" enabled="{!enabled}" rerender="progressTextBox" interval="5"/>
+    </apex:form>
+</apex:page>

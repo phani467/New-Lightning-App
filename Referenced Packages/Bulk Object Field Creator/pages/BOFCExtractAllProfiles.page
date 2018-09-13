@@ -1,0 +1,279 @@
+<apex:page controller="bofc.BOFCExtractAllProfiles" sidebar="false" showHeader="false">
+ 
+     <style>
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: 8%;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+         
+        }
+    
+    .footer-right {
+        float: right;
+    }
+    
+     .footer-left {
+        width: 40%;
+        float: left;
+    }
+    
+    .anti {
+    padding: 0 15px;
+}
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription"> Compare &amp; Export Profiles</h2>
+            <div class="blank"></div>
+        </div>
+        <div class="home_icon" style="margin: 10px; padding-left: 0px;float: right;"><a href="/apex/BOFCHome" style="color:blue;"><apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/ConfigBenchHomePage/img/gohome.png')}" /></a></div>
+   </div>
+ 
+ <apex:form >
+     <script>
+        function loading_Main(val) {
+                 if (val) {
+                   document.getElementById('contentLoadingMain').style.display = 'block';
+                   
+                 }
+                 else {
+                   document.getElementById('contentLoadingMain').style.display = 'none';
+                  
+                 }
+               }
+    </script>
+     
+     <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                               <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+     <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+     
+     <apex:pageBlock id="pg" mode="maindetail">   
+      <apex:outputPanel rendered="{!AllowPageAccess}">
+         <apex:actionFunction name="callFunction" action="{!refRecord}" reRender="b1" status="search_Status_main1"/>
+         <apex:pageBlockSection columns="1"> 
+            <apex:pageBlockSectionItem >
+                List of Profiles
+                <apex:outputPanel >
+                    <apex:selectList value="{!ProfileName}" multiselect="true" size="8" style="border-left:3px solid red" onchange="callFunction();">
+                        <apex:selectOptions value="{!lProfileOptions}"/>
+                    </apex:selectList>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select Profiles. Max 5 Profiles at a time</span>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            <apex:pageBlockSectionItem >
+                Select Components to Compare
+                <apex:outputPanel >
+                    <apex:selectList value="{!ComponentNames}" multiselect="true" size="6" style="border-left:3px solid red" onchange="callFunction();">
+                        <apex:selectOptions value="{!lComponentsOptions}"/>
+                    </apex:selectList>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;"></span>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+           
+            <apex:outputPanel id="b1" >
+                <apex:pageMessages ></apex:pageMessages>
+                <!-- <apex:commandButton value="Export & Compare Profile Details" reRender="pg" status="search_Status_main1" onclick="window.open('/apex/BOFCExtractAllProfilesReport?Profile={!ProfileIDs}&CompIDs={!CompIDs}&ObjNames={!ObjNames}','');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/> -->
+                <apex:commandButton value="Export & Compare Profile Details (except FLS)" reRender="pg" status="search_Status_main1" onclick="window.open('/apex/BOFCExtractAllProfilesReport?Profile={!ProfileIDs}&CompIDs={!CompIDs}','');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/>                
+                <!-- <apex:commandButton value="Export & Compare FLS Details" reRender="pg" status="search_Status_main1" onclick="window.open('/apex/BOFCCompareFLS','_blank');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/> -->
+                <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select Profiles &amp; Click Export Profiles</span>
+            </apex:outputPanel>
+        </apex:pageblockSection>
+        
+        <br/>
+             
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}"> 
+                <div style="color: red;font-weight:bold;">
+                *Note: <br/>1. In free version, User can compare &amp; export details of only 2 Profiles
+                </div>
+                
+            </apex:outputPanel> 
+        </apex:outputPanel>     
+     </apex:pageBlock>    
+ </apex:form>
+ 
+     <div id="overlay" style="display:none;">
+             <div class="loadingImg">
+                 <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+                 <br/>
+                 <span>Processing...Please Wait...!!!</span>
+             </div>
+     </div>
+ 
+     <script type="text/javascript">
+         function showOverlay()
+         {
+          document.getElementById("overlay").style.display= "block";   
+         }
+         
+    </script>
+ 
+    <footer>
+        <div class="row anti">
+            <div class="footer-left">
+                 
+            </div>
+            <div class="footer-right">
+                <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+            </div>
+        </div>
+    </footer> 
+ 
+</apex:page>

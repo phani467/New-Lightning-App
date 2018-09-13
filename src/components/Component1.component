@@ -1,0 +1,8 @@
+<apex:component >
+  <!-- Begin Default Content REMOVE THIS -->
+  <br>
+ 
+  I am siiting in the component and substituting the place of component in the Visualforce page.
+   </br>
+  <!-- End Default Content REMOVE THIS -->
+</apex:component>

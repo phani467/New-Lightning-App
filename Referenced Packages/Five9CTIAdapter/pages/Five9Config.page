@@ -1,0 +1,123 @@
+<apex:page controller="Five9.Five9ConfigController" sidebar="false" action="{!checkNeedInstall}">
+    <apex:pageblock title="Five9 Call Center Settings">
+
+               <apex:tabPanel switchType="client" selectedTab="generalConfig" id="five9ConfigTabPanel">
+                <apex:tab label="General" name="generalConfig" id="generalConfig">
+                    <apex:form id="vmBaseForm" >
+                        <apex:pageBlock title="General Five9 integration settings">
+                            <apex:pageMessages ></apex:pageMessages>
+                            <apex:pageBlockButtons >
+                                <apex:commandButton id="savebtn1" action="{!save}" value="Save" reRender="vmBaseForm" />
+                            </apex:pageBlockButtons>
+
+                            <apex:pageBlockSection id="voicemailURLBlock" columns="1">
+                                <apex:pageBlockSectionItem >
+                                       <apex:outputLabel value="Voicemail URL Base:" for="voicemail_url_base"/>
+                                       <apex:inputField value="{!configure.Five9__Codebase__c}" id="voicemail_url_base"/>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+
+                        </apex:pageBlock>
+                    </apex:form>
+                </apex:tab>
+                <apex:tab label="Screen Pop" name="popupConfig" id="popupConfig">
+                    <apex:form id="screenPopForm">
+                        <apex:pageBlock title="Screen pop search default settings">
+                            <apex:pageMessages ></apex:pageMessages>
+                            <apex:pageBlockButtons >
+                                <apex:commandButton id="savebtn2" action="{!save}" value="Save" reRender="screenPopForm"/>
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection id="popupConfig" columns="1">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="ANI Search:" for="ani_search"/>
+                                    <apex:inputCheckbox value="{!configure.Five9__Screenpop_ANI_Search__c}" id="ani_search"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Click-to-Dial Search:" for="c2d_search"/>
+                                    <apex:inputCheckbox value="{!configure.Five9__Screenpop_C2D_Search__c}" id="c2d_search"/>
+                                </apex:pageBlockSectionItem>
+
+                            </apex:pageBlockSection>
+                    </apex:pageBlock>
+                   </apex:form>
+                </apex:tab>
+                <apex:tab label="Open CTI Search Class" name="customSearchClass" id="customSearchClass">
+                    <apex:form id="customSearchForm">
+                        <apex:pageBlock title="Open CTI search class settings">
+                            <apex:pageMessages ></apex:pageMessages>
+                            <apex:pageBlockButtons >
+                                <apex:commandButton id="savebtn5" action="{!save}" value="Save" reRender="customSearchForm" disabled="{!isOrdinaryUser}"/>
+                            </apex:pageBlockButtons>
+                            <apex:selectRadio value="{!useDefaultSearchClassStr}" layout="pageDirection" disabled="{!isOrdinaryUser}">
+                                <apex:selectOptions value="{!searchClassItems}"/>
+                                <apex:actionSupport event="onchange" action="{!searchClassChanged}" reRender="customerClassName"/>
+                            </apex:selectRadio>
+                            <apex:outputLabel value="Custom search class name    " for="customerClassName"/>
+                            <apex:inputText value="{!searchClassName}" id="customerClassName" disabled="{!changingClassNameDisabled}" />
+                        </apex:pageBlock>
+                    </apex:form>
+                </apex:tab>
+                <apex:tab label="Callback Synchronization" name="callbackSettings" id="allbackSettings">
+                    <apex:form id="callbackFrom">
+                        <apex:pageBlock title="Callback synchronization settings">
+                            <apex:pageMessages ></apex:pageMessages>
+                            <apex:pageBlockButtons >
+                                <apex:commandButton id="savebtn4" action="{!save}" value="Save" reRender="callbackFrom"/>
+                            </apex:pageBlockButtons>
+                            <apex:pageBlockSection id="callbackFromBlock" columns="1">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Synchronization Enabled:" for="callbackSyncEnabled"/>
+                                    <apex:inputCheckbox value="{!configure.Five9__Callback_SynchEnabled__c}" id="callbackSyncEnabled"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="'Callback is done' task state" for="callbackCompletedState"/>
+                                    <apex:selectList value="{!configure.Five9__Callback_CompletedStatus__c}" size="1" id="callbackCompletedState">
+                                        <apex:selectOptions value="{!statusFields}"/>
+                                    </apex:selectList>
+                                </apex:pageBlockSectionItem>
+                            </apex:pageBlockSection>
+                    </apex:pageBlock>
+                   </apex:form>
+                </apex:tab>
+                <apex:tab label="Five9 Admin Web Services" name="adminwsConfig" id="adminwsConfig">
+                    <apex:form id="adminwsForm">
+
+                    <apex:pageBlock title="Five9 Admin Web Services settings">
+                        <apex:pageMessages ></apex:pageMessages>
+                        <apex:pageBlockButtons >
+                            <apex:commandButton id="savebtn3" action="{!save}" value="Save" reRender="adminwsForm"/>
+                        </apex:pageBlockButtons>
+                        <apex:pageBlockSection id="popupConfig" columns="1">
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="URL:" for="adminws_url"/>
+                                    <apex:inputField value="{!configure.Five9__AdminWS_URL__c}" id="adminws_url"/>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Username:" for="adminws_username"/>
+                                    <apex:inputText value="{!configure.Five9__AdminWS_Username__c}" id="adminws_username"/>
+
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Password:" for="adminws_password"/>
+                                    <apex:inputsecret value="{!configure.Five9__AdminWS_Password__c}" id="adminws_password">
+                                    </apex:inputsecret>
+                                </apex:pageBlockSectionItem>
+                                <apex:pageBlockSectionItem >
+                                    <apex:outputLabel value="Report e-mail:" for="adminws_rep_email"/>
+                                    <apex:inputField value="{!configure.Five9__AdminWS_ReportEmail__c}"  id="adminws_rep_email"/>
+                                </apex:pageBlockSectionItem>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                    </apex:form>
+                </apex:tab>
+
+                <apex:tab label="Five9 Log Mapping" name="logmappingConfig" id="logmappingConfig">
+                <c:Five9LogMappingConfigComponent />
+                </apex:tab>
+
+                <apex:tab label="Five9 List Management Mapping" name="listmappingConfig" id="listmappingConfig">
+                <c:Five9ListManagementConfigComponent />
+                </apex:tab>
+            </apex:tabPanel>
+    </apex:pageblock>
+</apex:page>

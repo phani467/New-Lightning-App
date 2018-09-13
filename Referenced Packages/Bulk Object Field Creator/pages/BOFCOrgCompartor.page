@@ -1,0 +1,392 @@
+<apex:page sidebar="false" controller="bofc.BOFCOrgCompartor" showHeader="false" cache="false">   
+<head>
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/css/style1.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'salesforce_object/css/bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'salesforce_object/css/design.css')}"/> 
+<apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'salesforce_object/css/style.css')}"/>
+<style>
+       
+
+      .overlay_div1
+        {
+        // display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        
+        }
+    
+    .rms
+    {
+       position: fixed;
+       top: 25%;
+       left: 17.5%;
+       
+       border: 3px solid black;
+       color: black;
+       background: white;
+       opacity: 5;
+       padding:10px;
+       z-index: 1111;
+       width:66%;
+    }
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        hr {
+    margin-top: 27px;
+    margin-bottom: 20px;
+    border: 0;
+    border-top: 1px solid #000;
+    width: 100%;
+}
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:18px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 3px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: 52px;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            .basic-info-right,.basic-info-left{width:50%; float:left}
+            .basic-info-right{width:100%}
+            
+            .bPageBlock{float:left; width:100%;}
+            .table-holder{float: left;
+    
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 100%;
+    border: 1px solid #CCC;
+    margin-top:10px;}
+            
+            .add-new-connect-but{clear: both;
+    width: 100%;
+    margin: 10px 0px;
+    float: left;}
+    
+            .multi-org-head{    border: 1px solid #CCC;
+    background-color: #A097D4;
+    height: 20px;
+    color: #fff;}
+    td{
+    padding:0 20px 10px 0;
+    }
+    
+    
+    
+    </style>
+    
+
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    
+</head>
+ <div class="ptBody secondaryPalette brandSecondaryBrd">
+    <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+        <div style="    background: red;margin-bottom: 10px; width: 1215px; color: white;   text-align: center; font-size: 20px;">
+                 {!ExpirationMsg}. <a href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here for Full Version </a>
+        </div>
+    </apex:outputPanel>
+      <div class="content">
+        <div class="contentLeft">
+                 
+        </div>
+        <div class="contentRight" style="padding-top:5px">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Org Comparator</h2>
+            <div class="blank"></div>
+        </div>
+    </div>    
+         <div class="home_icon" style="margin: 10px; padding-left: 0px;float: right;"><a href="/apex/BOFCHome" style="color:blue;"><apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/ConfigBenchHomePage/img/gohome.png')}" /></a></div>
+   
+    </div>
+    
+    <apex:form id="form1">
+    <!-- <apex:actionFunction name="changeComponentList" action="{!ComponentList}"/> -->
+          <apex:outputPanel rendered="{!AllowPageAccess}">
+             <div>
+               <div style="width:40%;display:inline-block;margin-top:{!if(TypeofVersion=='FreeVersion',50,20)}px;">
+                  <table style="height:218px;"> 
+                    <tr>
+                        <td>Select Component Type</td>
+                        <td><apex:outputPanel >
+                            <apex:selectList styleClass="form-control" value="{!ComponentTypeName}" multiselect="false" size="1" onchange="changeComponentList();">
+                                        <apex:selectOptions value="{!ComponentTypeList}"/>
+                            </apex:selectList>
+                        </apex:outputPanel></td>
+                    </tr>
+                
+                    <tr><td>Select Object Name</td>
+                        <td><apex:outputPanel >
+                            <apex:selectList styleClass="form-control" value="{!ComponentName}" multiselect="false" size="1" style="width:200px;">
+                                        <apex:selectOptions value="{!ComponentListValues}"/>
+                            </apex:selectList>
+                        </apex:outputPanel> </td></tr>
+                    <tr><td>Display Type</td>
+                        <td>
+                            <apex:selectList styleClass="form-control" value="{!viewType}" multiselect="false" size="1">
+                                <apex:selectOptions value="{!ViewTypeItems}"/>
+                            </apex:selectList> 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:commandButton value="Compare" action="{!MatcherButton}" styleClass="btn-default" style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;"/>
+                            <!-- <apex:commandButton value="Export Report(xls)"  styleClass="btn-default"/> -->
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                         <p style="font-size: 13px;color: red;"> * Note:<br/>1. You need to select atleast two org to compare orgs   </p>   
+                         <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}"><p style="font-size: 13px;color: red;"> 2. In Free version, user can compare only 2 Standard Objects. To enable other objects, Go for Full Version   </p>    </apex:outputPanel>
+                        </td>
+                    </tr>
+                    
+                 </table>
+                </div>
+                <div style="float:right;width:60%;margin-top: {!if(TypeofVersion=='FreeVersion',40,10)}px;">   
+                    <div class="basic-info-right">  
+                       <div class="table-holder">
+                           <table width="100%" class="table table-hover table-condensed table-bordered">
+                           <caption style="font-weight:bold;font-size:16px;padding:5px 0px;background:#006400;color:white;">List of Connections</caption>
+                                <tr class="multi-org-head" style="background:#808080"> <th></th> <th>Org Name </th> <th>Username </th> <th>Password </th> <th>Token </th><th>IsSandbox</th><th>Instance Name</th> </tr> 
+                                <apex:repeat value="{!lWrapperConnect}" var="a">
+                                 <tr>
+                                     <td style="text-align:center"> <apex:inputCheckbox value="{!a.selected}"/>                 </td>  
+                                     <td> <apex:outputText value="{!a.name}"/>                        </td>
+                                     <td> <apex:outputText value="{!a.username}"/>                    </td>
+                                     <td> ***                   </td>
+                                     <td> <apex:outputText value="{!a.Token}"/>                    </td>
+                                     <td style="text-align:center"> <apex:inputCheckbox value="{!a.isSandbox}" disabled="true"/> </td>
+                                     <td> <apex:outputText value="{!a.Instancename}"/>                        </td>
+                                 </tr>
+                                 </apex:repeat>
+                           </table>   
+                         </div>  
+                         <div class="add-new-connect-but">
+                             <apex:commandButton value="Add New Connection" action="{!addNewConnection}" reRender="form1"/> 
+                             <apex:commandButton value="Delete Connection" action="{!deleteConnection}" reRender="form1"/> 
+                         </div>
+                    </div>
+                  </div>
+             </div>  
+         </apex:outputPanel>   
+         
+         <apex:outputPanel id="conBox">
+         <apex:outputPanel rendered="{!ShowNewConnectionBox}">
+             
+              <div class='overlay_div1' > </div>
+                <div class='rms'>
+                    <h1 style="color:#000;text-align:center;text-decoration:underline;display: block;margin-bottom: 6px;">New Connection</h1>
+                    <apex:pageMessages ></apex:pageMessages>
+                    <apex:pageBlock >
+                    <apex:pageBlockSection title="Add Details" columns="2">
+                      <apex:pageBlockSectionItem >Org Name<apex:inputField value="{!loginDetail.name}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Username <apex:inputField value="{!loginDetail.bofc__Username__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Is Sandbox<apex:inputCheckbox value="{!loginDetail.bofc__IsSandbox__c}"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Password<apex:inputField value="{!loginDetail.bofc__pwd__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >
+                          Instance/Domain Name
+                          <apex:outputPanel >
+                          <apex:inputField value="{!loginDetail.bofc__Instance_Name__c}" style="border-left:3px solid red;"/>
+                          <br/> for eg: ap2, cs24 etc. You can find it in page URL
+                          </apex:outputPanel>
+                      </apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Security Token<apex:inputField value="{!loginDetail.bofc__Token__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <br/>   
+                    <apex:commandButton value="Verify & Save" action="{!VerifySave}" reRender="form1,pg,conBox"/> 
+                    <apex:commandButton value="Close" action="{!CancelConnection}" reRender="pg,conBox"/> <br/><br/>
+                    </apex:pageBlock>
+                    * Note: Once connection is successfully created, you need to add Remote Site Settings(RMS). <br/><br/>
+                    Step 1: Click "Create New" <span style="color:red;"> Goto Setup > Administer > Security Controls > Remote Site Settings </span> and <a href="/0rp" target="_blank">create NEW </a>
+                    <br/> Step 2: Click "New Remote Site".
+                    <br/> Step 3: Give any name in Remote Site name and add remote site url:   https://{Instance Name}.salesforce.com.  <br/>(Note: Replace "{Instance Name}" with the instance/domain name you added while creating connection.
+               </div>
+        </apex:outputPanel> 
+        </apex:outputPanel> 
+      
+    
+    <hr/>
+    <Apex:pageMessages ></Apex:pageMessages>
+    <apex:outputPanel id="panel1">
+      <div style="overflow: auto; height: 325px;width:100%"> 
+                 
+           <apex:repeat value="{!lWrapperConnect}" var="a" id="rid" rendered="{!DisplayData==true}"> 
+             <apex:outputPanel rendered="{!a.selected==true}">
+             <div style="height: 425px;width:49%;float:left;border:0px solid;" id="org_tables">
+                 
+                      <center>  <table class="table table-border table-condensed" style="margin-right:10px">
+                                    <caption  style="font-weight:bold;font-size:16px;padding:5px 0px;background:#006400;color:white;">{!a.name}</caption>
+                                    <thead>
+                                    <tr> 
+                                        <th style="width:15%;border:1px solid #ccc;font-weight:bold;background: darkgray;"> Field Name  </th> 
+                                        <th style="width:15%;border:1px solid #ccc;font-weight:bold;background: darkgray;"> Is Standard </th> 
+                                        <th style="width:15%;border:1px solid #ccc;font-weight:bold;background: darkgray;"> Field Type  </th> 
+                                    </tr>
+                                    </thead>
+                                    <apex:outputPanel rendered="{!ComponentTypeName == 'Object' && a.lFields !=null}">                
+                                    <apex:repeat value="{!a.lFields}" var="org">
+                                        <tr> 
+                                            <td style="width:15%;border:1px solid #ccc;">{!org.fieldname}</td> 
+                                            <td style="width:15%;border:1px solid #ccc;"> <center><apex:inputCheckbox value="{!org.IsCustomField}" disabled="true"/></center> </td> 
+                                            <td style="width:15%;border:1px solid #ccc;"> {!org.fieldtype}</td> 
+                                        </tr>
+                                    </apex:repeat> 
+                                    </apex:outputPanel>            
+                        </table> </center>
+             </div>
+           </apex:outputPanel>  
+         </apex:repeat>
+     </div> 
+    </apex:outputPanel> 
+    
+         
+    </apex:form>
+    
+    <footer>
+                    <div class="row anti">
+                        <div class="footer-left">
+                             
+                        </div>
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+    </footer> 
+    
+</apex:page>

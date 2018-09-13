@@ -1,0 +1,6 @@
+<apex:page standardController="Account">
+
+This is my First <i>component</i>
+<c:recordDisplay record="Contact" />
+  
+</apex:page>

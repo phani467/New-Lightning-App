@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectivityDevConfigMetadata xmlns="http://soap.sforce.com/2006/04/metadata">
+    <isOauth>true</isOauth>
+    <nameIdFormat>Unspecified</nameIdFormat>
+    <samlAscUrl>https://app.five9.eu/appsvcs/saml/SSO/alias/defaultAlias</samlAscUrl>
+    <samlEncryptionType>AES_128</samlEncryptionType>
+    <samlEntityUrl>https://app.five9.eu/appsvcs/saml/metadata/alias/defaultAlias</samlEntityUrl>
+    <samlSubjectType>FederationId</samlSubjectType>
+    <startUrl>https://app.five9.eu/clients/integrations/sf.main.html?appKey=SF</startUrl>
+</ConnectivityDevConfigMetadata>

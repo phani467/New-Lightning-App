@@ -1,0 +1,5 @@
+<aura:component >
+    <h1>This is Header</h1>
+    <p class='para'>Here is some nice text for your new component</p>
+	
+</aura:component>

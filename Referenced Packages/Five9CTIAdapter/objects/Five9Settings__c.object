@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <description>Five9 Call Center integration settings</description>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>AdminWS_Password__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Five9 administrator account password</description>
+        <externalId>false</externalId>
+        <label>AdminWS Password</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AdminWS_ReportEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Email Five9 Admin Web Services will send reports to</description>
+        <externalId>false</externalId>
+        <label>AdminWS ReportEmail</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>AdminWS_URL__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Five9 Admin Web Services endpoint</description>
+        <externalId>false</externalId>
+        <label>AdminWS URL</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>AdminWS_Username__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Five9 Admin Web Services administrator account username</description>
+        <externalId>false</externalId>
+        <label>AdminWS Username</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Callback_CompletedStatus__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Callback_CompletedStatus</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Callback_SynchEnabled__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Callback_SynchEnabled</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Check_Future_Method_Invocation__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Check if future from future method invocation should raise exception</description>
+        <externalId>false</externalId>
+        <label>Check Future Method Invocation</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Codebase__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Five9 integrations codebase</description>
+        <externalId>false</externalId>
+        <label>Codebase</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Custom_Search_Class_Name__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Custom Search class name</description>
+        <externalId>false</externalId>
+        <label>Custom_Search_Class_Name</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>InstallationCompleted__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>This field is initially to false and then to true after the installation is completed</description>
+        <externalId>false</externalId>
+        <label>InstallationCompleted</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>LM_UseOM__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Determines whether Outbound messages are used for list synchronization</description>
+        <externalId>false</externalId>
+        <label>LM Use Outbound Messages</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Screenpop_ANI_Search__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Perform search by ANI during screenpop</description>
+        <externalId>false</externalId>
+        <label>Screenpop ANI Search</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Screenpop_C2D_Search__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Screenpop C2D Search</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <label>Five9Settings</label>
+    <visibility>Public</visibility>
+</CustomObject>

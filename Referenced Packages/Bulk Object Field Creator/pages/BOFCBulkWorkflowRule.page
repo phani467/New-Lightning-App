@@ -1,0 +1,381 @@
+<apex:page controller="bofc.BOFCBulkWorkflowRule" action="{!init}" sidebar="false" showHeader="false">
+   <style>
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: 8%;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+         
+        }
+    
+    .footer-right {
+        float: right;
+    }
+    
+     .footer-left {
+        width: 40%;
+        float: left;
+    }
+    
+    .anti {
+    padding: 0 15px;
+    
+    .clscroll table {
+    table-layout: fixed;
+}
+
+.clscroll td, .clscroll th { 
+    overflow: hidden;
+}
+
+.corner-header {
+    float: left;
+}
+
+.column-headers {
+    float: left;
+    overflow: scroll;
+}
+}
+        
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Workflow Rules</h2>
+            <div class="blank"></div>
+        </div>
+        <div class="home_icon" style="margin: 10px; padding-left: 0px;float: right;"><a href="/apex/BOFCHome" style="color:blue;"><apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/ConfigBenchHomePage/img/gohome.png')}" /></a></div>
+   </div>
+   
+    <script>
+        function clickBox(visible,readOnly,type){
+            var visibleVal = document.getElementById(visible).checked;
+            // alert(visibleVal);
+            
+            var readOnlyVal = document.getElementById(readOnly).checked;
+            // alert(readOnlyVal);
+            
+            if(visibleVal == false && type=='Visible'){
+                //alert('inside if condition');
+                document.getElementById(readOnly).checked = false;
+            }
+            if(readOnlyVal == true && type=='ReadOnly'){
+                // alert('inside if condition');
+                document.getElementById(visible).checked = true;
+            }
+        }
+    </script>
+     
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-load.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-deflate.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-inflate.js')}"/>  
+     
+    <apex:form id="form" >
+        <apex:pageMessages id="messages"/>
+        
+        <apex:pageBlock title="Update / Inactivate Multiple Workflow Rules">
+            <apex:pageBlockSection columns="1" rendered="{!!LimitCompleted}">
+                <u><b><div style="color: red;font-weight:bold;">Steps to Update or Inactivate Multiple Workflow Rules</div></b></u>
+                    <div style="color: black;">
+                        1. Select the object for which you want to see Workflow Rules and click "Display Workflow Rules"
+                    </div>
+                    <div style="color: black;">
+                        2. Once button is clicked in step 1, it will take few seconds and will display list of workflow rules.
+                    </div>
+                    <div style="color: black;">
+                        3. Select Workflow Rules for which you want to update any field or mark it as "Inactive".
+                    </div>
+                    <div style="color: black;">
+                        4. Click on orange button labeled as "Update Workflow Rules" and it will take few seconds to update selected workflow rules.
+                    </div>
+            </apex:pageblockSection>
+            
+            <apex:outputPanel rendered="{!LimitCompleted}">
+            <br/><br/>
+            <div style="color: red;font-weight:bold;">
+                <span style="color:red;font-size: 16px;text-align: right; margin: 10px;">*You have consumed allowed limit of updating 6 workflow rules. Please <a href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here</a> for Full Version</span>
+            </div><br/>
+            </apex:outputPanel>
+            
+            <apex:outputPanel rendered="{!!AllowPageAccess}">
+            <br/><br/>
+            <div style="color: red;font-weight:bold;">
+                <span style="color:red;font-size: 16px;text-align: right; margin: 10px;">*You license has got expired. Please <a href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here</a> for renewal</span>
+            </div><br/>
+            </apex:outputPanel>
+            
+            <apex:pageBlockSection columns="1" rendered="{!!LimitCompleted && AllowPageAccess}">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Object Name" />
+                    <apex:outputPanel >
+                    <apex:selectList size="1" value="{!MetaDataItem}" >
+                        <apex:selectOptions value="{!MetaDataItems}"/>
+                    </apex:selectList>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select name of Object</span>
+                    <apex:commandButton value="Display Workflow Rules" action="{!retrieveMetadataItem}" disabled="{!LimitCompleted}"/>
+                    </apex:outputPanel>
+                    
+                </apex:pageBlockSectionItem>
+                
+                <apex:pageBlockSection columns="1">
+                    <apex:commandButton value="Update Workflow Rules" action="{!fetchDisplayFLSDetailsdeploy}" disabled="{!AllowPageAccess==false || lWrapperClassWorkflow.size == 0}" style="background: orange;font-size: 14px;"/>
+                    <apex:pageBlockTable value="{!lWrapperClassWorkflow}"  var="wp">
+                         <apex:column style="width:50px;">
+                            <apex:facet name="header">
+                                        <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                            </apex:facet>
+                            <apex:inputCheckbox value="{!wp.selected}" id="inputId" /> 
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Status</apex:facet>
+                            <center>
+                                <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'cross_icon.png')}" title="Error Found. Check Error Description" width="20" height="20" rendered="{!wp.FieldStatus=='error'}"/>
+                                <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'right_click.png')}" title="No Error Found. Ready for Insert" width="20" height="20" rendered="{!wp.FieldStatus=='insert'}" />
+                                <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'Exclamation_icon.png')}" title="Validate records" width="20" height="20" rendered="{!wp.FieldStatus=='validate'}"/>
+                            </center>
+                        </apex:column>
+                        <apex:column >
+                            <apex:facet name="header">Error Description</apex:facet>
+                            <apex:outputText id="ErrorDesc" value="{!wp.ErrorDescription}" style="font-weight:bold;color:#fff;background-color: {!if(wp.FieldStatus=='validate','gold', if(wp.FieldStatus=='error','red','lawngreen'))};width:125px;"/>
+                        </apex:column>
+                
+                        
+                        <apex:column >
+                            <apex:facet name="header"> Workflow Rule Name</apex:facet>
+                            {!wp.fullname}
+                        </apex:column>
+                        <apex:column style="width:50px;">
+                            <apex:facet name="header"> Is Active</apex:facet>
+                            <center><apex:inputCheckbox value="{!wp.active}" /></center>
+                        </apex:column>
+                        <apex:column style="width:300px;">
+                            <apex:facet name="header"> Criteria / Formula</apex:facet>
+                            <apex:repeat value="{!wp.criteriaItems1}" var="a">
+                              {!a.count}  {!a.field} {!a.operation} {!a.value} <br/>
+                            </apex:repeat>
+                            
+                            {!wp.formula}
+                        </apex:column>
+                        <apex:column style="width:100px;">
+                            <apex:facet name="header"> Filter Logic</apex:facet>
+                            {!wp.booleanFilter}
+                        </apex:column>
+                        <apex:column style="width:250px;">
+                            <apex:facet name="header"> Trigger Action</apex:facet>
+                            {!if(wp.triggerType=='onAllChanges','Evaluate the rule when a record is created, and every time its edited',if(wp.triggerType=='onCreateOrTriggeringUpdate','Evaluate the rule when a record is created, and any time it is edited to subsequently meet criteria', if(wp.triggerType=='onCreateOnly','Evaluate the rule when a record is created','')))}
+                        </apex:column>
+                        
+                        <apex:column style="width:400px;">
+                            <apex:facet name="header"> Description</apex:facet>
+                            <apex:inputTextArea value="{!wp.Description}" style="width:400px;" />
+                        </apex:column>
+                    </apex:pageBlockTable>
+                    <apex:outputPanel rendered="{!lWrapperClassWorkflow.size== 0}">
+                        <div >
+                            <span style="font-size: 13px;text-align: right; margin: 10px;">*No Search results</span>
+                        </div><br/>
+                    </apex:outputPanel>
+                </apex:pageBlockSection>
+                
+            </apex:pageBlockSection>
+            <br/><br/>
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}"> 
+            <div style="color: red;font-weight:bold;">
+                *Note: In free version, user can only update 6 workflow rules. To get more access, kindly upgrade to Full version.
+            </div></apex:outputPanel>
+            
+            
+        </apex:pageBlock> 
+          
+        
+        
+        <div id="overlay" style="display:none;">
+     <div class="loadingImg" style="text-align:center">
+     <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+     <br/>
+     <span>Processing...Please Wait...!!!</span>
+     </div>
+ </div>
+ 
+ <script type="text/javascript">
+ function selectAllCheckboxes(obj,receivedInputID){
+             
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;                 
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+         
+ }
+ function showOverlay()
+ {
+     document.getElementById("overlay").style.display= "block";   
+ }
+ </script>
+ </apex:form>
+ <footer>
+                    <div class="row anti">
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+    </footer> 
+
+ 
+
+</apex:page>

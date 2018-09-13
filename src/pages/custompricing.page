@@ -1,0 +1,7 @@
+<apex:page >
+  
+      <apex:form >
+    <apex:pageBlock title="opportunity selection">
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

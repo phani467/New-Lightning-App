@@ -1,0 +1,22 @@
+<apex:page StandardController="Account">
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Hello Welcome to New Visual Force Page </h1><br></br>
+  This is your new Page
+  <!-- End Default Content REMOVE THIS -->
+  <apex:form >
+  <apex:pageBlock >
+  <apex:pageBlockButtons >
+  
+  <apex:commandButton title="SaveRecord" action="{!save}" value="Save"/>
+  <apex:commandButton title="cancel" action="{!cancel}" value="Cancel"/>
+  </apex:pageBlockButtons>
+  <apex:pageBlockSection title="New Contact Info" collapsible="false" columns="2">
+  <apex:inputField value="{!Account.Name}"/>
+  <apex:inputField value="{!Account.Phone}"/>
+    </apex:pageBlockSection>
+    <apex:pageBlockSection title="Description Information" collapsible="false">
+    <apex:inputField value="{!Account.Description}"/>
+    </apex:pageBlockSection>
+  </apex:pageBlock>
+  </apex:form>
+</apex:page>

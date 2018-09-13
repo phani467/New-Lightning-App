@@ -1,0 +1,950 @@
+<apex:page controller="bofc.BulkObjectFieldCreator" sidebar="false" showHeader="false" cache="false" >
+  <style>
+      .overlay_div1
+        {
+        // display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        
+        }
+    
+    .rms
+    {
+       position: fixed;
+       top: 30%;
+       left: 20%;
+       border: 3px solid black;
+       color: black;
+       background: white;
+       opacity: 5;
+       padding:10px;
+       z-index: 1111;
+    }
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: {!if(TypeofVersion =='FreeVersion','8.8','5.5')}%;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            .pbSubsection td{
+                width:100px;
+            }
+    </style>
+
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#showHide").click(function(){
+                $(".upload_area").toggle();
+            });
+           
+        });
+    </script> -->
+    
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Bulk Object Field Creator</h2>
+            <div class="blank"></div>
+        </div>
+    
+    <div class="downloadClass">   
+        <a href="/servlet/servlet.FileDownload?file={!doc.id}" target="_blank">
+                           Download Sample Fields Template
+        </a>                   
+    </div>   
+    <div class="hideDropClass">   
+         <!-- <apex:outputPanel >
+            <apex:outputText value="{!if(FileDropPanel == true,'Hide','Show')}"></apex:outputText> Drop Panel 
+        </apex:outputPanel> --> 
+         <button id="showHide" type="button" class="ShowHideButtonClass">Show/Hide Drop Panel</button>                  
+   </div> 
+   
+   </div>
+    <apex:form id="formID">
+       
+    <apex:outputPanel rendered="{!FileDropPanel}">
+    <div class="upload_area">
+        <div class="drop_zone" id="drop">
+            <div class="drag_drop_qoute">Drag and Drop your Create Fields File here. or browse CSV, .XLS or .XLSX<br />
+                <input type="file" name="xlfile" id="xlf"> </input>
+            </div>
+        </div>
+    </div>
+   </apex:outputPanel>
+   
+   
+
+   <apex:pageBlock id="BasicPGID" >
+        <apex:pageBlockSection columns="3" >
+            <apex:pageBlockSectionItem dataStyle="width:100px;">
+                Object Name
+                <apex:outputPanel >
+                    <apex:inputtext value="{!ObjectName}" rendered="{!IsSameOrg == false}" style="border-left:3px solid red"/> 
+                    <apex:selectList value="{!ObjectName}" multiselect="false" size="1" rendered="{!IsSameOrg == true}" style="width:100px;border-left:3px solid red">
+                        <apex:selectOptions value="{!StandardCustomIgnoreSytemObjects}"/>
+                        <apex:actionSupport event="onchange" rerender="BasicPGID" status="search_Status_main1"/>
+                    </apex:selectList><br/>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select name of Object</span>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageBlockSectionItem dataStyle="width:100px;">
+                    Profile
+                    <apex:outputPanel >
+                        <apex:selectList value="{!ProfileNamesSel}" multiselect="true" size="5" style="border-left:3px solid red">
+                            <apex:selectOptions value="{!lProfileOptions}"/>
+                        </apex:selectList>
+                        <span style="color:red;font-size: 10px;text-align: right;"><br/>*Select profiles to which newly fields would be assigned</span>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageBlockSectionItem dataStyle="width:100px;">
+                    Add Fields <br/>to Layouts
+                    <apex:outputPanel >
+                        <apex:selectList value="{!LayoutNamesSel}" multiselect="true" size="5" style="border-left:3px solid red">
+                            <apex:selectOptions value="{!ObjectLayoutNames}"/>
+                        </apex:selectList>
+                        <span style="color:red;font-size: 10px;text-align: right;"><br/>*Select Layouts to which newly fields would be added</span>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+        </apex:pageblockSection>
+        <apex:pageBlockSection columns="1">
+                <br/><u><b><div style="color: red;font-weight:bold;">Steps to Create New Fields:</div></b></u>
+                    <div style="color: black;">
+                        1. Use Template(Refer sample template on top right corner) to add Multiple fields or click "Add New Row" to add single field.
+                    </div>
+                    <div style="color: black;">
+                        2. Drag-drop or select excel/csv file, if you are using template file to create multiple fields. 
+                    </div>
+                    <div style="color: black;">
+                        3. Verify all the details in required columns or remove error(if any).
+                    </div>
+                    <div style="color: black;">
+                        4. Select the rows which you want to insert &amp; Click "Create New Fields" button to add new fields to an selected object.
+                    </div>
+                    <!-- <div style="color: black;">
+                        5. Once fields are successfully created, assign field level permissions on all profiles on newly created fields by clicking on "Assign FLS on Newly Created Field".
+                    </div> -->
+                    
+        </apex:pageblockSection>
+       
+     </apex:pageblock>
+     <!-- <apex:pageblock >
+            <div class="upload_area">
+                <div class="drop_zone" id="drop">
+                    <div class="drag_drop_qoute">Drag and Drop your Field Creation document here. or browse <br />.CSV, .XLS or .XLSX<br />
+                        <input type="file" name="xlfile" id="xlf"> </input>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:12px;text-align: right;float:right;">   
+                       <a href="/servlet/servlet.FileDownload?file=01590000007a5uW" target="_blank">
+                           Create Fields Excel Template
+                       </a>
+            </div>   
+        
+     </apex:pageblock>
+    
+     -->
+     
+     <script>
+        function loading_Main(val) {
+                 if (val) {
+                   document.getElementById('contentLoadingMain').style.display = 'block';
+                   
+                 }
+                 else {
+                   document.getElementById('contentLoadingMain').style.display = 'none';
+                  
+                 }
+               }
+    </script> 
+     
+    <apex:outputPanel rendered="{!AppExpired==true}">
+        <div style="background: red;margin-bottom: 10px; width: 1215px; color: white;   text-align: center; font-size: 20px;">
+                 {!ExpirationMsg}
+        </div>
+    </apex:outputPanel>  
+    <apex:outputPanel id="t1" rendered="{!AppExpired==false}">
+        <apex:pageMessages />
+        <div style="background: greenyellow;  margin-bottom: 10px; width: 1215px; color: crimson;font-size: 20px; font-weight: bold; text-align: center;">
+            {!fieldStatusMessage}
+        </div>    
+        <apex:pageBlock title="Create New Fields"> 
+            <apex:actionFunction name="sendData" action="{!parseFieldCreationData}" reRender="t1" status="search_Status_main">
+                <apex:param value="" id="data_as_string1" name="data_as_string" assignTo="{!FieldCreationData}"/>
+            </apex:actionFunction>
+            <!-- <apex:actionFunction name="FLSAssign" action="{!fetchDisplayFLSDetails}" reRender="t1" status="search_Status_main1">
+            </apex:actionFunction> -->
+            
+            <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                              
+                              <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+            <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+            
+            <apex:actionStatus onstop="stopSpinner();" id="search_Status_main" startStyle="color:red;"/>
+             
+            
+            <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Delete Row" disabled="{!LimitCompleted==true || lcreateFieldWrapper.size == 0}" action="{!deleteNewField}"/>
+                <apex:commandButton value="Add New Row" disabled="{!LimitCompleted}" action="{!AddNewField}" reRender="t1" status="search_Status_main1"/>
+                <!--  <apex:commandButton value="Validate" action="{!ValidateFields}" reRender="BasicPGID,t1,pageblocks,pageblockscurrent" disabled="{!LimitCompleted==true || lcreateFieldWrapper.size == 0}" status="search_Status_main1"/> -->
+                <apex:commandButton value="Create New Fields" action="{!DeployFields}" reRender="t1" disabled="{!LimitCompleted==true || lcreateFieldWrapper.size == 0}" status="search_Status_main1" style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;" /> <!-- oncomplete="window.open('/apex/BulkObjectFieldCreatorSuccess','');"    oncomplete="alert('All selected rows for creating new Custom Fields processed successfully. ');" -->
+                <!-- <apex:commandButton value="Assign FLS to Newly Created Fields" onclick="if(!confirm('Attention!!! This action will assign field level security to all the newly created fields in which Visible to All Profiles checkbox was checked. \n\n This action can take some time, so please do not refresh your screen.')){return false};" action="{!fetchDisplayFLSDetailsdeploy}" reRender="t1,BasicPGID" disabled="{!LimitCompleted==true || lcreateFieldWrapper.size == 0}" status="search_Status_main1" style="color: white;padding: 7px;padding-right: 6px; background: lightcoral;    font-size: 14px;    margin: 0px;    font-weight: bold;"/> -->
+                <apex:commandButton value="Reload Page" action="{!refreshPage}" status="search_Status_main1"/>
+                
+                <!-- <apex:commandButton value="Assign layout" action="{!assignLayoutdeploy}" reRender="t1,BasicPGID" disabled="{!LimitCompleted==true || lcreateFieldWrapper.size == 0}" status="search_Status_main1" style="color: white;padding: 7px;padding-right: 6px; background: lightcoral;    font-size: 14px;    margin: 0px;    font-weight: bold;"/> -->
+                
+                
+                
+                <!-- <apex:commandButton value="Assign Field Level Security" status="search_Status_main1" onclick="window.open('/apex/AssignBulkFLS','');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/>
+                <apex:commandButton value="Delete BULK Fields" status="search_Status_main1" onclick="window.open('/apex/BulkObjectFieldDeletor','');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/>
+                <apex:commandButton value="Export Details" status="search_Status_main1" onclick="window.open('/apex/BOFCExtractData','');"  style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/>
+                -->
+                              
+               <div style="float:right;">
+                    <strong> <!-- <u><a href="/apex/BulkObjectFieldCreatorSuccess" style="color:blue;font-size:12px;">Download Latest Success File</a></u> &nbsp;&nbsp; -->
+                            <a href="/home/home.jsp" target="_blank" style="color:blue;font-size:10px;">Salesforce Home</a> &nbsp;&nbsp;
+                            <a href="/apex/BOFCHome" target="_blank" style="color:blue;font-size:10px;">BOFC Home</a>
+                </strong></div> 
+                
+                
+            </apex:pageBlockButtons>
+            <script type="text/javascript">
+              function updatePcrnt(e, targtVal){
+               var rate=document.getElementById(e).value.trim();
+               var newString =rate.replace('%', '');
+               newString = newString.replace('#', '');
+               newString =newString.replace('__', '');
+               newString =newString.replace('$', '');
+               newString =newString.replace('&', '');
+               newString =newString.replace('!', '');
+               newString =newString.replace('@', '');
+               newString =newString.replace('^', '');
+               newString =newString.replace('*', '');
+               newString =newString.replace(')', '');
+               newString =newString.replace('(', '');
+               newString =newString.replace('-', '');
+               newString =newString.replace('=', '');
+               newString =newString.replace('<', '');
+               newString =newString.replace('>', '');
+               newString =newString.replace('{', '');
+               newString =newString.replace('}', '');
+               newString =newString.replace('[', '');
+               newString =newString.replace(']', '');
+               
+               newString = newString.replace(/[^A-Z0-9]/ig, "_");
+               var newString =newString.replace(/_+/g, '_');
+                if(!isNaN(newString[0]))
+                {
+                 newString = 'X'+newString;
+                }
+                
+                if(newString[newString.length-1]=="_")
+                {
+                 newString= newString.substring(0,newString.length-1);
+                }
+                if(newString[0]=="_")
+                {
+                 newString= newString.substring(1,newString.length);
+                }
+                document.getElementById(targtVal).value= newString ;
+              }
+              
+              
+              function inputLimiter(e,allow) {
+            var AllowableCharacters = '';
+
+            if (allow == 'Letters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';}
+            if (allow == 'Numbers'){AllowableCharacters='1234567890';}
+            if (allow == 'NameCharacters'){AllowableCharacters=' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-.\'';}
+            if (allow == 'NameCharactersAndNumbers'){AllowableCharacters='1234567890 ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-\'';}
+            if (allow == 'Currency'){AllowableCharacters='1234567890.';}
+
+            var k = document.all?parseInt(e.keyCode): parseInt(e.which);
+            if (k!=13 && k!=8 && k!=0){
+                if ((e.ctrlKey==false) && (e.altKey==false)) {
+                return (AllowableCharacters.indexOf(String.fromCharCode(k))!=-1);
+                } else {
+                return true;
+                }
+            } else {
+                return true;
+            }
+        } 
+              
+            </script>
+            
+        <div class="table_container" style="max-height:300px;">
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion' && LimitCompleted==true}">
+                <div style="color: red;font-weight:bold;">
+                    <span style="background-color:red;color:white;font-size: 13px;text-align: right; margin: 10px;">*You have consumed allowed limit of creating 30 custom fields. For Unlimited access <a style="color: black;" target="_blank" href="https://store.tech9logy.com/salesforce/bulk-object-field-creator.html/"><u>Click Here</u></a></span>
+                </div><br/>
+            </apex:outputPanel> 
+            Max Selection(At a time): 100 &nbsp;&nbsp;&nbsp; Selected: <input type="text" id="example" disabled="disabled" style="background: none;border:none;"></input>&nbsp;&nbsp;&nbsp; Select First 100 records: <input type="checkbox" id="Checkexample" onclick="select100Checkboxes(this,'inputId')" ></input>  &nbsp;&nbsp;&nbsp; Select next 100(101-200) non-selected records: <input type="checkbox" id="Checkexample1" onclick="select101Checkboxes(this,'inputId')" ></input> 
+            <apex:pageBlockTable value="{!lcreateFieldWrapper}" var="st" id="pgTable" style="height:if(lcreateFieldWrapper.size<5, lcreateFieldWrapper.size * 80 , 300px;">
+                
+                <apex:column style="width:50px;">
+                    <apex:facet name="header">
+                        <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/>
+                    </apex:facet>
+                    <apex:inputCheckbox value="{!st.selected}" onclick="selectedCount('inputId')" id="inputId" disabled="{!st.FieldStatus=='created'}"/>
+                </apex:column>
+                <apex:column style="background: lightcyan;">
+                    <apex:facet name="header">Field Status</apex:facet>
+                        <!-- <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'cross_icon.png')}" title="Error Found. Check Error Description" width="20" height="20" rendered="{!st.FieldStatus=='error'}"/>
+                        <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'right_click.png')}" title="No Error Found. Ready for Insert" width="20" height="20" rendered="{!st.FieldStatus=='insert' || st.FieldStatus=='created' }" />
+                        <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'Exclamation_icon.png')}" title="Validate records" width="20" height="20" rendered="{!st.FieldStatus=='validate'}"/>
+                        -->
+                        <div style="width:200px;">
+                            <apex:outputText id="ErrorDesc" value="{!st.ErrorDescription}" style="width:300px;font-weight:bold;color:white;background-color: {!if(st.FieldStatus=='validate','gold', if(st.FieldStatus=='error','red','lawngreen'))};"/>
+                        </div>
+                </apex:column>
+                <!-- <apex:column >
+                    <apex:facet name="header">Error Description</apex:facet>
+                    <apex:outputText id="ErrorDesc" value="{!st.ErrorDescription}" style="font-weight:bold;color:#fff;background-color: {!if(st.FieldStatus=='validate','gold', if(st.FieldStatus=='error','red','lawngreen'))};width:125px;"/>
+                </apex:column> -->
+                <apex:column style="width:50px;">
+                    <apex:facet name="header">Field Type</apex:facet>
+                    <apex:selectList value="{!st.FieldType}" size="1" style="border-left:3px solid red;width:100px;" disabled="{!st.ErrorDescription=='Field Created Successfully'}">
+                        <apex:selectOptions value="{!datatypes}"/>
+                        <apex:actionSupport event="onchange" rerender="pgTable" status="search_Status_main1"/>
+                    </apex:selectList>
+                </apex:column>
+                <apex:column id="leng">
+                    <apex:facet name="header">Field Label</apex:facet>
+                    <apex:inputText id="FieldLabel" disabled="{!st.ErrorDescription=='Field Created Successfully'}" maxlength="40" size="24" value="{!st.FieldLabel}" style="border-left:3px solid red;width:125px;" onchange="updatePcrnt('{!$Component.FieldLabel}','{!$Component.FieldName}');" />
+                        
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Field Name</apex:facet>
+                    <apex:inputText id="FieldName" value="{!st.FieldFullName}" style="border-left:3px solid red;width:125px;" disabled="{!st.ErrorDescription=='Field Created Successfully'}"/>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Related To<br/>(Parent Object)</apex:facet>
+                    <apex:outputPanel rendered="{!st.fieldType=='Lookup' || st.fieldType=='MasterDetail'}">
+                    <apex:selectList value="{!st.referenceTo}" size="1" style="border-left:3px solid red;width:100px;" disabled="{!st.ErrorDescription=='Field Created Successfully'}">
+                        <apex:selectOptions value="{!StandardCustomIgnoreSytemObjects}"/>
+                    </apex:selectList>
+                    </apex:outputPanel>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Child Relation-<br/>ship Name</apex:facet>
+                    <apex:inputText value="{!st.ChildRelationshipName}" rendered="{!st.FieldType =='Lookup' || st.fieldType=='MasterDetail' }"   style="width:100px;border-left: {!if(st.FieldType =='Lookup'|| st.fieldType=='MasterDetail','3px solid red',null)}" disabled="{!st.FieldType !='Lookup' && st.fieldType!='MasterDetail' }" />
+                    <apex:outputText value="" style="width:50px;" rendered="{!st.FieldType !='Lookup' && st.fieldType!='MasterDetail' }" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Length</apex:facet>
+                    <apex:inputText onkeypress="return inputLimiter(event,'Numbers');"  
+                                    rendered="{!st.FieldType =='Formula(Number)' || st.FieldType =='Formula(Currency)' || st.FieldType =='Formula(Percent)' || st.FieldType =='Number' || st.FieldType =='Currency' || st.FieldType =='Percent' || st.FieldType =='Html' || st.FieldType =='LongTextArea' || st.FieldType =='Text'}"
+                                    value="{!st.FieldLength}" maxlength="5" size="5"  style="width:50px;border-left: {!if(st.FieldType =='Formula(Number)' || st.FieldType =='Formula(Currency)' || st.FieldType =='Formula(Percent)' || st.FieldType =='Number' || st.FieldType =='Currency' || st.FieldType =='Percent' || st.FieldType =='Html' || st.FieldType =='LongTextArea' || st.FieldType =='Text', '3px solid red',null)}"  disabled="{!(st.FieldType !='Formula(Number)' && st.FieldType !='Formula(Currency)' && st.FieldType !='Formula(Percent)' && st.FieldType !='Number' && st.FieldType !='Currency' && st.FieldType !='Percent' && st.FieldType !='Html' && st.FieldType !='LongTextArea' && st.FieldType != 'Text')}" />
+                </apex:column>
+                
+                <!-- <apex:column style="width:50px;">
+                    <apex:facet name="header">Precision</apex:facet>
+                    <apex:inputText value="{!st.FieldPrecision}" size="10" maxlength="2"  style="width:50px;border-left: {!if(st.FieldType =='Number' || st.FieldType =='Currency' || st.FieldType =='Percent', '3px solid red',null)}"  disabled="{!st.FieldType !='Number' && st.FieldType !='Currency' && st.FieldType !='Percent'}" />
+                </apex:column> -->
+                <apex:column style="width:50px;">
+                    <apex:facet name="header">Decimal<br/>Places</apex:facet>
+                    <apex:inputText rendered="{!st.FieldType =='Formula(Number)' || st.FieldType =='Formula(Currency)' || st.FieldType =='Formula(Percent)' || st.FieldType =='Location' || st.FieldType =='Number'  || st.FieldType =='Currency' || st.FieldType =='Percent'}" onkeypress="return inputLimiter(event,'Numbers');" value="{!st.FieldScale}" size="2" maxlength="2" style="width:50px;border-left: {!if(st.FieldType =='Formula(Number)' || st.FieldType =='Formula(Currency)' || st.FieldType =='Formula(Percent)' || st.FieldType =='Location' || st.FieldType =='Number'  || st.FieldType =='Currency' || st.FieldType =='Percent', '3px solid red',null)}" disabled="{!st.FieldType !='Formula(Number)' && st.FieldType !='Formula(Currency)' && st.FieldType !='Formula(Percent)' && st.FieldType !='Location' && st.FieldType !='Number' && st.FieldType !='Currency' && st.FieldType !='Percent'}" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header"># Visible<br/>Lines</apex:facet>
+                    <apex:inputText onkeypress="return inputLimiter(event,'Numbers');" value="{!st.VisibleLines}" size="2" maxlength="2" rendered="{!st.FieldType =='Html' || st.FieldType =='LongTextArea' || st.FieldType =='MultiselectPicklist'}" style="width:50px;border-left: {!if(st.FieldType =='Html' || st.FieldType =='LongTextArea' || st.FieldType =='MultiselectPicklist', '3px solid red',null)}" disabled="{!st.FieldType !='Html' && st.FieldType !='MultiselectPicklist' && st.FieldType !='LongTextArea'}" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Picklist <br/>Values</apex:facet>
+                    <apex:outputPanel >
+                        <apex:inputTextarea rendered="{!st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist'}" value="{!st.FieldPickListValue}"  style="border-left: {!if(st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist', '3px solid red',null)}" disabled="{!st.FieldType !='Picklist' && st.FieldType !='MultiselectPicklist'}" />
+                     </apex:outputPanel>
+                </apex:column> 
+                <apex:column >
+                    <apex:facet name="header">Global Picklist <br/>Value Set</apex:facet>
+                    <apex:outputPanel >
+                        <!--<apex:inputText value="{!st.PicklistValueSetOption}"  style="border-left: {!if(st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist', '3px solid red',null)}" disabled="{!st.FieldType !='Picklist' && st.FieldType !='MultiselectPicklist'}" />-->
+                        <apex:selectList rendered="{!st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist'}" value="{!st.PicklistValueSet}" size="1" style="border-left: {!if(st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist', '3px solid red',null)}" disabled="{!st.FieldType !='Picklist' && st.FieldType !='MultiselectPicklist'}">
+                            <apex:selectOptions value="{!st.PicklistValueSetOptions}"/>
+                        </apex:selectList> 
+                     </apex:outputPanel>
+                </apex:column> 
+                
+                
+                <apex:column >
+                    <apex:facet name="header">Display<br/> Format</apex:facet>
+                    <apex:inputText value="{!st.displayFormat}" rendered="{!st.FieldType =='AutoNumber'}" html-placeholder="{!if(st.FieldType =='AutoNumber','A-{0000}','')}" style="width:100px;border-left: {!if(st.FieldType =='AutoNumber', '3px solid red',null)}" disabled="{!st.FieldType !='AutoNumber'}" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Starting<br/> Number</apex:facet>
+                    <apex:inputText rendered="{!st.FieldType =='AutoNumber'}" onkeypress="return inputLimiter(event,'Numbers');" value="{!st.StartingNumber}" html-placeholder="1" style="width:50px;border-left: {!if(st.FieldType =='AutoNumber', '3px solid red',null)}" disabled="{!st.FieldType !='AutoNumber'}" />
+                </apex:column>
+                
+                <apex:column >
+                    <apex:facet name="header">Formula<br/>Details</apex:facet>
+                    <apex:inputText rendered="{!Contains(st.FieldType,'Formula')}"  value="{!st.FormulaDetails}" html-placeholder="Enter formula" style="width:50px;border-left: {!if(Contains(st.FieldType,'Formula')==true, '3px solid red',null)}" disabled="{!Contains(st.FieldType,'Formula')==false}" />
+                </apex:column>
+                
+                <!-- <apex:column headerValue="Visible to All">
+                    <apex:facet name="header">Visible to All <br/>Profiles <input type="checkbox" id="CheckVisibilty" onclick="selectVisibleProfiles(this,'visibleProfileId')" ></input></apex:facet>
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!st.VisibleToAllProfiles}" style="width:50px;" id="visibleProfileId" disabled="{!st.ErrorDescription=='Field Created Successfully'}"/>
+                    </apex:outputPanel>
+                </apex:column>-->
+                
+                <apex:column >
+                    <apex:facet name="header">Picklist<br/>Sorted</apex:facet>
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!st.FieldPickListSorted}" style="width:50px;" rendered="{!st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist'}"  disabled="{!st.FieldType !='Picklist' && st.FieldType !='MultiselectPicklist'}" />
+                    </apex:outputPanel>
+                </apex:column> 
+                <apex:column >
+                    <apex:facet name="header">Default<br/>Value</apex:facet>
+                    <center> 
+                        <apex:inputText value="{!st.FieldDefaultValue}" size="18" rendered="{!st.FieldType !='Checkbox'}"  style="width:50px;" disabled="{!st.fieldType=='MasterDetail' || st.fieldType=='AutoNumber' || st.FieldType =='Url' || st.FieldType =='Phone' || st.FieldType =='Lookup' || st.FieldType =='Html' || st.FieldType =='TextArea' || st.FieldType =='Location' || st.FieldType =='DateTime' || st.FieldType =='Date' || st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist'}"/>
+                        <apex:inputCheckbox value="{!st.FieldDefaultValue}" disabled="{!st.fieldType=='AutoNumber' || st.FieldType =='MasterDetail' || st.FieldType =='Lookup' || st.FieldType =='DateTime' || st.FieldType =='Date' || st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist'}" rendered="{!st.FieldType =='Checkbox'}" style="width:50px;border-left: {!if(st.FieldType =='Checkbox', '3px solid red',null)}"  /> 
+                    </center>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Required</apex:facet>
+                    <center> <apex:inputCheckbox value="{!st.FieldRequired}"  style="width:50px;" disabled="{!st.fieldType=='Lookup' || st.fieldType=='MasterDetail' || st.fieldType=='AutoNumber' || st.FieldType =='LongTextArea' || st.FieldType =='Html' || st.FieldType =='Checkbox'}" rendered="{!st.fieldType!='Lookup' && st.fieldType!='MasterDetail' && st.fieldType!='AutoNumber' && st.FieldType!='LongTextArea' && st.FieldType!='Html' && st.FieldType!='Checkbox'}" /> </center>
+                </apex:column>
+                <!-- <apex:column>
+                    <apex:facet name="header">Track<br/>History</apex:facet>
+                    <center><apex:inputCheckbox value="{!st.FieldTrackField}"  style="width:50px;" disabled="{!st.FieldType =='LongTextArea' || st.FieldType =='Html' || st.FieldType =='Url' || st.FieldType =='TextArea' || st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist' || st.FieldType =='Phone' || st.FieldType =='Percent' || st.FieldType =='Number' || st.FieldType =='Location' || st.FieldType =='Email' || st.FieldType =='DateTime' || st.FieldType =='Date' || st.FieldType =='Checkbox' || st.FieldType =='Currency'}"/></center>
+                </apex:column>
+                -->
+                <apex:column >
+                    <apex:facet name="header">Unique</apex:facet>
+                    <center><apex:inputCheckbox value="{!st.FieldUnique}"  style="width:50px;" disabled="{!st.fieldType=='AutoNumber' || st.FieldType =='MasterDetail' || st.FieldType =='Lookup' || st.FieldType =='LongTextArea' || st.FieldType =='Html' || st.FieldType =='Url' || st.FieldType =='TextArea' || st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist' || st.FieldType =='Phone' || st.FieldType =='Percent' || st.FieldType =='Location' || st.FieldType =='DateTime' || st.FieldType =='Date' || st.FieldType =='Checkbox' || st.FieldType =='Currency'}" rendered="{!st.fieldType!='AutoNumber' && st.FieldType!='MasterDetail' && st.FieldType!='Lookup' && st.FieldType!='LongTextArea' && st.FieldType!='Html' && st.FieldType!='Url' && st.FieldType!='TextArea' && st.FieldType!='Picklist' && st.FieldType!='MultiselectPicklist' && st.FieldType!='Phone' && st.FieldType!='Percent' && st.FieldType!='Location' && st.FieldType !='DateTime' && st.FieldType!='Date' && st.FieldType!='Checkbox' && st.FieldType!='Currency'}" /></center>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">External<br/>Id</apex:facet>
+                    <center><apex:inputCheckbox value="{!st.FieldExternalID}" style="width:50px;" disabled="{!st.FieldType =='MasterDetail' || st.FieldType =='Lookup' || st.FieldType =='LongTextArea' || st.FieldType =='Html' || st.FieldType =='Url' || st.FieldType =='TextArea' || st.FieldType =='Picklist' || st.FieldType =='MultiselectPicklist' || st.FieldType =='Phone' || st.FieldType =='Percent' || st.FieldType =='Location' || st.FieldType =='DateTime' || st.FieldType =='Date' || st.FieldType =='Checkbox' || st.FieldType =='Currency' }" rendered="{!st.FieldType!='MasterDetail' && st.FieldType!='Lookup' && st.FieldType !='LongTextArea' && st.FieldType !='Html' && st.FieldType !='Url' && st.FieldType!='TextArea' && st.FieldType !='Picklist' && st.FieldType!='MultiselectPicklist' && st.FieldType !='Phone' && st.FieldType!='Percent' && st.FieldType!='Location' && st.FieldType !='DateTime' && st.FieldType!='Date' && st.FieldType!='Checkbox' && st.FieldType!='Currency' }"/></center>
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Description</apex:facet>
+                    <apex:inputText value="{!st.FieldDescription}" maxlength="255" />
+                </apex:column>
+                <apex:column >
+                    <apex:facet name="header">Help Text</apex:facet>
+                    <apex:inputText value="{!st.FieldHelpText}" maxlength="255" />
+                </apex:column>
+                
+            </apex:pageBlockTable>
+            
+            </div>
+            <br/>
+            <div style="color: red;font-weight:bold;">
+                *Note:<br/> 1. Columns are enabled or disabled depending upon field type
+            </div>
+            
+            <div style="color: red;font-weight:bold;">
+                2. Field Label Should be of 40 characters (If more than 40, app will truncate the label as per Salesforce allowed limit
+            </div>
+            <div style="color: red;font-weight:bold;">
+                3. Field Name Should be of 38 characters (If more than 38, app will truncate the Name as per Salesforce allowed limit
+            </div>
+            <div style="color: red;font-weight:bold;">
+                4. Help Text Should be of 255 characters (If more than 255, app will truncate the HelpText as per Salesforce allowed limit
+            </div>
+            <div style="color: red;font-weight:bold;">
+                5. Add upto 500 Fields in excel or csv template. In case if you have more than 500 fields, please split it into multilpe sheets and upload.
+            </div>
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+            <div style="color: red;font-weight:bold;">
+                6. In free version, user can create only 30 fields. For unlimited access <a style="color: blue;" target="_blank" href="https://store.tech9logy.com/salesforce/bulk-object-field-creator.html/"><u>Click Here</u></a>
+            </div>
+            </apex:outputPanel>
+        </apex:pageBlock>
+            
+    </apex:outputPanel>
+  
+  </apex:form>
+  
+  <script type="text/javascript">
+
+function fixdata(data) {
+    var o = "", l = 0, w = 10240;
+    for(; l<data.byteLength/w; ++l) o+=String.fromCharCode.apply(null,new Uint8Array(data.slice(l*w,l*w+w)));
+    o+=String.fromCharCode.apply(null, new Uint8Array(data.slice(l*w)));
+    return o;
+}
+
+
+function to_csv(workbook) {
+    var result = [];
+    workbook.SheetNames.forEach(function(sheetName) {
+        var csv = XLSX.utils.sheet_to_csv(workbook.Sheets[sheetName]);
+        if(csv.length > 0){
+            //result.push("SHEET: " + sheetName);
+            //result.push("");
+            result.push(csv);
+        }
+    });
+    return result.join("\n");
+}
+
+
+function process_wb(wb) {
+    var output = "";
+
+//checking file type for csv or excel       
+if(typeof(wb)=="object")
+{
+    output = to_csv(wb);
+}
+else
+{
+    output=wb;
+}
+        
+        
+    //calling main function to represent data in tabular form   
+       // console.log(output);
+        process_uploaded_data(output);
+        
+}
+
+
+function process_uploaded_data(output_data)
+{
+ startSpinner(); 
+ var new_data;
+ new_data = $.csv.toArrays(output_data);
+ console.log("=================================")
+ console.log(new_data);
+ var data_as_string='';
+ for(var l=0; l<new_data.length;l++)
+ {
+  
+  for(var m=0 ;m<new_data[l].length;m++)
+  {
+      if(m<new_data[l].length-1)
+      {
+          data_as_string+=new_data[l][m]+'~,~';
+      }
+      else
+      {
+          data_as_string+=new_data[l][m];
+      }
+  }
+      data_as_string+='~;~';
+ 
+ }
+ 
+  console.log("=================================")
+ console.log(data_as_string);
+ var bid = '';
+ sendData(data_as_string);
+ 
+ 
+ // lString = new_data;
+ 
+ // stopSpinner();
+ $("#drop").hide();
+} 
+
+
+<!--Code for handling drop and upload of file-->
+var drop = document.getElementById('drop');
+function handleDrop(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    
+    var files = e.dataTransfer.files;
+    
+    var i,f;
+    for (i = 0, f = files[i]; i != files.length; ++i) {
+        var reader = new FileReader();
+        var name = f.name;
+        
+        //if csv
+        if (name.substring(name.lastIndexOf('.')) == ".csv") 
+        {
+                reader.onload = function(e) {
+                    var text = reader.result;
+                  
+                  process_wb(text);
+                };
+                reader.readAsText(f);
+                return;
+                
+        }  //if excel
+        else
+        { 
+            reader.onload = function(e) {
+        
+            var data = e.target.result;
+            
+                var arr = fixdata(data);
+            if (name.substring(name.lastIndexOf('.')) == '.xlsx') //if something xlsx
+            {   
+                    wb = XLSX.read(btoa(arr), {type: 'base64'});
+            }
+            else if (name.substring(name.lastIndexOf('.')) == '.xls')  //if something xls
+            {
+                    wb = XLS.read(btoa(arr), {type: 'base64'});
+            }
+            else //if something else
+            {
+                alert("Only .xls, .xlsx, and .csv files are supported.");
+                return;
+            }
+                process_wb(wb);
+         }  
+        }
+    
+        reader.readAsArrayBuffer(f);
+    }
+}
+
+function handleDragover(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'copy';
+}
+
+if(drop.addEventListener) {
+    drop.addEventListener('dragenter', handleDragover, false);
+    drop.addEventListener('dragover', handleDragover, false);
+    drop.addEventListener('drop', handleDrop, false);
+}
+
+
+var xlf = document.getElementById('xlf');
+function handleFile(e) {
+    
+    var files = e.target.files;
+    var i,f;
+    for (i = 0, f = files[i]; i != files.length; ++i) {
+        var reader = new FileReader();
+        var name = f.name;
+            //if csv
+        if (name.substring(name.lastIndexOf('.')) == ".csv") 
+        {
+                reader.onload = function(e) {
+                    var text = reader.result;
+                  
+                  process_wb(text);
+                };
+                reader.readAsText(f);
+                return;
+                
+        }  //if excel
+        else
+        { 
+            reader.onload = function(e) {
+        
+            var data = e.target.result;
+            
+                var arr = fixdata(data);
+            if (name.substring(name.lastIndexOf('.')) == '.xlsx')   //if something xlsx
+            {   
+                    wb = XLSX.read(btoa(arr), {type: 'base64'});
+            }
+            else if (name.substring(name.lastIndexOf('.')) == '.xls')  //if something xls
+            {
+                    wb = XLS.read(btoa(arr), {type: 'base64'});
+            }
+            else //if something else
+            {
+                alert("Only .xls, .xlsx, and .csv files are supported.");
+                return;
+            }
+                process_wb(wb);
+          }
+         }  
+         
+         reader.readAsArrayBuffer(f);
+    }
+}
+
+if(xlf.addEventListener) xlf.addEventListener('change', handleFile, false);
+
+<!--Code for handling drop and upload of file-->
+</script>
+
+<div class="overlay_div"> </div>
+    <div id="spinnerDiv"></div>
+
+<script type="text/javascript">
+<!--Spinning Image-->
+
+    var spinner;
+    function startSpinner() {
+        var opts = {
+          lines: 13, // The number of lines to draw
+          length: 20, // The length of each line
+          width: 10, // The line thickness
+          radius: 30, // The radius of the inner circle
+          corners: 1, // Corner roundness (0..1)
+          rotate: 0, // The rotation offset
+          direction: 1, // 1: clockwise, -1: counterclockwise
+          color: '#000', // #rgb or #rrggbb or array of colors
+          speed: 1, // Rounds per second
+          trail: 60, // Afterglow percentage
+          shadow: false, // Whether to render a shadow
+          hwaccel: false, // Whether to use hardware acceleration
+          className: 'spinner', // The CSS class to assign to the spinner
+          zIndex: 2e9, // The z-index (defaults to 2000000000)
+          top: '0%', // Top position relative to parent
+          left: '0%' // Left position relative to parent
+        };
+        var target = document.getElementById('spinnerDiv');
+        spinner = new Spinner(opts).spin(target);   
+
+    $(".overlay_div").show();
+    
+    }
+
+    function stopSpinner() {
+       $(".overlay_div").hide();
+        spinner.stop();
+    }
+
+        
+        function selectVisibleProfiles(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;                 
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                    if(obj.checked==true){
+                    count = count + 1;}
+                }
+            }
+        }
+        
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;                 
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                    if(obj.checked==true){
+                    count = count + 1;}
+                }
+            }
+            document.getElementById("example").value= ""+count;
+        }
+        
+        function select100Checkboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;                 
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                    if(count<100){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                        if(obj.checked==true){
+                        count = count + 1;}
+                    }
+                }
+            }
+            document.getElementById("example").value= ""+count;
+        }
+        
+        function select101Checkboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;
+            var count1=0;
+            
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){
+                    // alert('alert' + inputCheckBox.length);                 
+                    if(count1>99 && count1<200){
+                        inputCheckBox[i].checked = obj.checked;
+                        if(obj.checked==true){
+                        count = count + 1;}
+                    }
+                   count1 = count1+1;
+                }
+                
+            }
+            document.getElementById("example").value= ""+count;
+        }
+
+        
+        function selectedCount(receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");
+            var count = 0;                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    if(inputCheckBox[i].checked){
+                        count = count + 1;
+                    }
+                }
+            }
+           // alert("count" + count);
+            document.getElementById("example").value= ""+count;
+        }
+
+<!--Spinning Image-->
+</script>
+
+    <script>
+        $(document).ready(function(){
+            $("#showHide").click(function(){
+                $("#drop").toggle();
+            });
+           
+        });
+    </script> 
+
+  
+</apex:page>

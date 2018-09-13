@@ -1,0 +1,176 @@
+<apex:page controller="bofc.BOFCDashboardApexClassExport" contentType="application/vnd.ms-excel#ApexClass.xls" cache="true" action="{!apexclassCodeRes}">
+<apex:outputText value="{!xlsHeader}"/>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <Styles>
+    <Style ss:ID="objectTitle">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Center" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="1" ss:Size="10" ss:Color="#ffffff" ss:Family="Calibri"/>
+        <Interior ss:Color="#1f497d" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="heading">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Center" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="1" ss:Size="10" ss:Color="#000000"/>
+        <Interior ss:Color="#b8cce4" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="simpleDataLeft">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Left" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="0" ss:Size="10" ss:Color="#000000"/>
+        <Interior ss:Color="#ffffff" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="simpleDataRight">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Right" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="0" ss:Size="10" ss:Color="#000000"/>
+        <Interior ss:Color="#ffffff" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="true">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Left" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="1" ss:Size="10" ss:Color="#000000"/>
+        <Interior ss:Color="#c6efce" ss:Pattern="Solid"/>
+    </Style>
+    <Style ss:ID="false">
+        <Alignment ss:Vertical="Center" ss:Horizontal="Left" />
+        <Borders>
+            <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1" />
+            <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1" />
+        </Borders>
+        <Font ss:Bold="1" ss:Size="10" ss:Color="#000000"/>
+        <Interior ss:Color="#ffc7ce" ss:Pattern="Solid"/>
+    </Style>
+ </Styles>
+    <Worksheet ss:Name="Apex Class">
+        <Table x:FullColumns="1" x:FullRows="1">
+            <Column ss:AutoFitWidth="1"  ss:Width="217" />
+            <Column ss:AutoFitWidth="1" ss:Width="117"/>
+            <Column ss:AutoFitWidth="1" ss:Width="107"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="50"/>
+            <Column ss:AutoFitWidth="1" ss:Width="117"/>
+            <Column ss:AutoFitWidth="1" ss:Width="117"/>
+            <Column ss:AutoFitWidth="1" ss:Width="117"/>
+            <Column ss:AutoFitWidth="1" ss:Width="117"/>
+            <Row>
+                <Cell ss:StyleID="objectTitle" ss:MergeAcross="14"><Data ss:Type="String" >Apex Class</Data></Cell>
+            </Row>
+            <Row>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Class Name</Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Class Label</Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Namespace Prefix</Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Is Valid</Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Status</Data></Cell>
+            <Cell ss:StyleID="heading" ss:MergeAcross="3"><Data ss:Type="String" >Code Coverage</Data></Cell>    
+            
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Last Modified Date</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Last Modified By</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Created Date</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Created By Name</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Api Version</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Length (Without Comments)</Data></Cell>        
+            
+            </Row>
+            <Row>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Total Lines</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Num of Lines Covered</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Num of Lines Uncovered</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" >Total Coverage(%)</Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>    
+            <Cell ss:StyleID="heading"><Data ss:Type="String" ></Data></Cell>     
+            
+            </Row>
+            <!--
+              <apex:repeat value="{!lapexClass}" var="ac">
+            <Row>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Name}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Name}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.NamespacePrefix}</Data></Cell>
+            <Cell ss:StyleID="{!IF(ac.IsValid=true,true,false)}"><Data ss:Type="String" >{!ac.IsValid}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Status}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >10</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >0</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >10</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >0</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >  <apex:outputText value="{0,date,dd-MM-yyyy}"> <apex:param value="{!ac.LastModifiedDate}" /> </apex:outputText>   </Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.LastModifiedBy.Name}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String"><apex:outputText value="{0,date,dd-MM-yyyy}"> <apex:param value="{!ac.CreatedDate}" /> </apex:outputText></Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.CreatedBy.Name}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.ApiVersion}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.LengthWithoutComments}</Data></Cell>       
+            
+            </Row>
+            
+            </apex:repeat> -->
+            
+              <apex:repeat value="{!lClassDetails}" var="ac">
+            <Row>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Name}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Name}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.NamespacePrefix}</Data></Cell>
+            <Cell ss:StyleID="{!IF(ac.IsValid=true,true,false)}"><Data ss:Type="String" >{!ac.IsValid}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.Status}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.NumLinesCovered+ac.NumLinesUnCovered}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.NumLinesCovered}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.NumLinesUnCovered}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.totalCodeCoverage}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >  <apex:outputText value="{0,date,dd-MM-yyyy}"> <apex:param value="{!ac.LastModifiedDate}" /> </apex:outputText>   </Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.LastModifiedName}</Data></Cell>
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String"><apex:outputText value="{0,date,dd-MM-yyyy}"> <apex:param value="{!ac.CreatedDate}" /> </apex:outputText></Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.CreatedByName}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.ApiVersion}</Data></Cell>    
+            <Cell ss:StyleID="simpleDataLeft"><Data ss:Type="String" >{!ac.LengthWithoutComments}</Data></Cell>       
+            
+            </Row>
+            
+            </apex:repeat>
+            
+        </Table>
+    </Worksheet>
+</Workbook>
+</apex:page>

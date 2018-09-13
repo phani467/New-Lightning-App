@@ -1,0 +1,25 @@
+<apex:page Controller="SinglepicklistforMyAccount" action="{!autorun}" >
+ <apex:form >
+
+        <apex:pageblock >
+
+            <apex:pageBlockSection id="InfoId" columns="1" >
+
+                <apex:outputLabel value="Trainers List For Admin course" />
+
+                <apex:selectList size="1" value="{!SelectedValue}">
+
+                    <apex:selectOptions value="{!statusOptions}"/>
+
+                    <apex:actionSupport event="onchange" action="{!checkValue}" />
+
+                </apex:selectList>
+
+            </apex:pageBlockSection>
+
+        </apex:pageblock>
+
+    </apex:form>
+
+   
+</apex:page>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>DataForMaster</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>DataForMasters</value>
+    </caseValues>
+    <fields>
+        <label><!-- Amount1 --></label>
+        <name>Amount1__c</name>
+    </fields>
+    <fields>
+        <label><!-- Amount2 --></label>
+        <name>Amount2__c</name>
+    </fields>
+    <fields>
+        <label><!-- ApplyFormula --></label>
+        <name>Subtraction__c</name>
+        <relationshipLabel><!-- DataForMasters --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- TotalAmount --></label>
+        <name>TotalAmount__c</name>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

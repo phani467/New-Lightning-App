@@ -1,0 +1,14 @@
+<table border="0" cellpadding="5" width="600" cellspacing="5" height="400" >
+<tr valign="top" height="50" >
+<td tEditID="c1r1" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r1" locked="1" >
+<![CDATA[]]></td>
+</tr>
+<tr valign="top" height="300" >
+<td tEditID="c1r2" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r2" locked="0" >
+<![CDATA[<div><font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="font-size: 12pt;"><br></span></font></div><font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="font-size: 12pt;">&lt;html&gt;</span></font><div><font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="font-size: 12pt;">&lt;h1&gt; Hello Welcome to&nbsp;{!Account.Name}&lt;\h1&gt;</span></font><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;">&lt;h2&gt;Thank you for choosing the sales force as your partner&lt;\h2&gt;</div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="font-size: 12pt;">&lt;body&gt;</span></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span class="Apple-tab-span" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt; white-space: pre;">	</span><font face="arial"><span style="font-size: 12pt;">Here is your login&nbsp;</span>details<span style="font-size: 12pt;">:</span></font></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><font face="arial"><span style="font-size: 12pt;"><span class="Apple-tab-span" style="white-space:pre">	</span>Name:</span>{!Account.Name}</font></div><div><font face="arial" style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span class="Apple-tab-span" style="white-space:pre">	</span>Account Number:</font><font face="arial">{!Account.AccountNumber}</font></div><div><font face="arial"><span class="Apple-tab-span" style="white-space:pre">	</span>Annual Revenue:{!Account.AnnualRevenue}</font></div><div><font face="arial">&lt;\body&gt;</font></div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span class="Apple-tab-span" style="white-space:pre">	</span>&lt;\html&gt;</div><div style="color: rgb(0, 0, 0); font-family: arial; font-size: 12pt;"><span style="font-size: 12pt;">&nbsp;</span></div></div>]]></td>
+</tr>
+<tr valign="top" height="50" >
+<td tEditID="c1r3" style=" background-color:#FFFFFF; bEditID:r3st1; color:#000000; bLabel:main; font-size:12pt; font-family:arial;" aEditID="c1r3" locked="1" >
+<![CDATA[]]></td>
+</tr>
+</table>

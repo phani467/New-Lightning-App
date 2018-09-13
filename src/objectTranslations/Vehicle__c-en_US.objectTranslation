@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Vehicle</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Vehicles</value>
+    </caseValues>
+    <fields>
+        <label><!-- Air Conditioner --></label>
+        <name>Air_Conditioner__c</name>
+    </fields>
+    <fields>
+        <label><!-- Awning --></label>
+        <name>Awning__c</name>
+        <picklistValues>
+            <masterLabel>Electric</masterLabel>
+            <translation><!-- Electric --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Manual</masterLabel>
+            <translation><!-- Manual --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>None</masterLabel>
+            <translation><!-- None --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Backup Camera/Monitor --></label>
+        <name>Backup_Camera_Monitor__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bathroom Hookup --></label>
+        <name>Bathroom_Hookup__c</name>
+        <picklistValues>
+            <masterLabel>No Shower</masterLabel>
+            <translation><!-- No Shower --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tub/Shower Combo</masterLabel>
+            <translation><!-- Tub/Shower Combo --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Walk-In Shower</masterLabel>
+            <translation><!-- Walk-In Shower --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Bathrooms --></label>
+        <name>Bathrooms__c</name>
+    </fields>
+    <fields>
+        <label><!-- Bedrooms --></label>
+        <name>Bedrooms__c</name>
+    </fields>
+    <fields>
+        <label><!-- Fancy Sound System --></label>
+        <name>Fancy_Sound_System__c</name>
+    </fields>
+    <fields>
+        <label><!-- Generator --></label>
+        <name>Generator__c</name>
+    </fields>
+    <fields>
+        <label><!-- Levelers --></label>
+        <name>Levelers__c</name>
+        <picklistValues>
+            <masterLabel>Automatic</masterLabel>
+            <translation><!-- Automatic --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Manual</masterLabel>
+            <translation><!-- Manual --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- License Plate --></label>
+        <name>License_Plate__c</name>
+    </fields>
+    <fields>
+        <label><!-- Make --></label>
+        <name>Make__c</name>
+    </fields>
+    <fields>
+        <label><!-- Model --></label>
+        <name>Model__c</name>
+    </fields>
+    <fields>
+        <label><!-- Power --></label>
+        <name>Power__c</name>
+        <picklistValues>
+            <masterLabel>Diesel-Powered Class B</masterLabel>
+            <translation><!-- Diesel-Powered Class B --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Front-Engine Diesel</masterLabel>
+            <translation><!-- Front-Engine Diesel --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Regular Diesel</masterLabel>
+            <translation><!-- Regular Diesel --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Propane Tank --></label>
+        <name>Propane_Tank__c</name>
+    </fields>
+    <fields>
+        <label><!-- Recommended Passengers --></label>
+        <name>Recommended_Passengers__c</name>
+    </fields>
+    <fields>
+        <label><!-- Roof Mounted Antenna --></label>
+        <name>Roof_Mounted_Antenna__c</name>
+    </fields>
+    <fields>
+        <label><!-- Shower --></label>
+        <name>Shower__c</name>
+    </fields>
+    <fields>
+        <label><!-- Tub --></label>
+        <name>Tub__c</name>
+    </fields>
+    <fields>
+        <label><!-- Type --></label>
+        <name>Type__c</name>
+        <picklistValues>
+            <masterLabel>Economy</masterLabel>
+            <translation><!-- Economy --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Luxury</masterLabel>
+            <translation><!-- Luxury --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Mid-Range</masterLabel>
+            <translation><!-- Mid-Range --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- VIN Number --></label>
+        <name>VIN_Number__c</name>
+    </fields>
+    <layouts>
+        <layout>Vehicle Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+        <sections>
+            <label><!-- Features --></label>
+            <section>Features</section>
+        </sections>
+        <sections>
+            <label><!-- Vehicle Specs --></label>
+            <section>Vehicle Specs</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

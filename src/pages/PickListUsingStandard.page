@@ -1,0 +1,34 @@
+<apex:page standardController="Admin__c" extensions="GetSerciceOfInterestOptionList" sidebar="false">
+ <apex:form >
+ 
+ <h1>Registration form</h1>
+ <div>
+ <apex:pageBlock >
+ <apex:pageBlockButtons style="blue-text">
+  <apex:commandButton action="{!save}" value="Save" style="color:blue"/>
+ <apex:commandButton title="Save"  action="{!cancel}" value="Cancel" style="color:blue"/>
+ </apex:pageBlockButtons>
+ <apex:pageBlockSection >
+<apex:inputField value="{!Admin__c.Name}" required="true" styleClass="blue-text"/>
+<apex:inputField value="{!Admin__c.RegistrationNumber_admin__c}" required="true"/>
+<apex:inputField value="{!Admin__c.CourseFee_admin__c}"/>
+<apex:selectList value="{!Admin__c.Courses_admin__c}" size="1">
+  <apex:actionSupport event="onchange" rerender="list"/>
+  <apex:selectOptions value="{!SerciceOfInterestOptionList}"/>
+</apex:selectList>
+<apex:selectList value="{!Admin__c.CourseTraier__c}" size="1">
+  <apex:actionSupport event="onchange" rerender="list"/>
+  <apex:selectOptions value="{!TrainerList}"/>
+</apex:selectList>
+<apex:inputField value="{!Admin__c.CourseDescription_admin__c}"/>
+<apex:inputField value="{!Admin__c.Traing_admin__c}"/>
+  </apex:pageBlockSection>
+  </apex:pageBlock>
+  </div>  
+</apex:form> 
+<style type="text/css">
+h1{color:blue;}
+</style>
+
+
+</apex:page>

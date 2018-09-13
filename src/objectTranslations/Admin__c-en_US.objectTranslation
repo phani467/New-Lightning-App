@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Admin</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Admin</value>
+    </caseValues>
+    <fields>
+        <label><!-- CourseDescription --></label>
+        <name>CourseDescription_admin__c</name>
+    </fields>
+    <fields>
+        <label><!-- CourseFee_admin --></label>
+        <name>CourseFee_admin__c</name>
+    </fields>
+    <fields>
+        <label><!-- CourseTraier --></label>
+        <name>CourseTraier__c</name>
+        <picklistValues>
+            <masterLabel>Janelle</masterLabel>
+            <translation><!-- Janelle --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Joe</masterLabel>
+            <translation><!-- Joe --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Rayan</masterLabel>
+            <translation><!-- Rayan --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Tim</masterLabel>
+            <translation><!-- Tim --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>jhon</masterLabel>
+            <translation><!-- jhon --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Courses_admin --></label>
+        <name>Courses_admin__c</name>
+        <picklistValues>
+            <masterLabel>Admin 101</masterLabel>
+            <translation><!-- Admin 101 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Admin 102</masterLabel>
+            <translation><!-- Admin 102 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Admin 103</masterLabel>
+            <translation><!-- Admin 103 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Admin 104</masterLabel>
+            <translation><!-- Admin 104 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Admin 105</masterLabel>
+            <translation><!-- Admin 105 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- RegistrationNumber_admin --></label>
+        <name>RegistrationNumber_admin__c</name>
+    </fields>
+    <fields>
+        <label><!-- Trainig --></label>
+        <name>Traing_admin__c</name>
+        <relationshipLabel><!-- Admin --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

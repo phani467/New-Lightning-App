@@ -1,0 +1,593 @@
+<apex:page controller="bofc.BulkExportandImportFields" sidebar="false" showHeader="false" cache="false">
+ 
+ <style>
+     .home_icon
+        {
+          float:right;margin-top: 23px;font-size: 15px;padding-right: 50px;
+        }
+      .overlay_div1
+        {
+        // display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        
+        }
+    
+    footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+         
+        }
+    
+    .footer-right {
+        float: right;
+    }
+    
+     .footer-left {
+        width: 40%;
+        float: left;
+    }
+    
+    .anti {
+    padding: 0 15px;
+}
+    .rms
+    {
+       position: fixed;
+       top: 30%;
+       left: 20%;
+       border: 3px solid black;
+       color: black;
+       background: white;
+       opacity: 5;
+       padding:10px;
+       z-index: 1111;
+    }
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: {!if(TypeofVersion=='FreeVersion',8.5,5.5)}%;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            .basic-info-right,.basic-info-left{width:50%; float:left}
+            .basic-info-right{width:100%}
+            
+            .bPageBlock{float:left; width:100%;}
+            .table-holder{float: left;
+    
+    overflow-y: auto;
+    overflow-x: auto;
+    width: 100%;
+    border: 1px solid #CCC;
+    margin-top:10px;}
+            
+            .add-new-connect-but{clear: both;
+    width: 100%;
+    margin: 10px 0px;
+    float: left;}
+        
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Export Fields</h2>
+            <div class="blank"></div>
+        </div>
+        <div class="home_icon" style="padding-right: 10px;"><a href="/home/home.jsp" style="color:blue;font-size:13px;">Salesforce Home</a></div>
+        <div class="home_icon" style="padding-right: 10px;"><a href="/apex/BOFCHome" style="color:blue;font-size:13px;">BOFC Home</a></div>
+        
+   </div>
+     
+    <apex:form id="formID" >
+        
+        <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                              <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/SpinImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+            <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+            <apex:actionStatus onstop="stopSpinner();" id="search_Status_main" startStyle="color:red;"/>
+    
+    
+        <script type="text/javascript">
+              function updatePcrnt(e, targtVal){
+               var rate=document.getElementById(e).value.trim();
+               var newString = rate.replace(/[^A-Z0-9]/ig, "_");
+               var newString =newString.replace(/_+/g, '_');
+                if(!isNaN(newString[0]))
+                {
+                 newString = 'X'+newString;
+                }
+                
+                if(newString[newString.length-1]=="_")
+                {
+                 newString= newString.substring(0,newString.length-1);
+                }
+                // alert(newString);
+                
+                document.getElementById(targtVal).value= newString;
+              }
+            </script>
+            
+     <apex:pageBlock id="BasicPGID" >
+        <apex:outputPanel rendered="{!AllowPageAccess || AppExpired}">
+        <div style="    background: red;margin-bottom:18px; width: 1215px; color: white;   text-align: center; font-size: 20px;">
+                 {!ExpirationMsg}
+        </div>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!LimitCompleted}">
+                <div style="color: red;font-weight:bold;">
+                    <span style="color:red;font-size: 13px;text-align: right; margin: 10px;">*You have consumed allowed limit of Cloning 3 Objects. Please upgrade to Full version for unlimited access.</span>
+                </div><br/>
+        </apex:outputPanel>
+        <apex:outputPanel rendered="{!AllowPageAccess}"> 
+            <div style="font-size: 16px;background: grey; width: auto;color: white;font-weight:bold;">Fetch Fields from External Org:</div>
+            <div>
+               <div style="width:45%;display:inline-block;margin-top:{!if(TypeofVersion=='FreeVersion',50,20)}px;">
+                  <table style="height:218px;"> 
+                    <tr>
+                        <td colspan="2" style="background: cyan;"><hr/>
+                         <u><b><div style="color: red;font-weight:bold;">Steps to Export &amp; Import Fields in few clicks:</div></b></u>
+                            <div style="color: black;">
+                                1. Enter Object API name (Target Org) from which you need to export Fields.
+                            </div>
+                            <div style="color: black;">
+                                2. Select the Target Org from which fields needs to be exported (Select Only one org).
+                            </div>
+                            <div style="color: black;">
+                                3. Click "Download All Custom Fields (as xls)" button and it will export all Custom Fields from Target Org. <hr/>
+                            </div>   
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enter Object API Name</strong></td>
+                        <td><apex:outputPanel >
+                            <apex:inputText value="{!TargetOrgObjectAPIName}"/>
+                        </apex:outputPanel></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <apex:commandButton value="Download All Custom Fields (as xls)" action="{!MatcherButton}" reRender="formID,BasicPGID"  oncomplete="window.open('/apex/BOFCBulkExportImportDownload?ob={!JsoNBody}&trg={!TargetOrgObjectAPIName}','');" styleClass="btn-default" style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;"/>
+                            <!-- <apex:commandButton disabled="{!!AllowPageAccess}" value="Download All Custom Fields (as xls)" onclick="window.open('/apex/BOFCBulkFieldUpdateExcel?ob={!objectName}','');" reRender="t1,BasicPGID" status="search_Status_main1"/> -->
+                        </td>
+                    </tr>
+                 </table>
+                </div>
+                <div style="float:right;width:55%;margin-top: {!if(TypeofVersion=='FreeVersion',40,10)}px;">   
+                    <div class="basic-info-right">  
+                       <div class="table-holder">
+                           <table width="100%" class="table table-hover table-condensed table-bordered">
+                           <caption style="font-weight:bold;font-size:16px;padding:5px 0px;background:#006400;color:white;">List of Connections</caption>
+                                <tr class="multi-org-head" style="background:#808080;color:white;"> <th></th> <th>Org Name </th> <th>Username </th> <th>Password </th> <th>Token </th><th>IsSandbox</th><th>Instance Name</th> </tr> 
+                                <apex:repeat value="{!lWrapperConnect}" var="a">
+                                 <tr>
+                                     <td style="text-align:center"> <apex:inputCheckbox value="{!a.selected}"/>                 </td>  
+                                     <td> <apex:outputText value="{!a.name}"/>                        </td>
+                                     <td> <apex:outputText value="{!a.username}"/>                    </td>
+                                     <td> ***                  </td>
+                                     <td> <apex:outputText value="{!a.Token}"/>                    </td>
+                                     <td style="text-align:center"> <apex:inputCheckbox value="{!a.isSandbox}" disabled="true"/> </td>
+                                     <td> <apex:outputText value="{!a.Instancename}"/>                        </td>
+                                 </tr>
+                                 </apex:repeat>
+                           </table>   
+                         </div>  
+                         <div class="add-new-connect-but">
+                             <apex:commandButton value="Add New Connection" action="{!addNewConnection}" reRender="formID"/> 
+                             <apex:commandButton value="Delete Connection" action="{!deleteConnection}" reRender="formID"/> 
+                         </div>
+                    </div>
+                  </div>
+             </div>  
+             
+             <apex:outputPanel id="conBox">
+         <apex:outputPanel rendered="{!ShowNewConnectionBox}">
+             
+              <div class='overlay_div1' > </div>
+                <div class='rms'>
+                    <h1 style="color:#000;text-align:center;text-decoration:underline;display: block;margin-bottom: 6px;">New Connection</h1>
+                    <apex:pageMessages ></apex:pageMessages>
+                    <apex:pageBlock >
+                    <apex:pageBlockSection title="Add Details" columns="2">
+                      <apex:pageBlockSectionItem >Org Name<apex:inputField value="{!loginDetail.name}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Username <apex:inputField value="{!loginDetail.bofc__Username__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Is Sandbox<apex:inputCheckbox value="{!loginDetail.bofc__IsSandbox__c}"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Password<apex:inputField value="{!loginDetail.bofc__pwd__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >
+                          Instance/Domain Name
+                          <apex:outputPanel >
+                          <apex:inputField value="{!loginDetail.bofc__Instance_Name__c}" style="border-left:3px solid red;"/>
+                          <br/> for eg: ap2, cs24 etc. You can find it in page URL
+                          </apex:outputPanel>
+                      </apex:pageBlockSectionItem>
+                      <apex:pageBlockSectionItem >Security Token<apex:inputField value="{!loginDetail.bofc__Token__c}" style="border-left:3px solid red;"/></apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    
+                    <br/>   
+                    <apex:commandButton value="Verify & Save" action="{!VerifySave}" reRender="formID,pg,conBox"/> 
+                    <apex:commandButton value="Close" action="{!CancelConnection}" reRender="pg,conBox"/> <br/><br/>
+                    </apex:pageBlock>
+                    * Note: Once connection is successfully created, you need to add Remote Site Settings(RMS). <br/><br/>
+                    Step 1: Click "Create New" <span style="color:red;"> Goto Setup > Administer > Security Controls > Remote Site Settings </span> and <a href="/0rp" target="_blank">create NEW </a>
+                    <br/> Step 2: Click "New Remote Site".
+                    <br/> Step 3: Give any name in Remote Site name and add remote site url:   https://{Instance Name}.salesforce.com.  <br/>(Note: Replace "{Instance Name}" with the instance/domain name you added while creating connection.
+               </div>
+        </apex:outputPanel> 
+        </apex:outputPanel>
+        
+        
+        <apex:outputPanel >
+            
+            <apex:pageMessages ></apex:pageMessages>
+        </apex:outputPanel>
+        <apex:pageBlockSection columns="1"> <!-- rendered="{!DisplayCloneSection}"> -->
+        <apex:outputPanel rendered="{!AllowPageAccess}"> 
+            <div style="font-size: 16px;background: grey; width: auto;color: white;font-weight:bold;"></div>
+            <div>
+               <div style="width:45%;display:inline-block;margin-top:{!if(TypeofVersion=='FreeVersion',50,20)}px;">
+                  <table style=""> 
+                    <tr>
+                        <td colspan="2" style="background: cyan;"><hr/>
+                            <div style="color: black;">
+                                4. Once Custom Field xls is downloaded. Open BOFC Field Creation page.
+                            </div>
+                            <div style="color: black;">
+                                5. Drag and Drop xls file downloaded in Step 3 to create newly fields.
+                            </div>
+                               
+                        </td>
+                    </tr>
+                    
+                 </table>
+                </div>
+                <div style="float:right;width:55%;margin-top: {!if(TypeofVersion=='FreeVersion',40,10)}px;">   
+                    <div class="basic-info-right" style="    padding: 26px;    font-size: 26px;">  
+                           <apex:commandLink value="Click here to BOFC Field Creation Page" onclick="window.open('/apex/BulkObjectFieldCreator','_blank');" />
+                    </div>
+                </div>    
+             </div>
+        </apex:outputPanel>
+        </apex:pageBlockSection>
+        
+        
+        <!-- <apex:pageBlockSection columns="1" rendered="{!DisplayCloneSection}">
+           <hr/> 
+           
+           <div style="font-size: 16px;background: grey; width: auto;color: white;font-weight:bold;">Enter Details for Target Object:</div>
+           <apex:pageblockSectionItem >
+                Target Object
+                <apex:outputPanel >
+                    <apex:selectList value="{!ObjectName}" multiselect="false" size="1" style="border-left:3px solid red">
+                        <apex:selectOptions value="{!StandardCustomIgnoreSytemObjects}"/>
+                    </apex:selectList>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            
+            <apex:pageblockSectionItem >
+                Select which actions to perform
+                <apex:outputPanel >
+                    <apex:selectList value="{!selectedComponents}" multiselect="true" size="5" style="border-left:3px solid red">
+                        <apex:selectOptions value="{!selectedComponentsList}"/>
+                    </apex:selectList>
+                </apex:outputPanel>
+            </apex:pageblockSectionItem>
+            <apex:commandButton value="Clone Source Object to New Object" action="{!cloneOperation}" disabled="{!LimitCompleted==true || AllowPageAccess==false}"  reRender="t1,BasicPGID,typ" status="search_Status_main1"  style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;"/>
+        </apex:pageblockSection>
+        </apex:outputPanel>    
+        <hr/>
+           
+        <apex:pageBlockSection id="typ" columns="1" title="Clone Status" collapsible="false"  rendered="{!DisplayCloneSection}">
+            <apex:outputPanel rendered="{!lWrapperTable!=null}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 16px;">
+                             Kindly Note: Below are the list of activities which needs to be performed for completing your Clone Object Action. Kindly click on Create infront of each row one by one and complete your activities.
+                    </div>
+            </apex:outputPanel>
+            <apex:pageBlockTable value="{!lWrapperTable}" var="a" style="width:100%;">
+                <apex:column style="width:700px;">
+                    <apex:facet name="header">Type</apex:facet> {!a.type}
+                </apex:column>
+                <apex:column style="width:300px;">
+                    <apex:facet name="header">Status</apex:facet> <div style="background: green;color:white;font-weight:bold;width: 100%;"> {!a.StatusDesc} </div>
+                </apex:column>
+                <apex:column style="width:100px;">
+                    <apex:facet name="header">Action</apex:facet> 
+                    <apex:commandLink styleClass="button" action="{!cloneOperationFunc}" status="search_Status_main1" reRender="typ"  value="{!if(a.status=='Done', 'Done','Create')}" rendered="{!a.status!='Done'}">
+                        <apex:param value="{!a.type}" name="opSel" assignTo="{!opSel}"/>
+                    </apex:commandLink>
+                </apex:column>
+                
+            </apex:pageBlockTable>
+        
+        
+        </apex:pageBlockSection>   -->
+        
+           
+         <br/>
+     
+     <script>
+        function loading_Main(val) {
+                 if (val) {
+                   document.getElementById('contentLoadingMain').style.display = 'block';
+                   
+                 }
+                 else {
+                   document.getElementById('contentLoadingMain').style.display = 'none';
+                  
+                 }
+               }
+     </script> 
+     
+     
+            
+     <apex:outputPanel id="t1">
+        
+            <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                              
+                              <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+            <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+            <apex:actionStatus onstop="stopSpinner();" id="search_Status_main" startStyle="color:red;"/>
+            
+           <div class="table_container">
+            <script>
+            $(document).ready(function() {
+                $('.fixme').fixheadertable({
+                     height  : 200
+                });
+            });
+            </script>  
+            
+            
+            
+            
+            </div>
+            <br/>
+            
+            <div style="color: red;font-weight:bold;">
+            *Note: <br/>1. You cannot Create "Rollup Summary" fields in this feature
+            </div>
+            
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}"> 
+            <div style="color: red;font-weight:bold;">
+                2. In free version, user can Clone only 3 objects. After that access will be disabled
+            </div>
+            </apex:outputPanel>
+        
+            
+    </apex:outputPanel>
+    </apex:outputPanel>
+   </apex:pageBlock>
+  </apex:form>
+  
+
+<div class="overlay_div"> </div>
+    <div id="spinnerDiv"></div>
+
+<script type="text/javascript">
+<!--Spinning Image-->
+
+    var spinner;
+    function startSpinner() {
+        var opts = {
+          lines: 13, // The number of lines to draw
+          length: 20, // The length of each line
+          width: 10, // The line thickness
+          radius: 30, // The radius of the inner circle
+          corners: 1, // Corner roundness (0..1)
+          rotate: 0, // The rotation offset
+          direction: 1, // 1: clockwise, -1: counterclockwise
+          color: '#000', // #rgb or #rrggbb or array of colors
+          speed: 1, // Rounds per second
+          trail: 60, // Afterglow percentage
+          shadow: false, // Whether to render a shadow
+          hwaccel: false, // Whether to use hardware acceleration
+          className: 'spinner', // The CSS class to assign to the spinner
+          zIndex: 2e9, // The z-index (defaults to 2000000000)
+          top: '0%', // Top position relative to parent
+          left: '0%' // Left position relative to parent
+        };
+        var target = document.getElementById('spinnerDiv');
+        spinner = new Spinner(opts).spin(target);   
+
+    $(".overlay_div").show();
+    
+    }
+
+    function stopSpinner() {
+       $(".overlay_div").hide();
+        spinner.stop();
+    }
+
+
+        function selectAllCheckboxes(obj,receivedInputID){
+            var inputCheckBox = document.getElementsByTagName("input");                  
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+        }
+
+<!--Spinning Image-->
+</script>
+
+    <script>
+        $(document).ready(function(){
+            $("#showHide").click(function(){
+                $("#drop").toggle();
+            });
+           
+        });
+    </script>
+    
+    <footer>
+                    <div class="row anti">
+                        <div class="footer-left">
+                             
+                        </div>
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+    </footer> 
+  
+</apex:page>

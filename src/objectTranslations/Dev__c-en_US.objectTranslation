@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Dev</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Dev</value>
+    </caseValues>
+    <fields>
+        <label><!-- CourseDescription --></label>
+        <name>CourseDescription_Dev__c</name>
+    </fields>
+    <fields>
+        <label><!-- CourseFee --></label>
+        <name>CourseFee_Dev__c</name>
+    </fields>
+    <fields>
+        <label><!-- Courses --></label>
+        <name>Courses__c</name>
+        <picklistValues>
+            <masterLabel>Dev 101</masterLabel>
+            <translation><!-- Dev 101 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dev 103</masterLabel>
+            <translation><!-- Dev 103 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dev 104</masterLabel>
+            <translation><!-- Dev 104 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Dev 105</masterLabel>
+            <translation><!-- Dev 105 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>dev 102</masterLabel>
+            <translation><!-- dev 102 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- RegistrationNumber --></label>
+        <name>RegistrationNumber_Dev__c</name>
+    </fields>
+    <fields>
+        <label><!-- Trainig --></label>
+        <name>Traing_Dev__c</name>
+        <relationshipLabel><!-- Dev --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- Trainers --></label>
+        <name>Triners_Dev__c</name>
+        <picklistValues>
+            <masterLabel>janelle1</masterLabel>
+            <translation><!-- janelle1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>jhon1</masterLabel>
+            <translation><!-- jhon1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>joe1</masterLabel>
+            <translation><!-- joe1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>kumar1</masterLabel>
+            <translation><!-- kumar1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>ravi1</masterLabel>
+            <translation><!-- ravi1 --></translation>
+        </picklistValues>
+    </fields>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

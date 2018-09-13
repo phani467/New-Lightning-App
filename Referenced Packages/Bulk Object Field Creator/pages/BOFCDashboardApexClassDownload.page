@@ -1,0 +1,50 @@
+<apex:page showHeader="false" sidebar="false" applyBodyTag="false" applyHtmlTag="false" controller="bofc.BOFCDashboardApexClassDownload" renderAs="pdf">
+
+<table style='border-collapse:collapse;width:100%;margin-bottom:15px;' border="1">
+    <tr>
+        <th>
+            Class Name
+        </th>
+        <td>
+            {!apexClass.Name}
+        </td>
+        <th>
+            Namespace Prefix
+        </th>
+        <td>
+            {!apexClass.NamespacePrefix}
+        </td>
+    </tr>
+    <tr>
+        <th>
+            Status
+        </th>
+        <td>
+            {!apexClass.status}
+        </td>
+        <th>
+            Api Version
+        </th>
+        <td>
+            {!apexClass.ApiVersion}
+        </td>
+    </tr>
+    <tr>
+        <th colspan="2">
+            Is Valid
+        </th>
+        <td colspan="2">
+            {!apexClass.isValid}
+        </td>
+        
+    </tr>
+</table>
+<hr/>
+<apex:outputpanel rendered="{!classBody}">
+<span style='color:#f00'>This Apex Class is managed. No Code is Provided.</span>
+</apex:outputpanel>
+<apex:outputpanel rendered="{!classBody==false}">
+<pre>    {!apexClass.Body}</pre>
+</apex:outputpanel>
+
+</apex:page>

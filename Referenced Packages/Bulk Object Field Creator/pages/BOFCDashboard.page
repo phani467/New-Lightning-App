@@ -1,0 +1,422 @@
+<apex:page showHeader="false" showChat="false" sidebar="false" applyHtmlTag="false"  standardStylesheets="false" controller="bofc.BOFCDashboard">
+    <link rel="stylesheet" href="{!URLFOR($Resource.bootstrapapp,'/css/bootstrap.min.css')}"/>
+    <script src="{!URLFOR($Resource.BulkFieldCreator,'/js/jquery-2.2.4.min.js')}"></script>
+    <script src="{!URLFOR($Resource.BulkFieldCreator,'/js/bootstrap.min.js')}"></script>
+    <script type="text/javascript" src="{!URLFOR($Resource.BulkFieldCreator,'/js/Chart.min.js')}"></script>
+    <style>
+        body{
+            padding-top:54px;
+            background-color:#eee;
+        }
+        .navbar-fixed{
+            z-index:1;top:0;
+            
+            position:fixed;
+        }
+        input,button{
+            border-radius:0px !important;
+        }
+        .no-margin{
+            margin-left:0px !important;
+            margin-right:0px !important;
+        }
+
+        #wrapper {
+            padding-left: 70px;
+            transition: all .4s ease 0s;
+            height: 100%
+            background:#ddd;
+        }
+
+        #sidebar-wrapper {
+            margin-left: -220px;
+            left: 70px;
+            width: 220px;
+            background: #2c3e50;
+            position: fixed;
+            height: 100%;
+            z-index: 10000;
+            transition: all .4s ease 0s;
+        }
+
+        .sidebar-nav {
+            display: block;
+            float: left;
+            width: 220px;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        #page-content-wrapper {
+            padding-left: 0;
+            margin-left: 0;
+            width: 100%;
+            height: auto;
+            padding-top:15px;
+        }
+        #wrapper.active {
+            padding-left: 220px;
+        }
+        #wrapper.active #sidebar-wrapper,#wrapper.active #copyright-footer{
+            left: 220px;
+        }
+        img[alt='footer-logo']{
+            transition: content 1s ease-out;
+        }
+        #wrapper.active img[alt='footer-logo']{
+            content:url('{!URLFOR($Resource.bootstrapapp,'/logo.png')}');
+            width: 202px;
+        }
+        #wrapper.active img[alt='footer-logo']+div{
+            display:block;
+        }
+        #wrapper.small-logo img[alt='footer-logo']{
+            content:url('{!URLFOR($Resource.bootstrapapp,'/cb.png')}');
+            width: 50px;
+            margin: 9px;
+        }
+        #wrapper.small-logo footer{
+            left:0px;
+        }
+        #wrapper.small-logo img[alt='footer-logo']+div{
+            display:none;
+        }
+        div[id*='page-content-wrapper'] {
+            width: 100%;
+            padding-top:15px;
+        }
+        .se-pre-con {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background: url({!$Resource.BulkFieldCreator}/loading/Preloader_3.gif) center no-repeat #fff;
+        }
+        #sidebar_menu li a, .sidebar-nav li a {
+            color: #999;
+            display: block;
+            float: left;
+            text-decoration: none;
+            width: 100%;
+            background: #2c3e50;
+            border-top: 1px solid #2c3e50;
+            border-bottom: 1px solid #2c3e50;
+            -webkit-transition: background .5s;
+            -moz-transition: background .5s;
+            -o-transition: background .5s;
+            -ms-transition: background .5s;
+            transition: background .5s;
+        }
+        .sidebar_name {
+            padding-top: 25px;
+            color: #fff;
+            opacity: .7;
+        }
+
+        .sidebar-nav li {
+            line-height: 40px;
+            text-indent: 20px;
+        }
+
+        .sidebar-nav li a {
+            color: #999999;
+            display: block;
+            text-decoration: none;
+        }
+
+        .sidebar-nav li a:hover {
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+            text-decoration: none;
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+            height: 55px;
+            font-size: 18px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+
+        #main_icon
+        {
+            float:right;
+            padding-right: 25px;
+            padding-top:12px;
+        }
+        .sub_icon
+        {
+            float:right;
+            padding-right: 28px;
+            padding-top:10px;
+        }
+
+
+        @media (max-width:767px) {
+            #wrapper {
+                padding-left: 70px;
+                transition: all .4s ease 0s;
+            }
+            #sidebar-wrapper {
+                left: 70px;
+            }
+            #wrapper.active {
+                padding-left: 150px;
+            }
+            #wrapper.active #sidebar-wrapper {
+                left: 150px;
+                width: 150px;
+                transition: all .4s ease 0s;
+            }
+        }
+        .icon-bar {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background-color: #cccccc;
+            border-radius: 1px;
+            margin-bottom:5px;
+        }
+
+        a:hover .sub_icon {
+            transition: all 0.5s;
+            transform: rotateZ(45deg);
+            padding-top: 14px;
+            padding-right: 23px;
+        }
+        .huge{
+            font-size:40px;
+        }
+        .chart-legend li span{
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 5px;
+        }
+
+.table-fixed thead {
+  width: 98.7%;
+}
+.table-fixed tbody {
+  height: 300px;
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
+}
+table.table.table-fixed.table-stripped tbody tr:first-child td {
+    border-top: 0px;
+}
+table.table-fixed thead tr th{
+    border-bottom: 1px solid #ddd;
+}
+.panel-danger {
+    border-color: #a94442;
+}
+.panel-danger>.panel-heading {
+    color: #ffffff;
+    background-color: #a94442;
+    border-color: #ebccd1;
+}
+
+.panel-warning {
+    border-color: #8a6d3b;
+}
+.panel-warning>.panel-heading {
+    color: #ffffff;
+    background-color: #8a6d3b;
+    border-color: #8a6d3b;
+}
+.panel-info {
+    border-color: #31708f;
+}
+.panel-info > .panel-heading {
+    color: #FFFFFF;
+    background-color: #31708f;
+    border-color: #31708f;
+}
+    </style>
+<apex:form >
+
+    <apex:actionFunction name="changeComponent" action="{!toggleComponent}" rerender="page-content-wrapper" status="status" oncomplete="onCompleteHandler()">
+        <apex:param id="secName" name="secName" value="" />
+    </apex:actionFunction>
+        <div class="se-pre-con"></div>
+    <div class="container-fluid navbar-fixed" style="background:transparent;border-bottom:1px solid #ddd;padding:10px;">
+        <div class="row no-margin">    
+            <div class="col-xs-2">
+                <!-- <apex:image id="theImage" value="{!$Resource.bofclogo}" width="100" height="40" style="background:transparent;"/> -->
+                <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/bofclogo.png')}" width="100" height="30" style="background:transparent;" />
+
+            </div>
+            <div class="col-xs-10" >
+                            <apex:outputPanel style="float:right;">
+                                       <apex:outputLabel style="margin-right: 150px;text-align:center;padding-right:0px;font-size:16px;background:red;color:white;" rendered="{!TypeofVersion=='FreeVersion'}">Free Version. <u><a href="https://store.tech9logy.com/salesforce/config-bench.html/" target="_blank">Click Here</a></u> to upgrade to Full Version</apex:outputLabel> 
+                                       <apex:commandLink style="padding-right: 15px;" onclick="window.open('/home/home.jsp','_blank');"><u>Salesforce Home</u></apex:commandLink>
+                                       <apex:commandLink style="padding-right: 15px;" onclick="window.open('/apex/BOFCHome','_blank');"><u>BOFC Home</u></apex:commandLink>
+                            </apex:outputPanel>            
+                    </div>
+            <!-- <div class="col-xs-8">
+                <div class="input-group">
+                     <div class="input-group-btn search-panel">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="margin-right:-2px">
+                            <span id="search_concept">Filter by</span> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#contains">Custom Object</a></li>
+                            <li><a href="#its_equal">Apex Class</a></li>
+                            <li><a href="#greather_than">Apex Trigger</a></li>
+                            <li><a href="#less_than">Visualforce Page</a></li>
+                            <li><a href="#">Static Resource</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#all">Anything</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="search_param" value="all" id="search_param"/>         
+                    <input type="text" class="form-control" name="x" placeholder="Search term..."/> 
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" style="height:34px" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span> 
+                </div>
+            </div> -->
+            
+        </div>
+    </div>
+    <div id="wrapper" class="active">
+        <div id="sidebar-wrapper">
+            <ul id="sidebar_menu" class="sidebar-nav">
+                <li class="sidebar-brand">
+                    <a id="menu-toggle" href="#">
+                        Menu
+                        <span id="main_icon">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <ul class="sidebar-nav" id="sidebar">     
+                <li>
+                    <apex:outputLink value="javascript:void(0);">
+                        Dashboard<span class="sub_icon glyphicon glyphicon-link"></span>
+                    </apex:outputLink>
+                </li>
+                <!-- <li>
+                    <apex:outputLink value="javascript:void(0);" onClick="changeComponent('Custom Object');return false;">
+                        Custom Objects<span class="sub_icon glyphicon glyphicon-link"></span>
+                    </apex:outputLink>
+                </li>-->
+                <li>
+                    <apex:outputLink value="/apex/BOFCDashboardApexClasses" target="_blank">
+                                Apex Class<span class="sub_icon glyphicon glyphicon-link"></span>
+                    </apex:outputLink>
+                </li>
+                
+            </ul>
+            <footer style="position:fixed;bottom:0px;">
+            <article class="footer-left" >
+                            
+                            <div><p style="margin-top: -8px;font-size: 13px;color: #cfcfcf;float: right;margin-top:-4px;margin-right: 0px;"></p></div>
+                        </article>
+            </footer>
+        </div>
+        <apex:outputPanel id="page-content-wrapper">
+            <apex:ActionStatus id="status" layout="block" startStyle="background-color:transparent !important;transition:display 1s;" startStyleClass="se-pre-con">
+                <apex:facet name="start">
+                </apex:facet>
+            </apex:ActionStatus>
+            <apex:outputPanel layout="block" rendered="{!dashboard}" style="padding-top:15px;padding-bottom:50px;">
+                <c:BOFCDashboard />
+            </apex:outputPanel>
+            
+            <!-- <apex:outputPanel layout="block" rendered="{!customObject}" style="padding-top:15px;padding-bottom:50px;">
+                <c:BOFCCustomObject />
+            </apex:outputPanel> -->
+            
+            <apex:outputPanel layout="block" rendered="{!apexClass}" style="padding-top:15px;padding-bottom:50px;">
+                <!-- <c:apexClass /> -->
+            </apex:outputPanel>
+            
+            <!-- <apex:outputPanel layout="block" rendered="{!apexTrigger}" style="padding-top:15px;padding-bottom:50px;">
+                <c:apextrigger />
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" rendered="{!apexClass}" style="padding-top:15px;padding-bottom:50px;">
+                <c:apexClass />
+            </apex:outputPanel> -->
+            <div id="footer-container">
+                <footer style="background:#2c3e50;bottom:0px;position:fixed;left: 70px;width: 100%;" id="copyright-footer">
+                    <div class="container">
+                        <div class="row anti-box">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti-box">
+                                
+                            </div>
+                            
+        
+                            <div class="pull-right" style="width:333px;">
+                                <article class="footer-right" style="color:#ffffff">
+                                    <p style="margin-bottom:0px;padding:10px;">© 2017 Mohit Bansal. All rights reserved.</p>
+                                </article>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </apex:outputPanel>
+    </div>
+</apex:form>
+    <script type="text/javascript">
+        $(document).ready(function(e){
+            $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                e.preventDefault();
+                var param = $(this).attr("href").replace("#","");
+                var concept = $(this).text();
+                $('.search-panel span#search_concept').text(concept);
+                $('.input-group #search_param').val(param);
+            });
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("active");
+                $("#wrapper").toggleClass("small-logo");
+            });
+        });
+        $(window).ready(function() {
+            $(".se-pre-con").fadeOut("slow");
+        });
+       function onCompleteHandler(){
+           var str = '<footer style="background:#2c3e50;bottom:0px;position:fixed;left: 70px;width: 100%;" id="copyright-footer">';
+           str += '<div class="container"><div class="row anti-box"><div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti-box">';
+           str +='</div>';
+           str +='<div class="pull-right" style="width:333px;">';
+           str +='<article class="footer-right" style="color:#ffffff">';
+           str +='<p style="margin-bottom:0px;padding:10px;">© Copyright 2016. All Rights Reserved. </p>';
+           str +='</article>';
+           str +='</div>';
+           str +='</div>';
+           str +='</div>';
+           str +='</footer>';
+           $("#copyright-footer").remove();
+           $('#footer-container').html(str);
+       }
+        </script>
+</apex:page>

@@ -1,0 +1,347 @@
+<apex:page sidebar="false" showHeader="false" controller="bofc.BulkFieldsCreatorHomePage" action="{!ShowUrl}" >
+<!--   
+    
+<head>
+<title>index</title>
+
+<apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator,'/HomePageCSS/css/bootstrap.min.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/css/style.css')}"/>
+<apex:stylesheet value="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/css/bootstrap.min.css')}"/>
+
+<apex:includeScript value="{!URLFOR($Resource.BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+
+</head>
+<style>
+    .bPageHeader{font-size:12px;}
+    .bPageHeader #AllTab_Tab{line-height: 22px;}
+    h1{font-size:29px important;}
+    .tabs li { margin-left: 0px;}
+    .tabs li a{font-size: 15px; }
+    .social_part_one ul li {margin: 0px;}
+    .social_part_one > a{border-left:none;padding-left: 0px; line-height: 22px;}
+    .social_part_one > a:hover{ text-decoration: none;color: #999999;}
+    .tab_content .ques{ font-weight:bold}
+    .faq_tab .ques_row:not(:first-child){ margin-top:3%}
+    .ques_row .answer h4{font-weight: bold;font-size: 13px;}
+    .tab_para_container .condition{margin-top: 3%; padding-left: 3%; color: #f00; font-size: 12px;}
+    .add_button a:hover{color:#fff;}
+    .add_button {margin:20px;}
+    .shipping_heading > a:hover{color: #726f6f;}
+    .about_tab_content{margin-top: -1px;}
+    .tabs a:focus, .tabs a:hover, .tabs .current a{ border-bottom: 1px solid #fff !important;}
+    .shipping_heading > a{  text-decoration: none;  font-size: 17px;  text-transform: initial;font-weight: bold;}
+    .shipping_heading > a:hover{text-decoration: none;}
+    .shipping_heading {
+    padding: 3px 0px 0px;
+}
+
+.comingsoon
+    {
+        position: absolute;
+    font-size: 13px;
+        top: 120px;
+    right: 147px;
+    padding: 3px;
+    background-color: #f00;
+    color: #fff;
+    }
+    
+    .comingsoon:after, .comingsoon:before {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+}
+
+    .comingsoon:after
+    {
+       border-color: rgba(136, 183, 213, 0);
+    border-top-color: #f00;
+    border-width: 9px;
+    margin-left: -9px;
+    }
+    
+</style>
+<body>
+        
+        <div class="wrapper">
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For unlimited access <a style="color: white;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+            </apex:outputPanel>
+            <apex:outputPanel rendered="{!TypeofVersion=='FullVersion'}">
+                    <div style="background: red;width: 100%; color: white;   text-align: left; font-size: 20px;">
+                             Welcome {!$User.FirstName},
+                    </div>
+            </apex:outputPanel>
+            <div class="header_top" style="margin-bottom:15px;"></div>
+                
+                <div class="container">
+                    <br/>
+                    <div class="row anti">
+                        <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12 anti">
+                            <div class="aside_box">
+                                <apex:image url="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/img/salesforece_bulk.png')}" width="55%"/>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-7 col-xs-12 anti">
+                            <div class="salesforce_box_design">
+                                <div class="salesforce_content">
+                                    <h1>Salesforce Bulk Object Field Creator</h1>
+                                    <p style="margin-top: 2%;"><strong>App Description</strong> : 
+                                    <span class="content_matter">
+                                    Salesforce Bulk Object Field Creator app easily imports objects fields from <strong>CSV or XLS or XLSX file to Salesforce</strong>. <br/><br/>
+                                    - <strong>Create</strong> multiple fields of different field types <strong>in single go. <br/>
+                                    - Assign Field Level Secuirty</strong> for multiple profiles for multiple fields in single go.<br/>
+                                    - <strong>Delete</strong> multiple fields in single go<br/>
+                                    - <strong>Export</strong> Profile Details,  Object &amp; Fields for an Object
+                                     </span> </p>
+                                </div>
+                                <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                                    <div class="add_button" style="font-size:18px;">
+                                        <a href="/apex/BulkObjectFieldCreator" style="font-size:18px;" target="_blank">Launch Free Version</a>
+                                        <a href="" style="font-size:18px;" target="_blank">Create in Multiple Orgs</a><div class="comingsoon">Now Available</div>
+                                    </div>
+                                    <br/>
+                                    <div class="salesforce_content" style="color:red;font-size: 13px;">
+                                       (Note: User can only create 5 fields in free version. For unlimited access <a style="color: blue;" target="_blank" href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>)
+                                    </div><br/>
+                                </apex:outputPanel> 
+                                
+                                <apex:outputPanel rendered="{!TypeofVersion=='FullVersion' && AppExpired==true}">
+                                    <div class="add_button">
+                                        <a href="" target="_blank">Launch Your App</a>
+                                    </div>
+                                    <p style="font-size: 20px;background:red;">{!ExpirationMsg}</p>
+                                </apex:outputPanel>
+                                
+                                <apex:outputPanel rendered="{!TypeofVersion=='FullVersion' && AppExpired==false}">
+                                    <div class="add_button">
+                                        <a href="/apex/BulkObjectFieldCreator" target="_blank">Launch Your App</a>
+                                        <a href="" style="font-size:18px;" target="_blank">Create in Multiple Orgs</a><div class="comingsoon">Now Available</div> 
+                                    </div>
+                                </apex:outputPanel> 
+
+                                <div class="social_box">
+                                   
+                                    <div class="social_part_one">
+                                        <a href="#">Share This</a>
+                                        <ul>
+                                        <li><a href="https://www.facebook.com"><apex:image url="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/img/facebook_icon.jpg')}" /></a></li>
+                                        <li><a href="https://twitter.com"><apex:image url="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/img/twitter_icon.jpg')}" /></a></li>
+                                        <li><a href="https://www.linkedin.com/"><apex:image url="{!URLFOR($Resource.BulkFieldCreator, '/LinkedIn.png')}" /></a></li>
+                                        <li><a href="mailto:mishu67777@gmail.com" ><apex:image url="{!URLFOR($Resource.BulkFieldCreator, '/HomePageCSS/img/email_icon.jpg')}" /></a></li>
+                                        
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row anti">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti">
+                                    <div class="salesforce_bottom">
+                                        <div class="shipping_heading">
+                                        <a href="#">Supports CSV , XLS and XLSX</a>
+                                        <p>We make it easy for you</p>
+                                        </div>
+                                        <div class="shipping_heading">
+                                        <a href="#">Complete Free Support</a>
+                                        <p>Use with confidence</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti">
+                                    <div class="salesforce_bottom">
+                                        <div class="shipping_heading">
+                                        <a href="#">100% Guarantee</a>
+                                        <p>Your satisfaction matters to us!</p>
+                                        </div>
+                                        <div class="shipping_heading">
+                                        <a href="#">How to use it?</a>
+                                        <p> <a href="https://www.youtube.com/watch?v=mqcYMPZUNzw" target="_blank">Click Here </a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="row anti">
+                        <div class="container">
+                            <div class="navbar">
+                                <ul class="tabs">
+                                    <li><a href="#one">Product description</a></li>
+                                    <li><a href="#two">Installation and Configuration</a></li>
+                                    <li><a href="#three">faq</a></li>
+                                </ul>
+        
+                                <div class="about_tab_content" id="about_tab_content" role="main">
+                                
+                                    <div id="one" class="tab_content">
+                                        <div class="tab_para_container">
+                                        <p> Creating multiple fields for salesforce standard and custom objects had being a painful and 
+                                        tiring job for Salesforce administrators and developers.</p>
+                                        
+                                        <p>Salesforce BOFC app allows users to create bulk fields 
+                                        of different field types in single go.  By default, the application supports all Standard and 
+                                        Custom Objects.</p>
+                                        
+                                        <p>Drag and Drop interface makes it really intuitive. Within 5 minutes of work, 
+                                        you can easily add as many number of fields in Standard or Custom object in your organization.
+                                        </p>
+                                        <p>Assign Field Level Security for Multiple Profiles for multiple fields in single go</p>
+                                        
+                                        <p>Delete multiple Fields in single go</p>
+                                        
+                                        <br/>  Here's why you should use <strong>Salesforce Bulk Object Field Creator</strong>:<br/><br/>
+                                                <ul>
+                                                <li>1. <strong>Supports CSV, XLS and XLSX Format- </strong>Drag Drop a csv or xls or xlsx files which contains list of new fields to be created.</li>
+                                                <li>2. <strong>Error And Validation Support- </strong>Application effectively guides user in field creation and provide error description.</li>
+                                                <li>3. <strong>Manual One step field Creation- </strong>You can manually add a field which needs to be created.</li>
+                                                <li>4. <strong>Support Multi field type- </strong>You can add 16 types of fields at a same time in single go.</li>
+                                                <li>5. <strong>Restricts Identical fields- </strong>App will restrict user to create fields which already exists in system.</li>
+                                                <li>6. Option to choose which fields need to be created from list of fields.</li>
+                                                <li>7. Columns are enabled or disabled depending upon field type selected.</li>
+                                                <li>8. Assign Field Level Security for Multiple Profiles for multiple fields in single go.</li>
+                                                <li>9. Delete multiple Fields in single go</li>
+                                                </ul>
+                                                    
+                                        
+                                        </div>
+                                        
+                                    </div>
+                                    
+<div id="two" class="tab_content">
+     <div class="tab_para_container">
+         <p style="color:#000"> For Installation and Configuration guide, <a style="color:blue;" href="/servlet/servlet.FileDownload?file={!doc.id}" target="_blank"> Click Here </a></p>
+        <p>NOTE: - 
+          <br/> a. Perform only Step 2, in case you are deploying new fields in current/same org in which package is installed, i.e we just need to add Remote Site Settings.
+          <br/> b. Perform Step 1 and 2, in case you are deploying new fields in new target Salesforce Org/Instance.</p>
+     <ul>
+     <li>
+     <h4><u>Step 1: Create Connected App in TARGET Org(where you want to create new fields)</u><br/></h4>
+         <ol type="i">
+             <li>Goto Setup > App Setup > Create  > Apps </li>
+             <li>Scroll down </li>
+             <li>Create new Connected App
+                 <ol>
+                    <li>Provide Connection name: Any Name</li>
+                    <li>Contact Email: Any Email</li>
+                    <li>Contact Phone: Any phone</li>
+                    <li>CallBackUrl:  localhost://3000</li>
+                    <li>Selected OAuth Scopes:       Full Access (full)</li>
+                    <li>Click Save</li>
+                 </ol>
+              </li>   
+             <li>Now, once page is saved, you will be able to see two value on Connected app page
+                 <ol style="font-weight:bold">
+                    <li>Consumer Key = It is equal to Consumer Id on the app page.</li>
+                    <li>Consumer Secret = It is equal to Consumer Secret on the app page.</li>
+                    <li>Domain Name: It can be found in the URL of browser when you open salesforce  page of target Organization.</li>
+                </ol>
+             </li>
+         </ol>
+     </li>
+    
+    
+     <ul>
+     <li style="margin-top:3%"><h4><u>Add a value for Remote site settings</u><br/></h4>
+         <ol type="i">
+             <li>Goto Setup > Administration Setup > Security Controls > Remote Site Settings</li>
+             <li>Add these two settings
+                 <ol>
+                     <li>https://ap2-api.salesforce.com</li>
+                     <li>https://ap2.salesforce.com</li>
+                     <li>https://{!hostname} </li>
+                 </ol>
+             </li>
+         </ol> 
+      </li>     
+  </ul>   
+
+<p class="condition">**Please replace “ap2” in above two values with domain of target organization in which you want to create fields. It can be found  in the URL of browser when you open salesforce  page.
+</p>
+         
+     </div>
+    
+
+</div>
+     
+                                    
+<div id="three" class="tab_content">
+    <div class="tab_para_container">
+       <ul class="faq_tab">
+        
+       <li class="ques_row"><div class="ques">1. Is there any specific CSV format or field format template which can be used to list out new fields to be created?</div>
+           <div class="answer">Sol: Yes. On the top of the application, there is a link “<strong>Download Sample Fields Template</strong>”, which can be used to list out new fields to be 
+            created.</div>
+       </li>
+
+        <li class="ques_row"><div class="ques">2. What does “Current Org” represents?</div>
+           <div class="answer">Sol: It means in which salesforce org you want to create new fields. If checked, it means you are creating fields in org in which 
+           package is installed. If  unchecked, this means you are creating fields to some other org.</div>
+       </li>
+
+
+    <li class="ques_row"><div class="ques">3. What does “Deploy to Sandbox” represents?</div>
+        <div class="answer">Sol: It is enabled when “<strong>Current Org</strong>” is unchecked. It means whether you are deploying new fields to sandbox 
+        or production environment.
+        <i><br/>
+        Deploy to Sandbox - Checked  -- Sandbox Instance
+        <br/>
+        Deploy to Sandbox -Unchecked  -- Production/Developer Instance</i>
+        </div>
+    </li>
+
+
+    <li class="ques_row"><div class="ques">2. Few columns are disabled, while adding some fields type?</div>
+        <div class="answer">Sol: Columns are enabled or disabled depending upon field type. If any column is disabled for a field type, 
+        it means that column is not required for that field type. In case, if you missed to enter any specific information, 
+        then “<strong>Error Description</strong>” column will help you to give necessary information for rectifying the issue.
+        </div>
+    </li>
+
+    
+    
+
+        </ul>
+    </div>
+
+
+</div>
+                                   
+                                </div>
+    
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    
+
+<script type="text/javascript">
+$(document).ready(function() {
+    $(".tab_content").hide(); //Hide all content
+    $("ul.tabs li:first").addClass("current").show();
+    $(".tab_content:first").show();
+    $("ul.tabs li").click(function() {
+        $("ul.tabs li").removeClass("current");
+        $(this).addClass("current");
+        $(".tab_content").hide();
+        var activeTab = $(this).find("a").attr("href");
+        $(activeTab).fadeIn();
+        return false;
+    });
+});
+</script>
+</body>
+-->
+
+      
+  
+</apex:page>

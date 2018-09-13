@@ -1,0 +1,44 @@
+<apex:page controller="bofc.BOFCBulkFieldUpdateExcel" sidebar="false" showHeader="false" cache="false" action="{!FetchExistingFields}" standardStylesheets="false" readOnly="true" contentType="application/vnd.ms-excel#BOFCBulkFieldUpdateExcel.xls">
+            <table>
+            <tr> 
+                <td>Field Label </td>
+                <td>Field Name </td>
+                <td>Type </td>
+                <td>Length</td>
+                <td>Scale </td>
+                <td>Visible Lines </td>
+                <td>Picklist Values </td>
+                <td>Default Value </td>
+                <td>Formula Details </td>
+                <td>Required </td>
+                <td>Unique </td>
+                <td>External Id </td>
+                <td>Description </td>
+                <td>InlineHelp Text </td>
+            </tr>
+              
+            <apex:repeat value="{!lCow[0].cFields}" var="st" id="pgTable" >
+              <tr>
+                  <td>{!st.Label}</td>
+                  <td>{!st.fullName}</td>
+                  <td>{!st.type_x} </td>
+                  <td>{!st.Length}</td>
+                  <td>{!st.Scale}</td>
+                  <td>{!st.visibleLines}</td>
+                  <td>
+                    <apex:repeat value="{!st.picklist.lPicklistvalues}" var="a"> 
+                        {!a.fullname}<br/> 
+                    </apex:repeat> </td>
+                    
+                  <td> {!st.DefaultValue}</td>
+                  <td>{!st.Formula}</td>
+                  <td>{!st.Required}</td>
+                  <td>{!st.Unique}</td>
+                  <td>{!st.ExternalID}</td>
+                  <td>{!st.Description}</td>
+                  <td>{!st.inlineHelpText}</td>
+             </tr>     
+    </apex:repeat>
+    </table>            
+    
+</apex:page>

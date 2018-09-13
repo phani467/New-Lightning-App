@@ -1,0 +1,57 @@
+<apex:page controller="bofc.BulkObjectFieldCreatorSuccess" action="{!exportToExcel}" standardStylesheets="false" readOnly="true" contentType="application/vnd.ms-excel#BOFCFieldSuccess.xls">
+  
+      <table>
+          <tr>
+          <th>Field Status </th>
+          <th> Type </th>
+          <th> Field Label</th>
+          <th> Field Name</th>
+          <th> Related To (Parent Object)</th>
+          <th> Child Relationship Name</th>
+          <th> Length </th>
+          <th> Decimal Places</th>
+          <th> # Visible Lines</th>
+          <th> Picklist Values</th>
+          <th> Display Format</th>
+          <th> Starting Number</th>
+          <th> Formula Details</th>
+          <th> Picklist Sorted</th>
+          <th> Default Value</th>
+          <th> Required </th>
+          <th> Unique </th>
+          <th> External Id</th>
+          <th> Description </th>
+          <th> Help Text</th>
+          </tr>
+          
+          <apex:repeat value="{!lstwrapper}" var="t"> 
+              <tr> 
+                  <td> {!t.bf.bofc__Field_Status__c}</td>
+                  <td> {!t.bf.bofc__Type__c} </td>
+                  <td> {!t.bf.bofc__Field_Label__c}</td>
+                  <td> {!t.bf.bofc__Field_Name__c} </td>
+                  <td> {!t.bf.bofc__Related_To_Parent_Object__c} </td>
+                  <td> {!t.bf.bofc__Child_Relationship_Name__c} </td>
+                  <td> {!t.bf.bofc__Length__c} </td>
+                  <td> {!t.bf.bofc__Decimal_Places__c} </td>
+                  <td> {!t.bf.bofc__Visible_Lines__c} </td>
+                  <td> {!t.bf.bofc__Picklist_Values__c} </td>
+                  <td> {!t.bf.bofc__Display_Format__c} </td>
+                  <td> {!t.bf.bofc__Starting_Number__c} </td>
+                  <td> {!t.bf.bofc__Formula_Details__c} </td>
+                  <td> {!t.bf.bofc__Picklist_Sorted__c} </td>
+                  
+                  <td> {!t.bf.bofc__Default_Value__c} </td>
+                  <td> {!t.bf.bofc__Required__c} </td>
+                  <td> {!t.bf.bofc__Unique__c} </td>
+                  <td> {!t.bf.bofc__External_Id__c} </td>
+                  
+                  <td> {!t.bf.bofc__Description__c} </td>
+                  <td> {!t.bf.bofc__Help_Text__c} </td>
+                  
+              </tr>
+          </apex:repeat>
+      </table>    
+            
+ 
+</apex:page>

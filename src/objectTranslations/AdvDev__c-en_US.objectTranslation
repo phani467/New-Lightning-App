@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>AdvDev</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>AdvDev</value>
+    </caseValues>
+    <fields>
+        <label><!-- CourseDescription --></label>
+        <name>CourseDescription_adv__c</name>
+    </fields>
+    <fields>
+        <label><!-- CourseFee --></label>
+        <name>CourseFee_ADVDEV__c</name>
+    </fields>
+    <fields>
+        <label><!-- Course Traier --></label>
+        <name>CourseTriner_adv__c</name>
+        <picklistValues>
+            <masterLabel>JOe2</masterLabel>
+            <translation><!-- JOe2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>eric 2</masterLabel>
+            <translation><!-- eric 2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>janeele2</masterLabel>
+            <translation><!-- janeele2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>jhon2</masterLabel>
+            <translation><!-- jhon2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>nic2</masterLabel>
+            <translation><!-- nic2 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- Courses --></label>
+        <name>Courses__c</name>
+        <picklistValues>
+            <masterLabel>ADV1</masterLabel>
+            <translation><!-- ADV1 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Adv2</masterLabel>
+            <translation><!-- Adv2 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Adv3</masterLabel>
+            <translation><!-- Adv3 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Adv4</masterLabel>
+            <translation><!-- Adv4 --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Adv5</masterLabel>
+            <translation><!-- Adv5 --></translation>
+        </picklistValues>
+    </fields>
+    <fields>
+        <label><!-- RegistrationNumber --></label>
+        <name>RegistrationNumber_ADvdev__c</name>
+    </fields>
+    <fields>
+        <label><!-- Trainig --></label>
+        <name>trainig_adv__c</name>
+        <relationshipLabel><!-- AdvDev --></relationshipLabel>
+    </fields>
+    <startsWith>Consonant</startsWith>
+    <validationRules>
+        <errorMessage><!-- The person with the same name already registered. --></errorMessage>
+        <name>NoDuplicates</name>
+    </validationRules>
+</CustomObjectTranslation>

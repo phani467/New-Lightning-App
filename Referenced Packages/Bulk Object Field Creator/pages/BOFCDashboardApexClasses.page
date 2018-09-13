@@ -1,0 +1,517 @@
+<apex:page applyBodyTag="false" applyHtmlTag="false" showHeader="false" sidebar="false" standardStylesheets="false" controller="bofc.BOFCDashboardApexClasses">
+    <html>
+        <head>
+            <title>
+            BOFC Org Detail
+            </title>
+            
+            <link rel="stylesheet" href="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/css/bootstrap.min.css')}"/>
+            <script src="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/js/jquery-2.2.4.min.js')}"></script>
+            <script src="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/js/bootstrap.min.js')}"></script>
+            <script type="text/javascript" src="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/js/Chart.min.js')}"></script>
+            <style>
+                /*[hidden], template
+                {
+                display:block !important;
+                }*/
+                body{
+                    padding-top:54px;
+                    background-color:#Fff;
+                }
+                .navbar-fixed{
+                    z-index:1;top:0;
+                    
+                    position:fixed;
+                }
+                input,button{
+                    border-radius:0px !important;
+                }
+                .no-margin{
+                    margin-left:0px !important;
+                    margin-right:0px !important;
+                }
+                
+                #wrapper {
+                    padding-left: 70px;
+                    transition: all .4s ease 0s;
+                    height: 100%
+                    background:#ddd;
+                }
+                
+                #sidebar-wrapper {
+                    margin-left: -220px;
+                    left: 70px;
+                    width: 220px;
+                    background: #2c3e50;
+                    position: fixed;
+                    height: 100%;
+                    z-index: 10000;
+                    transition: all .4s ease 0s;
+                }
+                
+                .sidebar-nav {
+                    display: block;
+                    float: left;
+                    width: 220px;
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+                #page-content-wrapper {
+                    padding-left: 0;
+                    margin-left: 0;
+                    width: 100%;
+                    height: auto;
+                    padding-top:15px;
+                }
+                #wrapper.active {
+                    padding-left: 220px;
+                }
+                #wrapper.active #sidebar-wrapper,#wrapper.active #copyright-footer{
+                    left: 220px;
+                    
+                }
+                img[alt='footer-logo']{
+                    transition: content 1s ease-out;
+                }
+                #wrapper.active img[alt='footer-logo']{
+                    content:url('{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/logo.png')}');
+                    width: 202px;
+                }
+                #wrapper.active img[alt='footer-logo']+div{
+                    display:block;
+                }
+                #wrapper.small-logo img[alt='footer-logo']{
+                    content:url('{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/cb.png')}');
+                    width: 50px;
+                    margin: 9px;
+                }
+                #wrapper.small-logo footer{
+                    left:0px;
+                }
+                #wrapper.small-logo img[alt='footer-logo']+div{
+                    display:none;
+                }
+                div[id*='page-content-wrapper'] {
+                    width: 100%;
+                    padding-top:15px;
+                }
+                .se-pre-con {
+                    position: fixed;
+                    left: 0px;
+                    top: 0px;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 99999;
+                    background: url({!$Resource.BulkFieldCreator}/loading/Preloader_3.gif) center no-repeat #fff;
+                }
+                #sidebar_menu li a, .sidebar-nav li a {
+                    color: #999;
+                    display: block;
+                    float: left;
+                    text-decoration: none;
+                    width: 100%;
+                    background: #2c3e50;
+                    border-top: 1px solid #2c3e50;
+                    border-bottom: 1px solid #2c3e50;
+                    -webkit-transition: background .5s;
+                    -moz-transition: background .5s;
+                    -o-transition: background .5s;
+                    -ms-transition: background .5s;
+                    transition: background .5s;
+                }
+                .sidebar_name {
+                    padding-top: 25px;
+                    color: #fff;
+                    opacity: .7;
+                }
+                
+                .sidebar-nav li {
+                    line-height: 40px;
+                    text-indent: 20px;
+                }
+                
+                .sidebar-nav li a {
+                    color: #999999;
+                    display: block;
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav li a:hover {
+                    color: #333;
+                    background: rgba(255,255,255,0.7);
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav li a:active,
+                .sidebar-nav li a:focus {
+                    text-decoration: none;
+                }
+                
+                .sidebar-nav > .sidebar-brand {
+                    height: 55px;
+                    font-size: 18px;
+                }
+                
+                .sidebar-nav > .sidebar-brand a {
+                    color: #999999;
+                }
+                
+                .sidebar-nav > .sidebar-brand a:hover {
+                    color: #fff;
+                    background: none;
+                }
+                
+                #main_icon
+                {
+                    float:right;
+                    padding-right: 25px;
+                    padding-top:12px;
+                }
+                .sub_icon
+                {
+                    float:right;
+                    padding-right: 28px;
+                    padding-top:10px;
+                }
+                
+                
+                @media (max-width:767px) {
+                    #wrapper {
+                        padding-left: 70px;
+                        transition: all .4s ease 0s;
+                    }
+                    #sidebar-wrapper {
+                        left: 70px;
+                    }
+                    #wrapper.active {
+                        padding-left: 150px;
+                    }
+                    #wrapper.active #sidebar-wrapper {
+                        left: 150px;
+                        width: 150px;
+                        transition: all .4s ease 0s;
+                    }
+                }
+                .icon-bar {
+                    display: block;
+                    width: 22px;
+                    height: 2px;
+                    background-color: #cccccc;
+                    border-radius: 1px;
+                    margin-bottom:5px;
+                }
+                
+                a:hover .sub_icon {
+                    transition: all 0.5s;
+                    transform: rotateZ(45deg);
+                    padding-top: 14px;
+                    padding-right: 23px;
+                }
+                .huge{
+                    font-size:40px;
+                }
+                .chart-legend li span{
+                    display: inline-block;
+                    width: 12px;
+                    height: 12px;
+                    margin-right: 5px;
+                }
+                
+                .table-fixed thead {
+                  width: 98.7%;
+                }
+                .table-fixed tbody {
+                  height: 300px;
+                  overflow-y: auto;
+                  width: 100%;
+                }
+                .table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+                  display: block;
+                }
+                .table-fixed tbody td, .table-fixed thead > tr> th {
+                  float: left;
+                  border-bottom-width: 0;
+                }
+                table.table.table-fixed.table-stripped tbody tr:first-child td {
+                    border-top: 0px;
+                }
+                table.table-fixed thead tr th{
+                    border-bottom: 1px solid #ddd;
+                }
+                .panel-danger {
+                    border-color: #a94442;
+                }
+                .panel-danger>.panel-heading {
+                    color: #ffffff;
+                    background-color: #a94442;
+                    border-color: #ebccd1;
+                }
+                
+                .panel-warning {
+                    border-color: #8a6d3b;
+                }
+                .panel-warning>.panel-heading {
+                    color: #ffffff;
+                    background-color: #8a6d3b;
+                    border-color: #8a6d3b;
+                }
+                .panel-info {
+                    border-color: #31708f;
+                }
+                .panel-info > .panel-heading {
+                    color: #FFFFFF;
+                    background-color: #31708f;
+                    border-color: #31708f;
+                }
+                ul li{margin-left:0px;}
+                #copyright-footer{background:#2c3e50;bottom:0px;position:fixed;left: 70px;width: 100%;color:#fff}
+                #orgsummary{    display: inline-block;    box-shadow: 0px 0px 3px 2px #aaa;    margin-left: 10px;    margin-top: 10px;}
+            </style>
+        </head>
+        <apex:form >
+        <body>
+            <!--Show Logo of App-->
+            <div class="container-fluid navbar-fixed" style="background:#FFFFFF;border-bottom:1px solid #ddd;padding:14px;width:100%">
+                <div class="row no-margin">    
+                    <div class="col-xs-2">
+                        <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/bofclogo.png')}" width="80" height="30" style="background:transparent;" />
+                    </div>
+                    <div class="col-xs-10" >
+                            <apex:outputPanel style="float:right;">
+                                       <apex:outputLabel style="margin-right: 150px;text-align:center;padding-right:0px;font-size:16px;background:red;color:white;" rendered="{!TypeofVersion=='FreeVersion'}">Free Version. <u><a href="https://store.tech9logy.com/salesforce/config-bench.html/" target="_blank">Click Here</a></u> to upgrade to Full Version</apex:outputLabel> 
+                                       <apex:commandLink style="padding-right: 15px;" onclick="window.open('/home/home.jsp','_blank');"><u>Salesforce Home</u></apex:commandLink>
+                                       <apex:commandLink style="padding-right: 15px;" onclick="window.open('/apex/BOFCHome','_blank');"><u>BOFC Home</u></apex:commandLink>
+                            </apex:outputPanel>            
+                    </div>
+                </div>
+                
+            </div>
+            <!--End Logo-->
+            <!--Show Sidebar-->
+            <div id="wrapper" class="active">
+                <div id="sidebar-wrapper">
+                    <ul id="sidebar_menu" class="sidebar-nav">
+                        <li class="sidebar-brand">
+                            <a id="menu-toggle" href="#">
+                                Menu
+                                <span id="main_icon">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul class="sidebar-nav" id="sidebar">     
+                        <li>
+                            <apex:outputLink value="/apex/BOFCDashboard" target="_blank">
+                                Dashboard<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        
+                        <li>
+                            <apex:outputLink value="/apex/BOFCDashboardApexClasses" target="_blank">
+                                Apex Class<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        
+                        <!-- <li>
+                            <apex:outputLink value="/apex/ConfigBenchLoginTrend">
+                                User Login Trends<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchCustomObject">
+                                Custom Objects<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchTriggersList">
+                                Apex Triggers<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchPagesList">
+                                Apex Pages<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchComponentsList" >
+                                Apex Components<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchWorkflowPage" >
+                                Workflow Rules<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>
+                        <li>
+                            <apex:outputLink value="/apex/ConfigBenchActiveUsers" >
+                                Active Users<span class="sub_icon glyphicon glyphicon-link"></span>
+                            </apex:outputLink>
+                        </li>-->
+                        
+                    </ul>
+                    <!-- <footer style="position:fixed;bottom:0px;">
+                        <article class="footer-left" >
+                            <img src="http://www.configbench.com/wp-content/uploads/2016/02/config.png" alt="footer-logo"/>
+                            <div><p style="margin-top: -8px;font-size: 13px;color: #cfcfcf;float: right;margin-top:-4px;margin-right: 0px;">A Tech9logy Product</p></div>
+                        </article>
+                    </footer>-->
+                </div>
+                <!--End Sidebar-->
+                <apex:outputPanel id="page-content-wrapper" style="margin-top:15px;">
+                    
+                        <div class="row"> 
+                            <div class="col-lg-offset-3 col-lg-6"> 
+                                <div class="form-group">
+                                    <apex:pageMessages ></apex:pageMessages>
+                                    <apex:outputPanel rendered="{!LimitCompleted}">
+                                    <br/><br/>
+                                    <div style="color: red;font-weight:bold;">
+                                        <span style="color:red;font-size: 16px;text-align: right; margin: 10px;">*You have consumed allowed limit of generating 10 reports. Please <a href="https://store.tech9logy.com/salesforce/config-bench.html/" target="_blank">Click Here</a> for Full Version</span>
+                                    </div><br/>
+                                    </apex:outputPanel>
+                                    
+                                    <apex:outputPanel rendered="{!!AllowPageAccess}">
+                                    <br/><br/>
+                                    <div style="color: red;font-weight:bold;">
+                                        <span style="color:red;font-size: 16px;text-align: right; margin: 10px;">*You license has got expired. Please <a href="https://store.tech9logy.com/salesforce/config-bench.html/" target="_blank">Click Here</a> for renewal</span>
+                                    </div><br/>
+                                    </apex:outputPanel>
+                                        
+                                </div>    
+                            </div>
+                        </div>
+                        <div class="row no-margin">
+    <div class="col-lg-12">
+    
+
+      <apex:outputPanel layout="block" styleClass="panle panel-default">
+        <div class="panel-heading">
+                                  <h4 style="display:inline-block;">
+                                    Apex Class Summary 
+                                  </h4>
+                                  <apex:outputPanel id="myButtons" styleClass="pull-right" style="margin-left:15px;font-size:20px;">
+                        <apex:commandButton action="{!Beginning}" title="Beginning" styleClass="btn btn-primary" value="<<" disabled="{!disablePrevious}" reRender="tableClass,myButtons"/>
+                        <apex:commandButton action="{!Previous}" title="Previous" value="<" styleClass="btn btn-primary" disabled="{!disablePrevious}" reRender="tableClass,myButtons"/>        
+                        &nbsp;( {!pageNumber}/{!totalPages} ) &nbsp;
+                        <apex:commandButton action="{!Next}" title="Next" value=">" styleClass="btn btn-primary" disabled="{!disableNext}" reRender="tableClass,myButtons"/>
+                        <apex:commandButton action="{!End}" title="End" value=">>" styleClass="btn btn-primary" disabled="{!disableNext}" reRender="tableClass,myButtons"/>        
+                    </apex:outputPanel>
+                    <apex:commandButton styleClass="btn btn-success" style="width:150px;float:right" disabled="{!LimitCompleted || !AllowPageAccess}" action="{!updateSelectedList}" oncomplete="exportToExcel()" value="Export Classes" rerender="setList"/>
+                                </div>
+                                <apex:outputPanel id="setList">
+                                    <script>
+                                        var names='{!nm}';
+                                    </script>
+                                </apex:outputPanel>  
+                                <apex:outputPanel id="tableClass">
+        <table class="table table-stripped">
+          <thead>
+            <tr>
+             <th class="col-xs-1"><input type="checkbox" onchange="checkAll(this)" id="check-all"/>
+              </th>
+              
+              <th class="col-xs-3">
+                  API Name
+              </th>
+              <th class="col-xs-2">
+                  Namespace Prefix
+              </th>
+              <th class="col-xs-2">
+                  IsValid
+              </th>
+              <th class="col-xs-2">
+                  Status
+              </th>
+              <th class="col-xs-2">
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+              <apex:variable value="{!1}" var="count"/>
+              <apex:repeat value="{!lapexClass}" var="ac">
+            <tr>
+              <td class="col-xs-1"><apex:inputCheckbox value="{!ac.isSelected}" /></td>
+              <td class="col-xs-3">{!ac.apexClass.Name}</td>
+              <td class="col-xs-2">{!ac.apexClass.NamespacePrefix}</td>
+              <td class="col-xs-2">{!ac.apexClass.IsValid}</td>
+              <td class="col-xs-2">{!ac.apexClass.Status}</td>
+              <td class="col-xs-2">
+                  <span>
+                      <a href="/{!ac.apexClass.Id}" target="_blank" title="View"><i class="glyphicon glyphicon-eye-open" style="font-size: 1.2em;margin-right: 20px;" /></a>
+                      <a href="/apex/BOFCDashboardApexClassDownload?className={!ac.apexClass.Name}" target="_blank" title="Export"><i class="glyphicon glyphicon-export"  style="font-size: 1.2em;margin-right: 20px;" /></a>
+                  </span>
+              </td>
+            </tr>  
+              <apex:variable value="{!count+1}" var="count"/>              
+              </apex:repeat>
+          </tbody>
+        </table>
+        </apex:outputPanel>
+      </apex:outputPanel>
+  </div>
+</div>
+                        <div id="footer-container">
+                            <footer id="copyright-footer">
+                                <div class="container">
+                                    <div class="row anti-box">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 anti-box">
+                                        </div>
+                                        <div class="pull-right" style="width:40%;">
+                                            <article class="footer-right" style="color:#aaa">
+                                                <p style="margin-bottom:0px;padding:10px;">© Copyright 2017. All Rights Reserved. </p>
+                                            </article>
+                                        </div>
+                                    </div>
+                                </div>
+                            </footer>
+                        </div>
+                </apex:outputPanel>
+            </div>
+            
+            
+            <script>
+            $(document).ready(function(e){
+                $('.search-panel .dropdown-menu').find('a').click(function(e) {
+                    e.preventDefault();
+                    var param = $(this).attr("href").replace("#","");
+                    var concept = $(this).text();
+                    $('.search-panel span#search_concept').text(concept);
+                    $('.input-group #search_param').val(param);
+                });
+                $("#menu-toggle").click(function(e) {
+                    e.preventDefault();
+                    $("#wrapper").toggleClass("active");
+                    $("#wrapper").toggleClass("small-logo");
+                });
+            });
+            $(window).ready(function() {
+                $(".se-pre-con").fadeOut("slow");
+            });
+            
+            
+            
+           function checkAll(obj) {
+                $("input:checkbox").prop('checked', $(obj).prop("checked"));
+            }
+            function exportToExcel(){                
+                if(names){
+                    console.log(names);
+                    window.open('/apex/BOFCDashboardApexClassExport?name='+names);
+                }
+                else{
+                    if(confirm('Do you want to export all Classes Information')){
+                        window.open('/apex/BOFCDashboardApexClassExport?name=1;');
+                    }
+                }
+                return false;
+            }
+            </script>
+        </body>
+        </apex:form>
+    </html>
+</apex:page>

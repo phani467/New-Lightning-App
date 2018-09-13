@@ -1,0 +1,36 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+    
+<aura:attribute name="picklistValues" type="Object" />
+    
+<aura:attribute name="newEntry" type="NewRecords__c" />
+<force:recordData aura:id="forceRecord"
+                recordId="{!v.recordId}"
+                targetFields="{!v.newEntry}"
+                fields="Id,CompnyName__c,ContactedDate__c,ContactNumber__c,ContactPerson__c,Email__c,EndClient__c,Extension__c,Responce__c,Office__c,YearsofExperience__c"
+                mode="EDIT" />
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+
+
+<c:PicklistValues sObjectName="NewRecords__c" fieldName="Responce__c" picklistValues="{!v.picklistValues}" />
+	
+<lightning:input aura:id="companyName" name="companyName" label="Company Name" required="true" />
+<lightning:input aura:id="endClient" name="endClient" label="End Client" />
+<lightning:input aura:id="yearsofExperience" name="yearsofExperience" label="Years Of Experience" />
+<lightning:input aura:id="contactedDate" name="contactedDate" type="date" label="Contacted Date" />
+<lightning:input aura:id="contactPerson" name="contactPerson" label="Contact Person"/>
+<lightning:input aura:id="workPhone" name="workPhone" label="Work/Office Phone"/>
+<lightning:input aura:id="extension" name="extension" label="Extension"/>
+<lightning:input aura:id="contactNumber" name="contactNumber" label="Contact Number"/>
+<lightning:input aura:id="email" name="email" type="Email" label="Email"/>
+   
+    <lightning:select aura:id="responce" name="responce" label="Responce">
+       <aura:iteration items="{!v.picklistValues}" var="item">
+    <option value="{!item}">{!item}</option>
+</aura:iteration>
+
+</lightning:select>
+<lightning:button variant="neutral" label="Cancel" />
+<lightning:button variant="brand" label="Submit" onclick="{!c.saveRecord}"/>
+
+</aura:component>

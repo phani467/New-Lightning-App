@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Category</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Category</value>
+    </caseValues>
+    <fields>
+        <label><!-- Availability --></label>
+        <name>Availability__c</name>
+        <relationshipLabel><!-- Category --></relationshipLabel>
+    </fields>
+    <fields>
+        <label><!-- No.ofPersons --></label>
+        <name>No_ofPersons__c</name>
+    </fields>
+    <fields>
+        <label><!-- RoomPrice --></label>
+        <name>RoomPrice__c</name>
+    </fields>
+    <fields>
+        <label><!-- RoomType --></label>
+        <name>RoomType__c</name>
+    </fields>
+    <fields>
+        <label><!-- ServiceCharge --></label>
+        <name>ServiceCharge__c</name>
+    </fields>
+    <fields>
+        <label><!-- Smoking --></label>
+        <name>Smoking__c</name>
+        <picklistValues>
+            <masterLabel>No</masterLabel>
+            <translation><!-- No --></translation>
+        </picklistValues>
+        <picklistValues>
+            <masterLabel>Yes</masterLabel>
+            <translation><!-- Yes --></translation>
+        </picklistValues>
+    </fields>
+    <layouts>
+        <layout>Category Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

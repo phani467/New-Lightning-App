@@ -1,0 +1,169 @@
+<apex:page id="pg" standardStylesheets="false" contenttype="application/vnd.ms-excel#ProfilesSheet.xls" controller="bofc.BOFCExtractAllProfilesReport" action="{!fetchProfileDetails}">
+
+<body>
+        
+        <apex:outputPanel rendered="{!AllowPageAccess || AppExpired}">
+        <div style="    background: red; width: 1215px; color: white;   text-align: center; font-size: 20px;">
+                 {!ExpirationMsg}
+        </div>
+        </apex:outputPanel>
+        
+            <apex:outputPanel rendered="{!AllowPageAccess}">
+                     <table style="border: 1px solid #CCC;">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Profile Details</center></td></tr> 
+                         <tr style="border: 1px solid #CCC;"> 
+                             <th width="15%" style="font-weight: bold;background-color: #9A8249;;border: 1px solid #CCC;color:white;"><center>Profile Name  </center></th>
+                             <apex:repeat value="{!lWrapperClassProfile}" var="a">   
+                                 <th width="15%" style="font-weight: bold;background-color: #9A8249;;border: 1px solid #CCC;color:white;"><center><apex:outputText value="{!(a.ProfileName)}"/> </center></th>
+                             </apex:repeat>
+                         </tr>    
+                         
+                         <tr style="border: 1px solid #CCC;"> 
+                             <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Profile ID </center></td>
+                             <apex:repeat value="{!lWrapperClassProfile}" var="a">   
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!(a.ProfileID)}"/> </center></td>
+                             </apex:repeat>
+                         </tr> 
+                          
+                         <tr style="border: 1px solid #CCC;"> 
+                             <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Custom</center></td>
+                             <apex:repeat value="{!lWrapperClassProfile}" var="a">   
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!(a.Custom)}"/> </center></td>
+                             </apex:repeat>
+                         </tr> 
+                         <tr style="border: 1px solid #CCC;"> 
+                             <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Description </center></td>
+                             <apex:repeat value="{!lWrapperClassProfile}" var="a">   
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!(a.Description)}"/> </center></td>
+                             </apex:repeat>
+                         </tr> 
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         <apex:outputPanel rendered="{!ShowObjectPermissions==true}">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Object Permissions</center></td></tr> 
+                         <apex:repeat value="{!options}" var="l" >
+                             <tr><td style="border: 1px solid #CCC;font-weight: bold;background-color: skyblue;"><center><apex:outputText value="{!(l)}"/></center></td><td colspan="{!lWrapperClassProfile.size}"></td></tr> 
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Read</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['Read']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Create</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['Create']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Edit</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['Edit']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr> 
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Delete</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['Delete']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr> 
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>View All</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['View All']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr> 
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>Modify All</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_obj_Prof_access[l][left(a,15)]['Modify All']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>                                     
+                         </apex:repeat>
+                         </apex:outputPanel>
+                         <!-- <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Field Level Security</center></td></tr> 
+                         
+                         <apex:repeat value="{!ObjOptions}" var="l1">
+                             <tr><td style="border: 1px solid #CCC;font-weight: bold;background-color: skyblue;"><center><apex:outputText value="{!(l1)}"/></center></td><td colspan="{!lWrapperClassProfile.size}"></td></tr> 
+                             <apex:repeat value="{!map_Obj_lFields[l1]}" var="l2">
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>{!l2}</center></td>
+                             </tr>
+                              <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;background-color: #CDEAA8;text-align:right;">Edit Access</td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>
+                                     <apex:outputText value="{!map_Object_field_Prof_access[left(a,15)][l1][l2]['Visible']}"/>  </center></td> 
+                                 </apex:repeat>
+                             </tr>
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;background-color: #CDEAA8;text-align:right;">Read Access</td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>
+                                     <apex:outputText value="{!map_Object_field_Prof_access[left(a,15)][l1][l2]['ReadOnly']}"/>  </center></td> 
+                                 </apex:repeat>
+                             </tr>
+                            </apex:repeat> 
+                         </apex:repeat> 
+                         
+                         -->
+                         <apex:outputPanel rendered="{!ShowTabSettings==true}">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Tab Settings</center></td></tr> 
+                         <apex:repeat value="{!sTabNames}" var="l">
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>
+                                     <apex:outputText value="{!l}"/>
+                                 </center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_tab_Prof_access[l][left(a,15)]['Visibility']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>  
+                         </apex:repeat>
+                         </apex:outputPanel>
+                         
+                         <apex:outputPanel rendered="{!ShowUserPermissions==true}">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>User Permissions</center></td></tr> 
+                         <apex:repeat value="{!sUserPer}" var="l">
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>{!l}</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_UserPer_Prof_access[l][left(a,15)]['Enabled']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>  
+                         </apex:repeat>
+                         </apex:outputPanel>
+                         
+                         <apex:outputPanel rendered="{!ShowRecordTypeSettings==true}">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Record Type Settings</center></td></tr> 
+                         <apex:repeat value="{!sRecNames}" var="l">
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>{!l}</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_RecType_Prof_access[l][left(a,15)]['Visibility']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>  
+                         </apex:repeat>
+                         </apex:outputPanel>
+                         
+                         <apex:outputPanel rendered="{!ShowAppPermissions==true}">
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}"></td></tr> 
+                         <tr><td colspan="{!lWrapperClassProfile.size+1}" style="font-weight: bold;background-color: darkcyan;border: 1px solid #CCC;color:white;"><center>Application Visibility</center></td></tr> 
+                         <apex:repeat value="{!sApps}" var="l">
+                             <tr style="border: 1px solid #CCC;"> 
+                                 <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center>{!l}</center></td>
+                                 <apex:repeat value="{!sProfileIDs}" var="a">   
+                                     <td style="border: 1px solid #CCC;font-weight: bold;background-color: #CDEAA8;"><center><apex:outputText value="{!map_App_Prof_access[l][left(a,15)]['Visible']}"/> </center></td>
+                                 </apex:repeat>
+                             </tr>  
+                         </apex:repeat>
+                         </apex:outputPanel>
+                                     
+                     </table> 
+             </apex:outputPanel>         
+   </body>                
+    
+</apex:page>

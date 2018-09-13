@@ -1,0 +1,25 @@
+<apex:page controller="wrapperAccountOpportunity" sidebar="false">
+    <apex:form >
+    <apex:commandButton value="Proceed with Selected" action="{!ProceedWithSelected}" reRender="panelId"/>
+    <apex:commandButton value="Proceed with Selected to Next Page" action="{!ProceedWithSelectedToNextPage}" />
+    <apex:pageBlock >
+        <apex:outputPanel id="panelId">
+            <apex:pageblockTable value="{!wrapperList}" var="wrapRec" rendered="{!normalList}">
+               <apex:column value="{!wrapRec.acc.Name}" />
+               <apex:column value="{!wrapRec.opp.Name}"/>
+               <apex:column >
+                   <apex:inputCheckbox value="{!wrapRec.selected}"/>
+               </apex:column>
+          </apex:pageblockTable>
+          
+           <apex:pageblockTable value="{!selectedWrapperList}" var="wrapRec" rendered="{!selectedList}">
+               <apex:column value="{!wrapRec.acc.Name}" />
+               <apex:column value="{!wrapRec.opp.Name}"/>
+               <apex:column >
+                   <apex:inputCheckbox value="{!wrapRec.selected}"/>
+               </apex:column>
+          </apex:pageblockTable>
+        </apex:outputPanel>      
+    </apex:pageBlock>
+    </apex:form>
+</apex:page>

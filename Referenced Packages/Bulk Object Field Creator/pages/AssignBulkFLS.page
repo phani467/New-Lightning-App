@@ -1,0 +1,416 @@
+<apex:page controller="bofc.AssignBulkFLS" action="{!init}" sidebar="false" showHeader="false">
+   <style>
+        .drop_zone
+        {
+        border: 2px dashed #bbb;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        width: 65%;
+        margin:0 auto;
+        margin-bottom:10px;
+        }
+        
+        .drop_zone input
+        {
+        color: #999999;
+        margin-left: 92px;
+        margin-top: 20px;
+        }
+        .drag_drop_qoute
+        {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding:8px;
+        text-align: center;
+        font: 16pt bold Arial, Helvetica, sans-serif;
+        color: #44BEEE;
+        
+        }
+        
+        
+        
+        #spinnerDiv
+        {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 111;
+        }
+        
+        .overlay_div
+        {
+        display:none;
+        position:fixed;
+        width:100%;
+        height:100%;
+        opacity:0.1;
+        top: 0px;
+        left: 0px;
+        z-index: 1111;
+        background-color:#000;
+        }
+        
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+         .bPageTitle .ptBody .content{width:30% !important;}
+         
+         body{width:90% !important; margin:0 auto !important;}
+         
+         .downloadClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            
+            font-weight: bold;
+            padding: 7px;
+            background: #44BEEE;
+            border: 2px solid #44BEEE;
+            border-radius: 3px;
+            color: #fff;
+            }
+            
+             .downloadClass a{
+             color: #fff;
+             }
+                
+                .hideDropClass{
+            font-size: 15px;
+            text-align: right;
+            float: right;
+            margin-right: 8px;
+            font-weight: bold;
+            border: 1px solid #44BEEE;
+            padding: 2px;
+            border-radius: 3px;
+            }
+            
+            .OCpageDescription{
+                font-size:25px;}
+                
+             .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 5px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            .ShowHideButtonClass{
+              background: transparent;
+              padding: 0px;
+              border: 0px;
+              padding: 7px;
+              }
+            
+            form{
+              clear: both;
+              padding-top: 8%;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+            footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+         
+        }
+    
+    .footer-right {
+        float: right;
+    }
+    
+     .footer-left {
+        width: 40%;
+        float: left;
+    }
+    
+    .anti {
+    padding: 0 15px;
+    
+    .clscroll table {
+    table-layout: fixed;
+}
+
+.clscroll td, .clscroll th { 
+    overflow: hidden;
+}
+
+.corner-header {
+    float: left;
+}
+
+.column-headers {
+    float: left;
+    overflow: scroll;
+}
+}
+        
+    </style>
+
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'js/jquery.csv-0.71.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/jszip.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xlsx.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ExcelUpload/excel/xls.js')}" />
+    <apex:includeScript value="{!$Resource.bofc__Spin}" />
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion'}">
+                    <div style="background: red;width: 100%;margin-bottom:10px; color: white;   text-align: center; font-size: 20px;">
+                             Free version. For Unlimited access <a style="color: white;" target="_blank" href="https://store.tech9logy.com/salesforce/bulk-object-field-creator.html"><u>Click Here</u></a>
+                    </div>
+                </apex:outputPanel>
+        
+        <div class="content">
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Assign Field Level Security</h2>
+            <div class="blank"></div>
+        </div>
+        <div class="home_icon" style="margin: 10px; padding-left: 0px;float: right;"><a href="/apex/BOFCHome" style="color:blue;"><apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/ConfigBenchHomePage/img/gohome.png')}" /></a></div>
+   </div>
+   
+    <script>
+        function clickBox(visible,readOnly,type){
+            var visibleVal = document.getElementById(visible).checked;
+            // alert(visibleVal);
+            
+            var readOnlyVal = document.getElementById(readOnly).checked;
+            // alert(readOnlyVal);
+            
+            if(visibleVal == false && type=='Visible'){
+                //alert('inside if condition');
+                document.getElementById(readOnly).checked = false;
+            }
+            if(readOnlyVal == true && type=='ReadOnly'){
+                // alert('inside if condition');
+                document.getElementById(visible).checked = true;
+            }
+        }
+    </script>
+     
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-load.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-deflate.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.bofc__jszip, '/jszip-inflate.js')}"/>  
+     
+    <apex:form id="form" >
+        <apex:pageMessages id="messages"/>
+        <apex:actionPoller action="{!checkAsyncRequest}" interval="5" rerender="form" rendered="{!NOT(ISNULL(AsyncResult))}"/>
+        <apex:pageBlock title="Assign FLS to Multiple Profiles" rendered="{!AND(ISNULL(AsyncResult),ISNULL(MetaDataRetrieveZip))}">
+            <apex:pageBlockSection columns="1">
+                <u><b><div style="color: red;font-weight:bold;">Steps to Assign Field Level Security to Multiple Profiles</div></b></u>
+                    <div style="color: black;">
+                        1. Select the object for which you want assign field level security and click "Prepare Object for FLS Assignation"
+                    </div>
+                    <div style="color: black;">
+                        2. Once button is clicked in step 1, it will take few seconds to make object ready for FLS and will display list of profiles.
+                    </div>
+                    <div style="color: black;">
+                        3. Select Profiles for which you want to assign field level security and check/Uncheck Edit or Read permissions boxes as required.
+                    </div>
+                    <div style="color: black;">
+                        4. Click on orange button labeled as "Update Field Level Security for Selected Profiles" and it will take few seconds to align field level security to selected profiles.
+                    </div>
+            </apex:pageblockSection>
+            <apex:pageBlockSection columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Object Name" />
+                    <apex:outputPanel >
+                    <apex:selectList size="1" value="{!MetaDataItem}" >
+                        <apex:selectOptions value="{!MetaDataItems}"/>
+                    </apex:selectList>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select name of Object</span>
+                    <apex:commandButton value="Prepare Object for FLS Assignation" action="{!retrieveMetadataItem}" />
+                    </apex:outputPanel>
+                    
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!EnableProfile}">
+                    Profile
+                    <apex:outputPanel >
+                        <apex:selectList value="{!ProfileName}" multiselect="true" size="5" style="border-left:3px solid red">
+                            <apex:selectOptions value="{!lProfileOptions}"/>
+                        </apex:selectList>
+                        <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*You can select 10 profiles at a time</span>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!EnableProfile}">
+                    Edit Access on All Fields
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!EditAllFields}" onclick="selectAllCheckboxes(this,'VisibleId')"/>
+                        <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Applicable on All Selected Profile</span>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:pageBlockSectionItem rendered="{!EnableProfile}">
+                    Read Access on All Fields
+                    <apex:outputPanel >
+                        <apex:inputCheckbox value="{!ReadAllFields}" onclick="selectAllCheckboxes(this,'ReadOnlyId')"/>
+                        <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Applicable on All Selected Profile</span>
+                    </apex:outputPanel>
+                </apex:pageblockSectionItem>
+                <apex:commandButton rendered="{!EnableProfile}" disabled="{!AllowPageAccess==false}" value="Update Field Level Security for Selected Profiles" onclick="showOverlay()"  action="{!fetchDisplayFLSDetailsdeploy}" style="border-radius: 5px; color: black;  padding: 6px;  padding-right: 6px;  font-size: 10px;  margin: 2px; background: bisque; font-weight: bold;"/>
+            
+                <apex:outputPanel rendered="{!EnableProfile==true}"> 
+                <div style="font-weight:bold;    background: lightyellow;border: 1px solid;width: 900px;">
+                  Once "<u><font style="background: cyan;">Update Field Level Security for Selected Profiles</font></u>" button is clicked, the status for submitted request can be verified by clicking <a href="/changemgmt/monitorDeployment.apexp?retURL=%2Fui%2Fsetup%2FSetup%3Fsetupid%3DDeploy&setupid=DeployStatus" target="_blank"> "<u><font style="background: cyan;">Click Here</font></u>" </a>
+                  <br/><br/>
+                  For each request, it will create a status entry.
+                  <br/> a. If status is "<u>Deploy: Succeeded</u>", then your Field Level Secuirty is successfully assigned.
+                  <br/> b. If status is "<u>Deploy: Failure</u>", then your Field Level Secuirty is successfully not assigned. Please open the status log:
+                  <br/> &nbsp;&nbsp;&nbsp;&nbsp;  i. If error is Fatal error, then please try again by clicking same button, sometimes salesforce resources are not free
+                  <br/> &nbsp;&nbsp;&nbsp;&nbsp; ii. If error is NOT fatal error, then please fix issue and try again on clicking same button.
+                    
+                </div>
+                </apex:outputPanel>
+                    
+            </apex:pageBlockSection>
+            <br/><br/>
+            
+            <apex:outputPanel rendered="{!TypeofVersion=='FreeVersion' && EnableProfile==true}"> 
+            <div style="color: red;font-weight:bold;">
+               Note: In free version, only 4 standard profiles are visible. To access all profiles, kindly upgrade to Full version.
+            </div>
+            </apex:outputPanel>
+            
+            
+        </apex:pageBlock>   
+        <apex:outputPanel rendered="{!NOT(ISNULL(MetaDataRetrieveZip))}">
+            <apex:actionFunction name="receiveFile" action="{!receiveMetadataZipFile}" rerender="messages,files" oncomplete="unzip();">
+                <apex:param name="filename" assignTo="{!MetadataFileName}" value=""/>
+                <apex:param name="filedata" assignTo="{!MetadataFileData}" value=""/>
+            </apex:actionFunction>  
+            <apex:actionFunction name="receiveComplete" action="{!receiveComplete}" rerender="form"/>
+            <c:BOFCUnZip name="unzip" oncomplete="if(more) receiveFile(path, data); else receiveComplete();">{!MetaDataRetrieveZip}</c:BOFCUnZip>
+        </apex:outputPanel>
+        
+       
+       <!--  <apex:pageBlock id="files" rendered="{!NOT(ISNULL(MetadataFiles))}">
+            <apex:pageBlockSection columns="1">
+                <apex:repeat value="{!MetadataFiles}" var="file">
+                    <apex:pageBlockSectionItem >
+                        <apex:outputLabel value="{!file.fullName}"/>
+                        <apex:outputLabel ><pre>{!file.content}</pre></apex:outputLabel>
+                    </apex:pageBlockSectionItem>
+                </apex:repeat>
+            </apex:pageBlockSection>
+       </apex:pageBlock>     -->
+           <!-- 
+            <div class="tableContainer" style="overflow-x:auto;float: left;width: 1154px;">
+            <apex:outputPanel rendered="{!lWrapperClassFLS.size > 0}">
+             <br/><br/> 
+             <table style="border: 1px solid #CCC;">
+                 <tr style="border: 1px solid #CCC;"> 
+                     <td style="width:100px;font-weight: bold;background-color: #9A8249;;border: 1px solid #CCC;color:white;">
+                         <table width="120px"><tr><td style="color:white;"><center>Profile Name  </center> </td></tr></table>
+                     </td>
+                     <apex:repeat value="{!lString}" var="p">
+                         <td style="width:120px;font-weight: bold;background-color: #A097D4;border: 1px solid #CCC;color:white;">
+                             <table width="120px"><tr><td style="color:white;"><center>{!p}   </center> </td></tr></table> 
+                         </td>
+                     </apex:repeat>
+                 </tr>  
+                 
+                 <apex:repeat value="{!lWrapperClassFLS}" var="a">
+                     <tr style="border: 1px solid #CCC;">
+                         <td style="width:120px;border: 1px solid #CCC;font-weight: bold;background-color: #9A8249;color:white;">
+                             <table width="120px">
+                                 <tr>
+                                     <td style="color:white;"><center> {!a.ProfileName }  </center> </td>
+                                                      
+                                 </tr>
+                                 
+                             </table> 
+                         </td>
+                         
+                         <apex:repeat value="{!lString}" var="p1">
+                                 <td style="width:120px;font-weight: bold;background-color: #CDEAA8;border: 1px solid #CCC;"> 
+                                    <table width="120px">
+                                     <tr>
+                                         <td>Edit Access:</td><td> <apex:inputCheckbox value="{!a.m_field[p1]['Editable']}" id="VisibleId"/>
+                                         </td> 
+                                     </tr>
+                                     <tr>
+                                         <td>Read Access:</td><td> <apex:inputCheckbox value="{!a.m_field[p1]['Readable']}" id="ReadOnlyId"/>
+                                         </td> 
+                                     </tr>
+                                    </table>
+                                 </td>
+                                
+                             </apex:repeat>
+                         </tr>    
+                 
+                 </apex:repeat>
+                </table>
+             </apex:outputPanel>
+       </div>     
+            
+            
+            
+        </apex:pageBlock> -->
+    
+        <div id="overlay" style="display:none;">
+     <div class="loadingImg" style="text-align:center">
+     <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, '/BulkFieldCreatorLoadingImage.gif')}" width="150" height="150" />
+     <br/>
+     <span>Processing...Please Wait...!!!</span>
+     </div>
+ </div>
+ 
+ <script type="text/javascript">
+ function selectAllCheckboxes(obj,receivedInputID){
+             
+            var inputCheckBox = document.getElementsByTagName("input"); 
+            var count = 0;                 
+            for(var i=0; i<inputCheckBox.length; i++){          
+                if(inputCheckBox[i].id.indexOf(receivedInputID)!=-1){                                     
+                    inputCheckBox[i].checked = obj.checked;
+                }
+            }
+         
+ }
+ function showOverlay()
+ {
+     document.getElementById("overlay").style.display= "block";   
+ }
+ </script>
+ </apex:form>
+ <footer>
+                    <div class="row anti">
+                        <div class="footer-right">
+                            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+                        </div>
+                    </div>
+    </footer> 
+
+ 
+
+</apex:page>

@@ -1,0 +1,78 @@
+<apex:page controller="bofc.BOFCBulkExportImportDownload" sidebar="false" showHeader="false" cache="false" action="{!FetchExistingFields}" standardStylesheets="false" readOnly="true" contentType="application/vnd.ms-excel#BOFCBulkFieldUpdateExcel.xls">
+            <table>
+            <tr> 
+                <td>Type </td>
+                <td>Field Label </td>
+                <td>Field Name </td>
+                <td>Related To (Parent Object) </td>
+                <td>Length</td>
+                <td>Decimal Places </td>
+                
+                <td>Picklist Values </td>
+                <td> Formula Details </td>
+                <td> Picklist Sorted</td>
+                
+                <td>Default Value </td>
+                <td> Display Format</td>
+                <td> Starting Number</td>
+                
+                <td>Required </td>
+                <td>Unique </td>
+                <td>External Id </td>
+                <td>Help Text</td>
+            </tr>
+              
+            <!-- <apex:repeat value="{!myclass.fields}" var="st" id="pgTable" >
+              <tr>
+                  <td>{!st.Label}</td>
+                  <td>{!st.Name}</td>
+                  <td>{!st.type} </td>
+                  <td>{!st.Length}</td>
+                  <td>{!st.Scale}</td>
+                  <td></td>
+                  <td>
+                    <apex:repeat value="{!st.picklist.lPicklistvalues}" var="a"> 
+                        {!a.fullname}<br/> 
+                    </apex:repeat> </td>
+                    
+                  <td> {!st.DefaultValue}</td>
+                  <td>{!st.calculatedFormula}</td>
+                  <td></td>
+                  <td>{!st.Unique}</td>
+                  <td>{!st.ExternalID}</td>
+                  <td></td>
+                  <td>{!st.inlineHelpText}</td>
+             </tr>     
+             </apex:repeat> -->
+             
+             <apex:repeat value="{!lCreateFieldWrapper}" var="st" id="pgTable1" >
+              <tr>
+                  <td>{!st.Fieldtype} </td>
+                  <td>{!st.FieldLabel}</td>
+                  <td>{!st.FieldFullName}</td>
+                  <td>{!st.FieldRelatedtoParent}</td>
+                  <td>{!st.FieldLength}</td>
+                  <td>{!st.FieldScale}</td>
+                  
+                  <td>
+                    <!-- <apex:repeat value="{!st.lPicklistvalue}" var="a"> 
+                        {!a}<br/> 
+                    </apex:repeat>--> {!st.picValues}</td>
+                  <td>{!st.FieldFormulaValue}</td>
+                  <td></td>
+                    
+                  <td> {!st.FieldDefaultValue}</td>
+                  <td></td>
+                  <td></td>
+                  
+                  <td> {!st.fieldRequired}</td>
+                  <td>{!st.FieldUnique}</td>
+                  <td>{!st.FieldExternalID}</td>
+                  <td>{!st.FieldInlineHelpText}</td>
+             </tr>     
+             </apex:repeat> 
+            
+             
+    </table>            
+    
+</apex:page>

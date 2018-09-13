@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Five9CallNow__c</fullName>
+        <defaultValue>false</defaultValue>
+        <deprecated>false</deprecated>
+        <description>Sets Five9 callNowMode to &apos;ANY&apos;</description>
+        <externalId>false</externalId>
+        <inlineHelpText>All new campaign members are added to Five9 list with &apos;call now mode&apos; set to &apos;ANY&apos;</inlineHelpText>
+        <label>Five9 Call Now</label>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Five9Endpoint__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Five9 WS Endpoint</label>
+        <required>false</required>
+        <type>Url</type>
+    </fields>
+    <fields>
+        <fullName>Five9Password__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Five9 User Password</label>
+        <length>50</length>
+        <maskChar>asterisk</maskChar>
+        <maskType>all</maskType>
+        <required>false</required>
+        <type>EncryptedText</type>
+    </fields>
+    <fields>
+        <fullName>Five9ReportEmail__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Five9 Report Email</label>
+        <required>false</required>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Five9User__c</fullName>
+        <deprecated>false</deprecated>
+        <externalId>false</externalId>
+        <label>Five9 User</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Five9list__c</fullName>
+        <deprecated>false</deprecated>
+        <description>Five9 dialing list name</description>
+        <externalId>false</externalId>
+        <label>Five9list</label>
+        <length>50</length>
+        <required>false</required>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+</CustomObject>

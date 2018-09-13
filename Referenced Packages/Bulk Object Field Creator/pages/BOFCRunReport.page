@@ -1,0 +1,329 @@
+<apex:page controller="bofc.BOFCRunReport" sidebar="false" showHeader="false" cache="false">
+  <apex:stylesheet value="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/css/style1.css')}"/> 
+ <style>
+        body .bPageTitle{
+        padding: 10px 0 0 !important;
+        }
+        
+        .contentLeft
+        {
+          float: left;
+        }
+        
+        footer
+        {
+         width:100%;
+         float:left;
+         margin-bottom: 10px;
+        }
+        
+        
+        .contentRight
+        {
+          float: left;
+          margin-left:10px;
+        }
+        
+        .home_icon
+        {
+          float:right;margin-top: 23px;font-size: 15px;padding-right: 50px;
+        }
+        .bPageTitle {
+              margin-bottom: 0px !important;
+         }
+         
+        .bPageTitle .ptBody .content{width:30% !important;}
+         
+        body{width:90% !important; margin:0 auto !important;}
+         
+            
+        .OCpageDescription{
+                font-size:25px;}
+                
+        .ptBody {
+              background-color: #fff !important;
+              padding: 0px;
+              color: #000;
+              padding: 0px 0 9px 0 !important;
+              clear: both;  
+              border-bottom: 8px solid #44BEEF;
+              position: fixed;
+              width: 90%;
+              z-index: 1111;
+            }
+              .OCpageType{
+                  font-size:11px;
+                  font-weight:bold;
+                  color:#000;
+                  
+              }      
+              
+             body .content{
+                width: 29%;
+              float: left;
+              
+            }
+            
+            form{
+              clear: both;
+              padding-top: 7%;
+              min-height:450px;
+            }
+            
+            .table_container
+            {
+             overflow-x:auto;
+            }
+            
+             #overlay
+            {
+              display: none;
+              position: fixed;
+              top: 0%;
+              left: 0%;
+              width: 100%;
+              height: 100%;
+              background-color: black;
+              z-index: 9999;
+              -moz-opacity: 0.8;
+              opacity: 0.5;
+              filter: alpha(opacity=80);
+            }
+            
+            #overlay .loadingImg
+            {
+                position: fixed;
+                top: 44%;
+                left: 44%;
+                text-align: center;
+            }
+            
+            .loadingImg img
+            {
+                width: 75px;
+                margin-bottom: 15px;
+            }
+            
+             #overlay span
+             {
+                 color: #fff;
+                 font-size: 16px;
+             }
+             
+             .tableContainer {
+                width: 99%;
+                height: auto;
+                overflow: auto;
+                margin-top: 10px;
+                }
+                
+              .tableHead
+              {
+                white-space: normal;
+              }  
+              body .bPageBlock {
+    padding: 0px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-top-width: 3px;}
+        
+        body .content {
+    width: 50%;
+    float: left;
+}
+        
+    </style>
+
+    
+    <div class="ptBody secondaryPalette brandSecondaryBrd">
+        <apex:outputPanel rendered="{!AllowPageAccess || AppExpired}">
+        <div style="    background: red;margin-bottom:18px; width: 1215px; color: white;   text-align: center; font-size: 20px;">
+                 {!ExpirationMsg}
+        </div>
+        </apex:outputPanel>
+        <div class="content">
+        
+        <div class="content" >
+            <h1 class="OCpageType">Salesforce BOFC</h1><br/>
+            <span class="titleSeparatingColon">:</span>
+            <h2 class="OCpageDescription">Run Reports</h2>
+            <div class="blank"></div>
+        </div>
+        </div>
+        <!-- <div class="home_icon"><a href="/apex/BOFCHome" style="color:blue;"><apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/img/gohome.png')}" /></a></div> -->
+        <div class="home_icon" style="padding-right: 10px;"><a href="/home/home.jsp" style="color:blue;font-size:13px;">Salesforce Home</a></div>
+        <div class="home_icon" style="padding-right: 10px;"><a href="/apex/BOFCHome" style="color:blue;font-size:13px;">BOFC Home</a></div>
+    </div>
+    
+    <apex:form id="formID">
+    
+     <script>
+        function loading_Main(val) {
+                 if (val) {
+                   document.getElementById('contentLoadingMain').style.display = 'block';
+                   
+                 }
+                 else {
+                   document.getElementById('contentLoadingMain').style.display = 'none';
+                  
+                 }
+               }
+     </script> 
+     
+     <apex:outputPanel id="t1">
+        <apex:pageMessages />
+        <apex:pageBlock title="Run Reports"> 
+           <!-- <apex:pageBlockButtons >
+                <apex:commandButton value="Delete Custom Objects" onclick="if(!confirm('Are you sure you want to delete selected custom objects?')){return false};" action="{!DeleteObjects}" reRender="t1,BasicPGID" disabled="{!LimitCompleted==true || AllowPageAccess==false || lObjectWrapper.size == 0}" status="search_Status_main1" style="color: white;padding: 7px;padding-right: 6px; background: lightseagreen;    font-size: 14px;    margin: 0px;    font-weight: bold;"/>
+                <apex:commandButton value="Reload Page" action="{!refreshPage}" status="search_Status_main1"/>
+            </apex:pageBlockButtons> -->
+            
+            
+            <!-- <apex:pageBlockSection columns="1">
+                <u><b><div style="color: red;font-weight:bold;">Steps to run Salesforce report in few clicks to perform bulk operation:</div></b></u>
+                    <div style="color: black;">
+                        1. Select the type of action you want to perform.
+                    </div>
+                    <div style="color: black;">
+                        2. Click "Delete Custom Objects" button to delete Objects from Salesforce.
+                    </div>
+                    <div style="color: black;">
+                        3. Once objects are successfully deleted, you can verify them by clicking on view.
+                    </div>
+            </apex:pageblockSection> -->
+            
+            <apex:outputPanel rendered="{!AllowPageAccess}"> 
+            <div id="contentLoadingMain" style="display:none;position:fixed;top:40%;right:40%;">
+                          <div style="text-align: center;">
+                              <apex:image url="{!URLFOR($Resource.bofc__BulkFieldCreator, 'ConfigBenchHomePage/img/SpinImage.gif')}" width="150" height="150" />
+                              <br/>
+                              <center>  <span style="font-size:22px;color:black;font-weight:bold;">  Processing...please wait...!!! </span> </center>
+                          </div>
+            </div>
+            <apex:actionStatus onstart="loading_Main(true)" onstop="loading_Main(false)" id="search_Status_main1" startStyle="color:red;"/> 
+            <apex:actionStatus onstop="stopSpinner();" id="search_Status_main" startStyle="color:red;"/>
+            
+        <div class="table_container">
+            <apex:actionFunction name="refreshPage"/> 
+            <apex:outputPanel rendered="{!LimitCompleted}">
+            <div style="color: red;font-weight:bold;">
+                <span style="color:red;font-size: 13px;text-align: right; margin: 10px;">*You have consumed allowed limit of deleting 3 custom objects. Please <a href="http://store.tech9logy.com/salesforce/bulk-object-field-creator.html" target="_blank">Click Here</a> for Full Version</span>
+            </div><br/>
+            </apex:outputPanel>
+            <apex:pageBlockSection columns="1" collapsible="false">
+            <apex:pageblockSectionItem >
+                Action Type
+                <apex:outputPanel >
+                    <apex:outputPanel >    
+                    <apex:selectList value="{!OperationType}"  multiselect="false" size="1" style="border-left:3px solid red" onchange="refreshPage();" >
+                        <apex:selectOptions value="{!OperationTypes}"/>
+                    </apex:selectList>
+                    <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*Select Action Type</span>
+                </apex:outputPanel>
+                </apex:outputPanel>
+             </apex:pageblockSectionItem>
+            
+             <apex:pageBlockSectionItem >
+                  Enter Report name
+                  <apex:outputPanel >
+                   <apex:inputText value="{!ReportName}"/>
+                   &nbsp;
+                  <apex:commandButton rendered="{!OperationType=='Update_Lead_Ownership'}" value="Assign Leads on the basis of Active Assignment Rule" action="{!UpdateLead}"/> </apex:outputPanel> 
+              </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem rendered="{!OperationType=='ImportCSV'}">
+                <h2>Condition no in report</h2> 
+                <apex:outputPanel >  
+                <apex:inputText value="{!condNo}"/>
+                <span style="color:red;font-size: 10px;text-align: right; margin: 10px;">*for eg: 1, 2, 3...</span>
+                </apex:outputPanel>  
+               </apex:pageBlockSectionItem>
+             
+             <apex:pageBlockSectionItem rendered="{!OperationType=='ImportCSV'}">
+                <h2>Select CSV/excel</h2> <br/>
+                <apex:outputPanel >
+                      <apex:inputFile value="{!csvFileBody}"  filename="{!csvAsString}"/>
+                      <apex:commandButton value="Import column value from CSV/XLS and add it as a report condition in any kind of reports" action="{!importCSVFile}"/> </apex:outputPanel>
+               </apex:pageBlockSectionItem>
+             </apex:pageBlockSection>
+             
+            
+            
+             <!-- <apex:pageBlockTable value="{!lObjectWrapper}" var="st" id="pgTable" >
+                <apex:column width="3%">
+                    <apex:facet name="header">
+                        <center> <apex:inputCheckbox onclick="selectAllCheckboxes(this,'inputId')"/></center>
+                    </apex:facet>
+                         <center><apex:inputCheckbox value="{!st.selected}" id="inputId" disabled="{!st.ObjectStatus == 'insert'}" rendered="{!st.ObjectStatus != 'insert'}" /> </center>  
+                         <apex:commandLink value="view" onclick="window.open('/p/setup/custent/CustomObjectsPage?setupid=CustomObjects','_blank');" rendered="{!st.ObjectStatus == 'insert'}"/>
+                         
+                </apex:column>
+                <apex:column width="5%">
+                    <apex:facet name="header"><center>Status</center></apex:facet>
+                    <center>
+                        <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/img/cross_icon.png')}" title="Error Found. Check Error Description" width="20" height="20" rendered="{!st.ObjectStatus=='error'}"/>
+                        <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/img/right_click.png')}" title="No Error Found. Ready for Insert" width="20" height="20" rendered="{!st.ObjectStatus=='insert'}" />
+                        <apex:image url="{!URLFOR($Resource.BulkFieldCreator, 'ConfigBenchHomePage/img/Exclamation_icon.png')}" title="Validate records" width="20" height="20" rendered="{!st.ObjectStatus=='validate'}"/>
+                    </center>
+                </apex:column>
+                <apex:column width="20%" id="leng">
+                    <apex:facet name="header">Object Label</apex:facet>
+                    <apex:OutputText id="ObjectLabel" value="{!st.ObjectLabel}"/>
+                        
+                </apex:column>
+                
+                <apex:column width="25%">
+                    <apex:facet name="header">Object Name</apex:facet>
+                    <apex:OutputText id="ObjectName" value="{!st.fullName}"/>
+                </apex:column>
+                <apex:column width="5%">
+                    <apex:facet name="header"><center>Is Custom?</center></apex:facet>
+                    <center><apex:inputCheckbox id="Custom" value="{!st.custom}" disabled="true"/></center>
+                </apex:column>
+                <apex:column width="15%">
+                    <apex:facet name="header">Error Description</apex:facet>
+                    <apex:outputText id="ErrorDesc" value="{!st.ErrorDescription}" style="font-weight:bold;color:#fff;background-color: {!if(st.ObjectStatus=='validate','gold', if(st.ObjectStatus=='error','red','lawngreen'))};width:125px;"/>
+                </apex:column>
+                                
+            </apex:pageBlockTable> 
+                -->
+                
+            </div>
+            <br/>
+            <apex:outputPanel rendered="{!OperationType=='Update_Lead_Ownership'}">
+            <div style="color: red;font-weight:bold;">
+                *Note:<br/> 1. You can run this feature on TABULAR type of report only. You can add any kind of conditions to filter or generate your report.
+            </div>
+            <div style="color: red;font-weight:bold;">
+                2. LeadID should be FIRST column in the report and rest you can include any kind of column.
+            </div>
+            </apex:outputPanel>
+            
+            <apex:outputPanel rendered="{!OperationType=='ImportCSV'}">
+            <div style="color: red;font-weight:bold;">
+                *Note:<br/> 1. You can run this feature on any kind of report only.
+            </div>
+            <div style="color: red;font-weight:bold;">
+                2. Column which needs to be imported should be FIRST column in the CSV and rest you can include any kind of column.
+            </div>
+            </apex:outputPanel>
+            
+            </apex:outputPanel>
+            
+        </apex:pageBlock>
+            
+    </apex:outputPanel>
+  
+  </apex:form>
+  <footer>
+    <div class="row anti">
+        <div class="footer-left">
+        </div>
+        <div class="footer-right">
+            <p> &copy;2017 Mohit Bansal. All rights reserved. Disclaimer</p>
+        </div>
+    </div>
+  </footer>
+  
+ 
+</apex:page>

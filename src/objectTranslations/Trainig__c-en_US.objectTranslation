@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObjectTranslation xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseValues>
+        <plural>false</plural>
+        <value>Trainig</value>
+    </caseValues>
+    <caseValues>
+        <plural>true</plural>
+        <value>Traing</value>
+    </caseValues>
+    <fields>
+        <label><!-- ADVAG --></label>
+        <name>ADVAG__c</name>
+    </fields>
+    <fields>
+        <label><!-- AdminStudent --></label>
+        <name>AdminStudent__c</name>
+    </fields>
+    <fields>
+        <label><!-- AdvStudents --></label>
+        <name>AdvStudents__c</name>
+    </fields>
+    <fields>
+        <label><!-- DevStudent --></label>
+        <name>DevStudent__c</name>
+    </fields>
+    <fields>
+        <label><!-- Dev --></label>
+        <name>Dev__c</name>
+    </fields>
+    <fields>
+        <label><!-- admin --></label>
+        <name>admin__c</name>
+    </fields>
+    <layouts>
+        <layout>Trainig Layout</layout>
+        <sections>
+            <label><!-- Custom Links --></label>
+            <section>Custom Links</section>
+        </sections>
+    </layouts>
+    <startsWith>Consonant</startsWith>
+</CustomObjectTranslation>

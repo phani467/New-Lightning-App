@@ -1,0 +1,11 @@
+<apex:page >
+<div style="font-size:30px;text-align:center">
+<h1>Thanks for submitting details</h1>
+  Welcome to SalesForce Developer Community
+
+</div>
+
+<!-- Begin Default Content REMOVE THIS -->
+  
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>
